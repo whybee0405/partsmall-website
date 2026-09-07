@@ -462,7 +462,7 @@ const RAW_PART_TYPES = [
     'brake-pads',
     'Brake Pads',
     'braking',
-    'Brake pads are the replaceable friction blocks that press against the brake disc to slow the wheel. They are a wear item and the most frequently replaced braking component.',
+    'Brake pads are the replaceable friction blocks that press against the brake disc to slow the wheel. They are a wear item and the most frequently replaced braking component, worn down over the life of the vehicle.',
     'The calliper squeezes a pair of pads against each face of the spinning disc. Friction converts the vehicle’s momentum into heat, which the disc then sheds into the airflow.',
     [
       'A high-pitched squeal that stops when you brake, from the wear indicator',
@@ -526,7 +526,7 @@ const RAW_PART_TYPES = [
     'callipers',
     'Callipers',
     'braking',
-    'A brake calliper is the hydraulic clamp that holds the brake pads and presses them against the disc. It converts brake fluid pressure into the clamping force that slows the vehicle.',
+    'A brake calliper is the hydraulic clamp that holds the brake pads and presses them against the disc. It converts brake fluid pressure into the clamping force that slows the vehicle, and can be fixed or sliding.',
     'Fluid pressure from the master cylinder acts on one or more pistons inside the calliper. The pistons push the pads against the disc, and on a sliding calliper the body itself moves on guide pins to apply the outer pad.',
     [
       'The vehicle pulling to one side under braking',
@@ -687,7 +687,7 @@ const RAW_PART_TYPES = [
     'crankshafts',
     'Crankshafts',
     'engine',
-    'The crankshaft converts the up-and-down movement of the pistons into the rotation that drives the vehicle. It runs in main bearings within the engine block.',
+    'The crankshaft converts the up-and-down movement of the pistons into the rotation that drives the vehicle. It runs in main bearings within the engine block and carries counterweights to balance the load.',
     'Connecting rods attach to offset journals on the crankshaft, so each downward piston stroke turns the shaft. The crankshaft then drives the flywheel, the timing system and the ancillary belt.',
     [
       'A deep knocking from the bottom of the engine, worst under load',
@@ -717,7 +717,7 @@ const RAW_PART_TYPES = [
     'cylinder-heads',
     'Cylinder Heads',
     'engine',
-    'The cylinder head sits on top of the engine block and contains the valves, valve seats and usually the camshafts. It forms the top of the combustion chamber and carries the inlet and exhaust ports.',
+    'The cylinder head sits on top of the engine block and contains the valves, valve seats and usually the camshafts. It forms the top of the combustion chamber and carries the inlet and exhaust ports, sealed by the head gasket below it.',
     'The head seals against the block through the head gasket, containing combustion pressure. It houses the valvetrain that admits air and fuel and releases exhaust gas, and carries coolant passages that manage combustion heat.',
     [
       'White sweet-smelling exhaust smoke',
@@ -780,7 +780,7 @@ const RAW_PART_TYPES = [
     'alternators',
     'Alternators',
     'electrical-sensors',
-    'The alternator generates the electricity that runs the vehicle while the engine is running and recharges the battery. Without it the vehicle runs only until the battery is flat.',
+    'The alternator generates the electricity that runs the vehicle while the engine is running and recharges the battery. Without it the vehicle runs only until the battery is flat, usually within an hour or two.',
     'Driven by the ancillary belt, the alternator produces alternating current which internal diodes rectify to direct current. A voltage regulator holds output at roughly 14 volts under varying load and engine speed.',
     [
       'A battery warning light while driving',
@@ -876,7 +876,7 @@ const RAW_PART_TYPES = [
     'distributors',
     'Distributors and Ignition',
     'electrical-sensors',
-    'A distributor routes high-voltage current from the ignition coil to the correct spark plug at the correct moment. It is found on older engines; modern engines use coil-on-plug systems instead.',
+    'A distributor routes high-voltage current from the ignition coil to the correct spark plug at the correct moment. It is found on older engines; modern engines use coil-on-plug systems instead, with no moving distributor cap.',
     'A rotor arm turning inside the distributor cap passes high-tension current to each plug lead in firing order. Timing is set by the distributor’s position relative to the camshaft drive.',
     [
       'Misfire under load or at higher revs',
@@ -908,7 +908,7 @@ const RAW_PART_TYPES = [
     'bushings',
     'Suspension Bushings',
     'suspension-steering',
-    'Suspension bushings are the rubber or polyurethane mountings between suspension components and the vehicle body. They allow controlled movement while absorbing vibration and road noise.',
+    'Suspension bushings are the rubber or polyurethane mountings between suspension components and the vehicle body. They allow controlled movement while absorbing vibration and road noise, and perish with age and mileage.',
     'Each bush lets a suspension arm pivot through its arc while resisting movement in other directions. That resistance is what holds wheel geometry steady under braking and cornering.',
     [
       'A knocking or clunking over bumps',
@@ -1411,7 +1411,7 @@ const RAW_PART_TYPES = [
     'fuel-pumps',
     'Fuel Pumps',
     'fuel-system',
-    'The fuel pump delivers fuel from the tank to the engine at the pressure the injection system requires. Most modern vehicles use an electric pump mounted inside the fuel tank.',
+    'The fuel pump delivers fuel from the tank to the engine at the pressure the injection system requires. Most modern vehicles use an electric pump mounted inside the fuel tank, cooled by the fuel around it.',
     'An electric motor drives an impeller that draws fuel through a strainer and pushes it up the fuel line to the rail. Surrounding fuel cools and lubricates the motor, which is why running low on fuel shortens pump life.',
     [
       'Extended cranking before the engine starts',
@@ -1536,7 +1536,7 @@ const RAW_PART_TYPES = [
     'bumpers',
     'Bumpers',
     'body-trim',
-    'A bumper is the moulded front or rear covering that absorbs minor impacts and carries lamps, sensors and grilles. Most modern bumpers are plastic covers over an internal reinforcement bar.',
+    'A bumper is the moulded front or rear covering that absorbs minor impacts and carries lamps, sensors and grilles. Most modern bumpers are plastic covers over an internal reinforcement bar, not a structural part itself.',
     'The visible cover manages airflow and appearance while an internal beam and crush cans absorb impact energy. The cover also mounts fog lamps, parking sensors and cameras.',
     [
       'Impact damage, cracking or deformation',
@@ -1688,7 +1688,7 @@ const RAW_PART_TYPES = [
     'wheel-bearings',
     'Wheel Bearings',
     'bearings',
-    'A wheel bearing supports the vehicle’s weight while allowing the wheel to rotate with minimal friction. It is a safety-critical component and a common source of driving noise.',
+    'A wheel bearing supports the vehicle’s weight while allowing the wheel to rotate with minimal friction. It is a safety-critical component and a common source of driving noise, usually a droning hum that changes with speed.',
     'The bearing sits between the stationary hub carrier and the rotating wheel hub, carrying both vertical load and cornering forces while keeping the wheel accurately located.',
     [
       'A droning or humming that rises and falls with road speed',

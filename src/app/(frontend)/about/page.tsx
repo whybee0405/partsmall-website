@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: 'Company',
   description:
-    'Parts-Mall Africa is the South African sales and distribution hub for Parts-Mall Corporation, a Korean automotive parts group founded in 1998 and exporting to 63 countries.',
+    'Parts-Mall Africa is the South African hub for Parts-Mall Corporation, a Korean parts group founded in 1998, exporting to 63 countries worldwide.',
   alternates: { canonical: '/about' },
 }
 

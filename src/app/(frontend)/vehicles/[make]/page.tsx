@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
 import { MAKES, getMake, modelsForMake, modelYearSpan } from '@/lib/data/vehicles'
 import { CATEGORIES } from '@/lib/data/catalogue'
-import { breadcrumbLd, collectionLd, JsonLd, metaDescription } from '@/lib/seo'
+import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
 
 export function generateStaticParams() {
   return MAKES.map((mk) => ({ make: mk.slug }))
@@ -22,14 +22,19 @@ export async function generateMetadata({
   if (!mk) return { title: 'Not found' }
 
   const models = modelsForMake(mk.slug)
+  const modelList = models
+    .slice(0, 3)
+    .map((x) => x.label)
+    .join(', ')
+  // A make with very few models (GWM and Haval has two) produces a short
+  // enough sentence that the longer closing clause still fits; a make with
+  // many models needs the shorter one to stay under the ceiling.
+  const long = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 33 branches, fitment confirmed by the counter.`
+  const short = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 33 South African branches.`
+
   return {
     title: `${mk.label} parts`,
-    description: metaDescription(
-      `${mk.label} replacement parts in South Africa across ${models.length} models including the ${models
-        .slice(0, 3)
-        .map((x) => x.label)
-        .join(', ')}. Supplied through 33 branches.`,
-    ),
+    description: long.length <= 155 ? long : short,
     alternates: { canonical: `/vehicles/${mk.slug}` },
   }
 }

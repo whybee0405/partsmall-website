@@ -10,7 +10,7 @@ import { breadcrumbLd, faqLd, JsonLd } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Frequently asked questions',
   description:
-    'Answers on ordering and fitment, branches and stock, the vehicles and parts Parts-Mall Africa supplies, private brands and warranty, trade and distributor terms, and company details.',
+    'Answers on ordering and fitment, branches and stock, the vehicles Parts-Mall Africa supplies, private brands, warranty, trade and distributor terms.',
   alternates: { canonical: '/faq' },
 }
 

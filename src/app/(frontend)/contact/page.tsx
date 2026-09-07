@@ -15,7 +15,7 @@ import { NETWORK } from '@/lib/data/branches'
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: `Contact Parts-Mall Africa head office in Meadowdale, Germiston. ${COMPANY.headOffice.email}. For stock checks and fitment, contact your nearest of ${NETWORK.total} network points directly.`,
+  description: `Contact Parts-Mall Africa head office in Meadowdale, Germiston. For stock checks and fitment, contact your nearest of ${NETWORK.total} network points directly.`,
   alternates: { canonical: '/contact' },
 }
 

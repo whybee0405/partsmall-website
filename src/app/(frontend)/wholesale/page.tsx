@@ -10,7 +10,7 @@ import { COMPANY, CORPORATE_FACTS, headOfficeMapUrl } from '@/lib/data/company'
 export const metadata: Metadata = {
   title: 'Distributor and franchise opportunities',
   description:
-    'Parts-Mall is expanding its distributor and franchise network across Southern Africa. Regional distributors, resellers and franchise partners talk directly to head office.',
+    'Parts-Mall is expanding its distributor and franchise network across Southern Africa. Distributors and franchise partners talk directly to head office.',
   alternates: { canonical: '/wholesale' },
 }
 

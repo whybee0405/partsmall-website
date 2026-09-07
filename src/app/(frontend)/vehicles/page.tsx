@@ -7,7 +7,7 @@ import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Car parts by make and model',
-  description: `Find replacement parts for ${MODELS.length} models across ${MAKES.length} makes, including Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Ford, Nissan and Toyota. Years, engines and the parts most often replaced on each.`,
+  description: `Find replacement parts for ${MODELS.length} models across ${MAKES.length} makes, including Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Ford, Nissan and Toyota, and what each needs.`,
   alternates: { canonical: '/vehicles' },
 }
 

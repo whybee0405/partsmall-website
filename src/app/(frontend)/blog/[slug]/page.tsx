@@ -20,8 +20,10 @@ export async function generateMetadata({
   const guide = getGuide(slug)
   if (!guide) return { title: 'Post not found' }
 
+  // Absolute title, not the templated one — the site suffix would push
+  // several of these headlines past the 60-character budget.
   return {
-    title: guide.title,
+    title: { absolute: guide.title },
     description: guide.excerpt,
     alternates: { canonical: `/blog/${guide.slug}` },
     openGraph: {
@@ -29,6 +31,7 @@ export async function generateMetadata({
       title: guide.title,
       description: guide.excerpt,
       publishedTime: guide.date,
+      images: [{ url: guide.image }],
     },
   }
 }

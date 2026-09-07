@@ -135,7 +135,7 @@ export const GUIDES: Guide[] = [
     slug: 'brake-pad-fitment-checks',
     title: 'Brake pad fitment: what to confirm before you order',
     excerpt:
-      'Four checks that stop a return. Most brake pad returns come down to one of them, and all four take a minute at the car.',
+      'Four checks that stop a return. Most brake pad returns come down to one of them, and all four take barely a minute at the car.',
     category: 'Fitment',
     readMinutes: 5,
     date: '2026-06-28',
@@ -152,7 +152,7 @@ export const GUIDES: Guide[] = [
     slug: 'oem-private-brand-or-aftermarket',
     title: 'OEM, private brand or aftermarket: choosing for the job',
     excerpt:
-      'Not every repair needs an OEM part, and not every part should be the cheapest option on the shelf. How to decide.',
+      'Not every repair needs an OEM part, and not every part should be the cheapest option on the shelf. Three rules help you decide.',
     category: 'Buying',
     readMinutes: 6,
     date: '2026-06-09',
@@ -169,7 +169,7 @@ export const GUIDES: Guide[] = [
     slug: 'opening-a-trade-account',
     title: 'Opening a trade account with Parts-Mall',
     excerpt:
-      'What the team needs from you, what happens after you send the enquiry, and how long it usually takes.',
+      'What the team needs from you, what happens after you send the enquiry, and how long it usually takes before you are trading.',
     category: 'Trade',
     readMinutes: 3,
     date: '2026-05-22',
@@ -185,7 +185,7 @@ export const GUIDES: Guide[] = [
     slug: 'korean-service-parts-by-model',
     title: 'The Korean service parts branches move most',
     excerpt:
-      'Across 33 South African branches, a small group of references carries a disproportionate share of counter volume.',
+      'Across 33 South African branches, a small group of references carries a disproportionate share of counter volume across the network.',
     category: 'Fitment',
     readMinutes: 5,
     date: '2026-04-30',
@@ -202,7 +202,7 @@ export const GUIDES: Guide[] = [
     slug: 'what-your-branch-needs-to-find-a-part',
     title: 'What your branch needs from you to find a part fast',
     excerpt:
-      'The counter can work from very little, but five details turn a ten-minute search into a one-minute answer.',
+      'The counter can work from very little, but five details turn a ten-minute search into a one-minute answer, even on a bad line.',
     category: 'Ordering',
     readMinutes: 3,
     date: '2026-04-11',

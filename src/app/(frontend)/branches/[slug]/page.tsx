@@ -35,9 +35,20 @@ export async function generateMetadata({
   const branch = getBranch(slug)
   if (!branch) return { title: 'Branch not found' }
 
+  // A handful of branch names carry a second town in parentheses-free form
+  // ("Gqeberha, Port Elizabeth") that pushes the description past 155
+  // characters once the address and phone are added — fall back to the
+  // first name in that case rather than truncating mid-sentence.
+  const shortAddr = branch.address.split(',')[0]
+  const loc = branch.province === 'Pan-Africa' ? branch.country : branch.province
+  const buildDescription = (name: string) =>
+    `Parts-Mall ${name} branch, ${shortAddr}, ${loc}. Call ${branch.phone} for stock, fitment and trade supply, or WhatsApp the branch.`
+  const fullDescription = buildDescription(branch.name)
+
   return {
     title: `${branch.name} branch`,
-    description: `Parts-Mall ${branch.name}, ${branch.address}. Call ${branch.phone} for stock checks, fitment and trade supply. ${branch.hours}.`,
+    description:
+      fullDescription.length <= 155 ? fullDescription : buildDescription(branch.name.split(',')[0]),
     alternates: { canonical: `/branches/${branch.slug}` },
   }
 }

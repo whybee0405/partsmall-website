@@ -51,16 +51,16 @@ export async function generateMetadata({
   if (!mk || !mo || !pt) return { title: 'Not found' }
 
   const span = modelYearSpan(mo)
+  // Absolute title without the year span — some make/model/part-type
+  // combinations already sit close to 60 characters before the suffix, and
+  // the span belongs in the description and H1, not competing for budget
+  // in the tab title.
   return {
-    title: `${mk.label} ${mo.label} ${pt.label} (${span})`,
+    title: { absolute: `${mk.label} ${mo.label} ${pt.label}` },
     description: metaDescription(
-      `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Supplied and fitment-confirmed through 33 branches across South Africa. ${pt.summary}`,
+      `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Supplied and fitment-confirmed through 33 South African branches before dispatch. ${pt.summary}`,
     ),
     alternates: { canonical: `/vehicles/${mk.slug}/${mo.slug}/${pt.slug}` },
-    openGraph: {
-      title: `${mk.label} ${mo.label} ${pt.label}`,
-      description: `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Confirmed and supplied through 33 South African branches.`,
-    },
   }
 }
 

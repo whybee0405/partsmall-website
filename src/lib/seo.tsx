@@ -3,22 +3,35 @@ import type { Faq } from '@/lib/data/catalogue'
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://partsmall.co.za'
 
 /**
- * Truncates a meta description at a word boundary.
+ * Truncates a meta description at a word boundary, to a 120-155 character
+ * window.
  *
  * A hard slice leaves descriptions ending mid-word ("...in a manual veh"),
  * which looks broken in a result listing. This trims back to the last sentence
  * end where one is close enough, otherwise to the last whole word.
+ *
+ * "Close enough" is gated on `min`, not a fraction of `limit` — a source
+ * text with a short first sentence and a long second one used to get cut
+ * right after the first period, discarding the rest and landing well under
+ * the floor. Only take the sentence-boundary shortcut if it still clears
+ * `min` on its own; otherwise fall through to the word-boundary cut, which
+ * fills up to `limit` instead of stopping short.
+ *
+ * The word-boundary path reserves one character for the ellipsis before
+ * slicing, not after — appending it post-slice let output run past `limit`
+ * by the ellipsis's own length, which defeats the point of a ceiling.
  */
-export function metaDescription(text: string, limit = 155) {
+export function metaDescription(text: string, limit = 155, min = 120) {
   const clean = text.replace(/\s+/g, ' ').trim()
   if (clean.length <= limit) return clean
 
   const window = clean.slice(0, limit)
   const sentenceEnd = Math.max(window.lastIndexOf('. '), window.lastIndexOf('? '))
-  if (sentenceEnd > limit * 0.6) return window.slice(0, sentenceEnd + 1)
+  if (sentenceEnd >= min) return window.slice(0, sentenceEnd + 1)
 
-  const wordEnd = window.lastIndexOf(' ')
-  return `${window.slice(0, wordEnd > 0 ? wordEnd : limit).replace(/[,;:]$/, '')}...`
+  const budget = clean.slice(0, limit - 1)
+  const wordEnd = budget.lastIndexOf(' ')
+  return `${budget.slice(0, wordEnd > 0 ? wordEnd : limit - 1).replace(/[,;:]$/, '')}…`
 }
 
 /**

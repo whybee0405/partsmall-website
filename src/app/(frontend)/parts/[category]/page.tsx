@@ -28,7 +28,6 @@ export async function generateMetadata({
     title: `${cat.label} parts`,
     description: metaDescription(cat.summary),
     alternates: { canonical: `/parts/${cat.slug}` },
-    openGraph: { title: `${cat.label} parts | Parts-Mall Africa`, description: cat.summary },
   }
 }
 

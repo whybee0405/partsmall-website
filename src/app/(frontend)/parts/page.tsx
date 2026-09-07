@@ -11,7 +11,7 @@ import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Car parts by system',
-  description: `Replacement car parts across ${CATEGORIES.length} systems and ${PART_TYPES.length} part types, for Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan, Toyota and more. What each part does, how it fails, and what to confirm before ordering.`,
+  description: `Replacement car parts across ${CATEGORIES.length} systems and ${PART_TYPES.length} part types: Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan and Toyota. What each part does, how it fails.`,
   alternates: { canonical: '/parts' },
 }
 

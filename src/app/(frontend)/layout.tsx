@@ -46,7 +46,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partsmall.co.za'
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Parts-Mall Africa | Korean vehicle parts, supplied from a branch near you',
+    default: 'Parts-Mall Africa | Korean Vehicle Parts Supplier',
     template: '%s | Parts-Mall Africa',
   },
   description:
@@ -65,6 +65,18 @@ export const metadata: Metadata = {
     locale: 'en_ZA',
     siteName: COMPANY.name,
     url: siteUrl,
+    images: [
+      {
+        url: '/images/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Parts-Mall Africa — Korean vehicle parts supplier in Southern Africa.',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/images/og-default.png'],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: '/' },

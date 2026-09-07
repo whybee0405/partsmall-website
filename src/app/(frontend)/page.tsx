@@ -22,7 +22,7 @@ import { CORPORATE_FACTS, GUIDES } from '@/lib/data/company'
 
 export const metadata: Metadata = {
   description:
-    'Korean vehicle parts held across 33 South African branches and 5 pan-African country points. Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan and Toyota. Trade accounts and branch stock checks.',
+    'Korean vehicle parts across 33 South African branches. Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan and Toyota, fitment confirmed by the counter.',
   alternates: { canonical: '/' },
 }
 

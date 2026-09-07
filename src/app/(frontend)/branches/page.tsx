@@ -8,7 +8,7 @@ import { branchesByProvince, NETWORK } from '@/lib/data/branches'
 
 export const metadata: Metadata = {
   title: 'Branch finder',
-  description: `Find your nearest Parts-Mall branch. ${NETWORK.southAfrica} branches across ${NETWORK.provinces} South African provinces, plus country points in Botswana, Eswatini, Mozambique, Namibia and Zimbabwe.`,
+  description: `Find your nearest Parts-Mall branch. ${NETWORK.southAfrica} branches across ${NETWORK.provinces} South African provinces, plus points in Botswana, Eswatini, Mozambique, Namibia and Zimbabwe.`,
   alternates: { canonical: '/branches' },
 }
 
