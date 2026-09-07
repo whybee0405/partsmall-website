@@ -25,7 +25,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: 'who-we-are',
     title: '1. Who we are',
     body: [
-      'This policy is issued by Parts-Mall Africa (Pty) Ltd ("Parts-Mall Africa", "we", "us"), registration number [company registration number], with its head office at 50 Herman Street, R24 Business Park, Building G, Unit 1, Meadowdale, Germiston 1401, South Africa.',
+      'This policy is issued by Parts-Mall Africa (Pty) Ltd ("Parts-Mall Africa", "we", "us"), registration number 2005/007249/07, VAT number 4430222457, with its head office at 50 Herman Street, R24 Business Park, Building G, Unit 1, Meadowdale, Germiston 1401, South Africa.',
       'Parts-Mall Africa is the "responsible party" under the Protection of Personal Information Act 4 of 2013 (POPIA) for the personal information this site collects. Our appointed Information Officer is [Information Officer name and role], contactable at the details in Section 13 below.',
       'This policy applies to partsmall.co.za and to information you give us by phone, WhatsApp or in person at a branch when that information is recorded in our systems. It does not apply to WhatsApp, Google Maps or any other third-party service you reach through a link on this site — those are covered by that service\'s own privacy terms.',
     ],
@@ -67,7 +67,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: 'cross-border',
     title: '6. Cross-border transfers',
     body: [
-      'Any transfer of personal information outside South Africa — including, if applicable, to Parts-Mall Corporation in South Korea or to a hosting provider located outside South Africa — is only made where POPIA\'s conditions for cross-border transfer are met, including that the recipient is subject to a comparable level of protection or you have consented to the transfer. [The specific countries information may be transferred to, and the safeguard relied on for each, need to be confirmed — see review notes.]',
+      'This site and the systems behind it are hosted in South Africa. The only cross-border transfer we anticipate is the limited group-level sharing with Parts-Mall Corporation in South Korea described in Section 5, if and when that occurs. Any such transfer is only made where POPIA\'s conditions for cross-border transfer are met, including that the recipient is subject to a comparable level of protection or you have consented to the transfer. [Whether this sharing actually occurs, and if so what safeguard applies, needs to be confirmed — see review notes.]',
     ],
   },
   {
@@ -131,7 +131,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: 'acceptance',
     title: '1. Acceptance of these terms',
     body: [
-      'These terms govern your use of partsmall.co.za, operated by Parts-Mall Africa (Pty) Ltd, registration number [company registration number] ("Parts-Mall Africa", "we", "us"). By using this site, you agree to these terms. If you do not agree, please do not use the site.',
+      'These terms govern your use of partsmall.co.za, operated by Parts-Mall Africa (Pty) Ltd, registration number 2005/007249/07, VAT number 4430222457 ("Parts-Mall Africa", "we", "us"). By using this site, you agree to these terms. If you do not agree, please do not use the site.',
     ],
   },
   {
