@@ -47,25 +47,36 @@ export default function PartsPage() {
               <li key={c.slug} className="bg-paper ring-1 ring-inset ring-hairline">
                 <Link
                   href={`/parts/${c.slug}`}
-                  className="group flex h-full flex-col gap-4 p-6 transition-colors duration-200 hover:bg-card"
+                  className="group relative flex h-full flex-col gap-4 overflow-hidden p-6"
                 >
-                  <div className="flex items-start justify-between gap-4">
+                  <Image
+                    src={c.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover opacity-[0.14] transition-opacity duration-300 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-paper/92 transition-colors duration-300 group-hover:bg-navy-900/80" />
+
+                  <div className="relative flex items-start justify-between gap-4">
                     <CategoryIcon
                       name={c.icon}
                       size={24}
-                      className="text-steel transition-colors duration-200 group-hover:text-signal-deep"
+                      className="text-steel transition-colors duration-200 group-hover:text-signal"
                     />
-                    <span className="t-data text-[0.7rem] text-steel">
+                    <span className="t-data text-[0.7rem] text-steel transition-colors duration-200 group-hover:text-on-navy-muted">
                       {count} {count === 1 ? 'type' : 'types'}
                     </span>
                   </div>
-                  <div className="flex-1">
-                    <h2 className="t-h3 text-ink group-hover:text-navy-700">{c.label}</h2>
-                    <p className="mt-2 text-[0.9rem] leading-relaxed text-steel">
+                  <div className="relative flex-1">
+                    <h2 className="t-h3 text-ink transition-colors duration-200 group-hover:text-on-navy">
+                      {c.label}
+                    </h2>
+                    <p className="mt-2 text-[0.9rem] leading-relaxed text-steel transition-colors duration-200 group-hover:text-on-navy-muted">
                       {c.blurb}
                     </p>
                   </div>
-                  <span className="flex items-center gap-1.5 text-[0.85rem] font-semibold text-navy-700">
+                  <span className="relative flex items-center gap-1.5 text-[0.85rem] font-semibold text-navy-700 transition-colors duration-200 group-hover:text-on-navy">
                     View {c.label.toLowerCase()}
                     <ArrowRight
                       size={15}
