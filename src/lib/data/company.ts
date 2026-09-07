@@ -12,11 +12,7 @@ export const COMPANY = {
   headOffice: {
     name: 'Parts-Mall Meadowdale',
     email: 'pma.sales1@parts-mall.com',
-    // PLACEHOLDER — not a verified number. Directory listings disagree
-    // (011 392 1141, 011 805 6593) and none is confirmed WhatsApp-enabled.
-    // Replace with the real head-office WhatsApp Business number before
-    // this button goes live for real customers.
-    whatsappPhone: '0000000000',
+    whatsappPhone: '072 875 8042',
     address: [
       '50 Herman Street',
       'R24 Business Park, Building G, Unit 1',
