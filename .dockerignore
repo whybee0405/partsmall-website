@@ -1,0 +1,29 @@
+# Build context hygiene. Keeps the image small and keeps dev secrets out of it.
+node_modules
+.next
+out
+build
+
+.git
+.gitignore
+
+# Never bake local secrets or the local database into an image.
+.env
+.env.local
+.env*.local
+partsmall.db
+partsmall.db-journal
+
+# Uploads live in a named volume, not in the image.
+public/media
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+Dockerfile
+.dockerignore
+docker-compose*.yml

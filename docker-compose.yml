@@ -1,0 +1,56 @@
+# Parts-Mall Africa.
+#
+# Deliberately namespaced `partsmall-africa` so nothing here collides with the
+# separate `partsmall-zic-website` project already on this machine. That gives
+# distinct volumes (partsmall-africa_*), a distinct network
+# (partsmall-africa_default) and an explicit container name.
+#
+# Port 3050 was chosen because it is clear of everything currently published on
+# this host. Bound to 127.0.0.1 so the site is not exposed on the LAN; drop the
+# prefix if you want to test on a phone over the local network.
+
+name: partsmall-africa
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET:?set PAYLOAD_SECRET in .env.docker}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3050}
+    image: partsmall-africa-web:local
+    container_name: partsmall-africa-web
+    restart: unless-stopped
+
+    ports:
+      - '127.0.0.1:${HOST_PORT:-3050}:3000'
+
+    environment:
+      NODE_ENV: production
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?set PAYLOAD_SECRET in .env.docker}
+      DATABASE_URI: file:/app/data/partsmall.db
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3050}
+
+    volumes:
+      # The SQLite database. Seeded from the image on first start, persistent after.
+      - db:/app/data
+      # Media uploaded through the CMS.
+      - media:/app/public/media
+
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://127.0.0.1:3000/robots.txt']
+      interval: 30s
+      timeout: 5s
+      start_period: 25s
+      retries: 3
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+volumes:
+  db:
+  media:

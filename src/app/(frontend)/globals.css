@@ -1,0 +1,443 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Parts-Mall Africa design system
+   --------------------------------------------------------------------------
+   Register: brand. Colour strategy: Committed.
+   Theme: light-locked. The usage scene is a workshop owner checking a part
+   number on a cracked Android in direct Highveld sun. Dark mode loses that
+   fight, so the site does not ship one.
+   Radius: one value, 4px, everywhere. Full-bleed elements are 0.
+   ========================================================================== */
+
+@theme {
+  /* --- Colour ---------------------------------------------------------- */
+  /* Ink and navy carry authority. Signal green marks a guarantee or an
+     action, and nothing else. Neutrals are tinted warm so nothing reads
+     as pure grey; nothing is #000 or #fff. */
+
+  --color-ink: oklch(0.2 0.03 262); /* ~#171c2b  body text */
+  --color-ink-soft: oklch(0.32 0.028 262); /* ~#2b3244  secondary heads */
+
+  --color-navy-900: oklch(0.25 0.07 262); /* ~#16244a  structural blocks */
+  --color-navy-800: oklch(0.31 0.09 262); /* ~#1c2f63 */
+  --color-navy-700: oklch(0.38 0.11 262); /* ~#24408a  brand primary */
+  --color-navy-500: oklch(0.52 0.125 262); /* ~#3a5fbd  links, hover */
+  --color-navy-100: oklch(0.93 0.025 262); /* ~#dfe4f4  tints */
+
+  /* Signal green. --signal is the bright mark used for rules, dots, active
+     states and badges with dark text. --signal-deep is the only green that
+     may sit under light text: it clears 4.8:1 against paper. */
+  --color-signal: oklch(0.64 0.15 155); /* ~#21a05f */
+  --color-signal-deep: oklch(0.53 0.135 155); /* ~#12804a  CTA background */
+  --color-signal-soft: oklch(0.94 0.035 155); /* ~#ddf5e7  badge tint */
+
+  --color-paper: oklch(0.985 0.004 90); /* ~#fbfaf8  canvas */
+  --color-paper-2: oklch(0.96 0.007 90); /* ~#f2efeb  inset surfaces */
+  --color-card: oklch(0.998 0.001 90); /* ~#fefefd  raised surfaces */
+  --color-hairline: oklch(0.885 0.006 85); /* ~#dcd9d4  dividers */
+  --color-hairline-strong: oklch(0.8 0.008 85); /* ~#c3bfb9 */
+  --color-steel: oklch(0.53 0.02 262); /* ~#6b7488  muted text, 4.6:1 */
+
+  /* On-navy tokens, for text sitting on the structural blocks. */
+  --color-on-navy: oklch(0.97 0.006 90);
+  --color-on-navy-muted: oklch(0.78 0.02 262);
+  --color-on-navy-rule: oklch(0.42 0.05 262);
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-martian-mono), ui-monospace, monospace;
+
+  /* Modular scale, ratio 1.28. Fluid across 380px to 1440px. */
+  --text-display: clamp(2.75rem, 1.2rem + 6.5vw, 6.5rem);
+  --text-h1: clamp(2.15rem, 1.2rem + 4vw, 4.25rem);
+  --text-h2: clamp(1.7rem, 1.15rem + 2.3vw, 2.9rem);
+  --text-h3: clamp(1.3rem, 1.05rem + 1vw, 1.75rem);
+  --text-h4: 1.15rem;
+  --text-lead: clamp(1.06rem, 1rem + 0.35vw, 1.2rem);
+  --text-label: 0.7rem;
+
+  /* --- Shape and depth -------------------------------------------------- */
+  --radius-base: 4px;
+
+  /* Shadows are tinted navy, never black, and appear on interaction. */
+  --shadow-lift: 0 1px 2px oklch(0.25 0.07 262 / 0.06), 0 8px 24px oklch(0.25 0.07 262 / 0.07);
+  --shadow-panel: 0 1px 2px oklch(0.25 0.07 262 / 0.05), 0 18px 44px oklch(0.25 0.07 262 / 0.09);
+
+  /* --- Motion ----------------------------------------------------------- */
+  /* Exponential ease-out only. No bounce, no elastic. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+    min-width: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* Sticky header clearance for in-page anchors. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* The signature move: Archivo pushed wide. Container stencil, truck
+       livery. Every competitor in this category uses condensed type. */
+    font-stretch: 118%;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus is a green outer ring, never a border-colour swap, so nothing
+     shifts on focus. */
+  :focus-visible {
+    outline: 2px solid var(--color-signal-deep);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-navy-700);
+    color: var(--color-on-navy);
+  }
+
+  /* Reserve space for async images so nothing reflows. */
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ==========================================================================
+   Type utilities
+   ========================================================================== */
+
+@utility t-display {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 800;
+  font-stretch: 118%;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+}
+
+@utility t-h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 800;
+  font-stretch: 115%;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+}
+
+@utility t-h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+@utility t-h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 700;
+  font-stretch: 108%;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+@utility t-lead {
+  font-size: var(--text-lead);
+  line-height: 1.62;
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+}
+
+/* Mono is reserved for things that are literally data: part numbers, branch
+   phone numbers, counts, spec fields. It never carries prose. */
+@utility t-data {
+  font-family: var(--font-mono);
+  font-stretch: 87.5%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+@utility t-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-stretch: 87.5%;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+@utility shell {
+  width: 100%;
+  max-width: 82.5rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 80rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Vertical rhythm tiers. Sections vary deliberately; identical padding
+   everywhere is monotony. */
+@utility band {
+  padding-block: clamp(3.5rem, 2rem + 6vw, 7rem);
+}
+
+@utility band-tight {
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+}
+
+@utility band-tall {
+  padding-block: clamp(4.5rem, 2rem + 9vw, 9.5rem);
+}
+
+/* The structural navy block. Used for genuine authority moments only:
+   the network, the group story, the partner pitch. */
+@utility slab {
+  background-color: var(--color-navy-900);
+  color: var(--color-on-navy);
+}
+
+/* ==========================================================================
+   The top-rule accent. The one recurring signature: emphasis comes from a
+   rule above the content, never a side stripe.
+   ========================================================================== */
+
+@utility rule-top {
+  border-top: 2px solid var(--color-ink);
+  padding-top: 0.875rem;
+}
+
+@utility rule-top-signal {
+  border-top: 2px solid var(--color-signal);
+  padding-top: 0.875rem;
+}
+
+/* ==========================================================================
+   Motion
+   ========================================================================== */
+
+/* Scroll reveal.
+
+   The hidden state is gated behind `html.js`, which a head script adds before
+   first paint. Without JS the markup simply renders visible, so a blocked or
+   failed bundle produces a static page rather than a blank one. That matters
+   for an audience on patchy mobile connections. */
+[data-reveal] {
+  transition:
+    opacity 0.55s var(--ease-out-expo),
+    transform 0.55s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Hero map — the flowing "material" on the route lines. A dashed strand
+   animates along the same path as the static glow stroke, reading as
+   current moving through a conduit rather than a flat vector line. The
+   site-wide reduced-motion block below already halts these; SVG <animate>/
+   <animateMotion> elements (camera, pulses) are gated separately in JS
+   since CSS cannot stop SMIL.
+   ========================================================================== */
+
+.hero-map-flow-primary {
+  animation: hero-map-flow-primary 0.55s linear infinite;
+}
+.hero-map-flow-secondary {
+  animation: hero-map-flow-secondary 0.95s linear infinite;
+}
+@keyframes hero-map-flow-primary {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+@keyframes hero-map-flow-secondary {
+  to {
+    stroke-dashoffset: -13;
+  }
+}
+
+/* ==========================================================================
+   Floating action buttons (WhatsApp, chat) — a slow breathing ring, not
+   Tailwind's default 1s ping. These sit on every page indefinitely, so it
+   reads as an ambient "you can reach us" signal rather than an urgent alert.
+   ========================================================================== */
+
+.fab-pulse-ring {
+  animation: fab-pulse 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes fab-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-pulse-ring {
+    animation: none;
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Branch map (Leaflet) — a plain styled dot instead of Leaflet's default
+   pin image, so there is no bundler asset-path issue to work around.
+   ========================================================================== */
+
+.branch-map-dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  border: 2px solid var(--color-navy-900);
+  box-shadow: 0 0 0 2px oklch(0.985 0.004 90 / 0.9);
+  transition: opacity 0.2s ease;
+}
+
+.leaflet-container {
+  font-family: var(--font-body);
+  background: var(--color-paper-2);
+}
+
+/* ==========================================================================
+   Custom cursor — desktop, fine-pointer only. See CustomCursor.tsx: the
+   `custom-cursor-active` class is only ever added by that component once it
+   has confirmed pointer:fine and no reduced-motion preference, so `cursor:
+   none` never ships to a device that didn't ask for it.
+   ========================================================================== */
+
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.hero-cursor-dot,
+.hero-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 300;
+  border-radius: 9999px;
+  transition:
+    opacity 0.2s ease,
+    width 0.18s var(--ease-out-quart),
+    height 0.18s var(--ease-out-quart),
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.hero-cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--color-signal);
+}
+
+.hero-cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--color-signal);
+  opacity: 0.65;
+}
+
+.hero-cursor-dot.is-hover {
+  background: var(--color-navy-700);
+  width: 5px;
+  height: 5px;
+}
+
+.hero-cursor-ring.is-hover {
+  width: 50px;
+  height: 50px;
+  border-color: var(--color-navy-700);
+  opacity: 0.9;
+}
+
+.hero-cursor-dot.is-hidden,
+.hero-cursor-ring.is-hidden {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
