@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowUpRight, EnvelopeSimple, NavigationArrow } from '@phosphor-icons/react/dist/ssr'
 import { Wordmark } from '@/components/ui/Wordmark'
+import { CookiePreferencesButton } from '@/components/CookiePreferencesButton'
 import { COMPANY, headOfficeMapUrl } from '@/lib/data/company'
 import { NETWORK } from '@/lib/data/branches'
 import { CATEGORIES } from '@/lib/data/catalogue'
@@ -127,10 +128,19 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-on-navy-rule pt-6 text-[0.82rem] text-on-navy-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-on-navy-rule pt-6 text-[0.82rem] text-on-navy-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             {new Date().getFullYear()} {COMPANY.legalName}. All rights reserved.
           </p>
+          <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <Link href="/privacy" className="transition-colors hover:text-on-navy">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-on-navy">
+              Terms of Service
+            </Link>
+            <CookiePreferencesButton className="transition-colors hover:text-on-navy" />
+          </nav>
           <p className="t-data text-[0.78rem]">
             {NETWORK.southAfrica} branches / {NETWORK.provinces} provinces /{' '}
             {NETWORK.countries} countries

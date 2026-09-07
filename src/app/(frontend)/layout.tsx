@@ -5,6 +5,7 @@ import { Footer } from '@/components/site/Footer'
 import { CustomCursor } from '@/components/CustomCursor'
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { ChatWidget } from '@/components/ChatWidget'
+import { CookieBanner } from '@/components/CookieBanner'
 import { COMPANY } from '@/lib/data/company'
 import './globals.css'
 
@@ -119,6 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CustomCursor />
         <FloatingWhatsApp />
         <ChatWidget />
+        <CookieBanner />
       </body>
     </html>
   )

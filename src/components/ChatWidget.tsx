@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChatCircleDots, X, PaperPlaneRight, Phone, WhatsappLogo, NavigationArrow } from '@phosphor-icons/react'
 import { telHref, mapsHref, whatsappNumber, type Branch } from '@/lib/data/branches'
+import { useCookieBannerOpen } from '@/lib/consent'
 
 type Message = {
   role: 'user' | 'assistant'
@@ -29,6 +30,7 @@ export function ChatWidget() {
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const bannerOpen = useCookieBannerOpen()
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -106,7 +108,9 @@ export function ChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? 'Close chat assistant' : 'Open chat assistant'}
-        className="fixed bottom-6 left-6 z-[90] flex h-14 w-14 items-center justify-center rounded-full bg-navy-700 text-on-navy shadow-[var(--shadow-panel)] transition-transform hover:scale-105 active:scale-95"
+        className={`fixed left-6 z-[90] flex h-14 w-14 items-center justify-center rounded-full bg-navy-700 text-on-navy shadow-[var(--shadow-panel)] transition-[bottom,transform] duration-200 hover:scale-105 active:scale-95 ${
+          bannerOpen && !open ? 'bottom-28 sm:bottom-24' : 'bottom-6'
+        }`}
       >
         {!open && (
           <span aria-hidden="true" className="fab-pulse-ring absolute inset-0 rounded-full bg-navy-700" />
