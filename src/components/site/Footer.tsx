@@ -41,7 +41,7 @@ const columns = [
     title: 'Trade',
     links: [
       { href: '/wholesale', label: 'Distributor and franchise enquiries' },
-      { href: '/guides', label: 'Guides and fitment notes' },
+      { href: '/blog', label: 'Blog and fitment notes' },
       { href: '/contact', label: 'Contact head office' },
     ],
   },

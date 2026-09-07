@@ -53,13 +53,13 @@ export const FAQS: Faq[] = [
     category: 'ordering',
     q: 'What do I need to give the counter to order a part?',
     a: 'Lead with the vehicle: make, model and year, then the engine code or capacity, then the specific component described the way it appears on the car. An OEM number off the old part narrows the search fastest, even if it looks worn or partial. Say up front whether you need it today.',
-    href: '/guides/what-your-branch-needs-to-find-a-part',
+    href: '/blog/what-your-branch-needs-to-find-a-part',
   },
   {
     category: 'ordering',
     q: 'How do I read a Parts-Mall part number?',
     a: 'Every reference follows PM, a three-letter system code, then a numeric block. PM-BRK-1001 is braking, PM-ENG is engine, PM-ELS is electrical and sensors, and so on across all 13 catalogue systems. The numeric block groups by family, not by vehicle, so the number alone does not confirm fitment — the branch still checks that against your vehicle.',
-    href: '/guides/reading-a-parts-mall-part-number',
+    href: '/blog/reading-a-parts-mall-part-number',
   },
   {
     category: 'ordering',
@@ -76,7 +76,7 @@ export const FAQS: Faq[] = [
     category: 'ordering',
     q: "What's the difference between OEM, private-brand and aftermarket parts?",
     a: 'Safety-critical or hard-to-reach components favour OEM or the strongest private-brand line, since redoing the labour costs more than the parts saving. Routine service items — filters, pads, cables — suit a certified private brand built to the same ISO 9001 and TS 16949 standard as original equipment. Cosmetic and trim parts are usually a budget decision. Every Parts-Mall private-brand line carries corporation warranty backing regardless of tier.',
-    href: '/guides/oem-private-brand-or-aftermarket',
+    href: '/blog/oem-private-brand-or-aftermarket',
   },
   {
     category: 'ordering',
@@ -175,7 +175,7 @@ export const FAQS: Faq[] = [
     category: 'brands-warranty',
     q: 'Are private-brand parts built to the same standard as OEM?',
     a: 'Parts-Mall private-brand lines are certified to ISO 9001 and TS 16949, the same automotive quality standard used in original equipment production.',
-    href: '/guides/oem-private-brand-or-aftermarket',
+    href: '/blog/oem-private-brand-or-aftermarket',
   },
 
   // ── Trade, distributors and franchise ───────────────────────────────────

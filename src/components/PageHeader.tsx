@@ -12,7 +12,7 @@ import type { ReactNode } from 'react'
  * that need them rather than stamped above every heading.
  *
  * `backgroundImage` is opt-in — only the top-level section pages (Parts,
- * Vehicles, Branches, Wholesale, Guides, Company, Contact) pass one. Every
+ * Vehicles, Branches, Wholesale, Blog, Company, Contact) pass one. Every
  * deeper page (a model, a part type, a single branch) keeps the plain paper
  * header, so a photo doesn't repeat at every level of a three-deep taxonomy.
  */

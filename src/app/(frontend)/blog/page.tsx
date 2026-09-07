@@ -6,13 +6,13 @@ import { Reveal } from '@/components/ui/Reveal'
 import { GUIDES } from '@/lib/data/company'
 
 export const metadata: Metadata = {
-  title: 'Guides',
+  title: 'Blog',
   description:
     'Fitment checks, ordering notes and buying guidance from the Parts-Mall counter. Written for the person standing at the car.',
-  alternates: { canonical: '/guides' },
+  alternates: { canonical: '/blog' },
 }
 
-export default function GuidesPage() {
+export default function BlogPage() {
   const [lead, ...rest] = GUIDES
 
   return (
@@ -20,7 +20,7 @@ export default function GuidesPage() {
       <PageHeader
         title="Notes from the counter."
         lead="Fitment checks, ordering shortcuts and buying guidance, written for the person standing at the car rather than for a search engine."
-        breadcrumbs={[{ href: '/guides', label: 'Guides' }]}
+        breadcrumbs={[{ href: '/blog', label: 'Blog' }]}
         backgroundImage="/images/ph-branch-interior.webp"
         imageAlt="Inside a Parts-Mall branch, shelving stocked with boxed parts."
       />
@@ -31,7 +31,7 @@ export default function GuidesPage() {
               page has hierarchy instead of nine identical cards. */}
           <Reveal>
             <Link
-              href={`/guides/${lead.slug}`}
+              href={`/blog/${lead.slug}`}
               className="group grid gap-8 md:grid-cols-2 md:items-center md:gap-12"
             >
               <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
@@ -63,7 +63,7 @@ export default function GuidesPage() {
           <ul className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {rest.map((g, i) => (
               <Reveal as="li" key={g.slug} delay={(i % 3) * 0.07}>
-                <Link href={`/guides/${g.slug}`} className="group block">
+                <Link href={`/blog/${g.slug}`} className="group block">
                   <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
                     <Image
                       src={g.image}

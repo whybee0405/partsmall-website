@@ -14,6 +14,13 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
   },
+  // The section was renamed from Guides to Blog; keep old links working.
+  async redirects() {
+    return [
+      { source: '/guides', destination: '/blog', permanent: true },
+      { source: '/guides/:slug', destination: '/blog/:slug', permanent: true },
+    ]
+  },
 }
 
 export default withPayload(nextConfig)

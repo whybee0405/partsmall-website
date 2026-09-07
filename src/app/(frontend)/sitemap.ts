@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/branches`, priority: 0.9, changeFrequency: 'monthly', lastModified: now },
     { url: `${base}/wholesale`, priority: 0.8, changeFrequency: 'monthly', lastModified: now },
     { url: `${base}/faq`, priority: 0.8, changeFrequency: 'monthly', lastModified: now },
-    { url: `${base}/guides`, priority: 0.7, changeFrequency: 'weekly', lastModified: now },
+    { url: `${base}/blog`, priority: 0.7, changeFrequency: 'weekly', lastModified: now },
     { url: `${base}/about`, priority: 0.6, changeFrequency: 'yearly', lastModified: now },
     { url: `${base}/contact`, priority: 0.6, changeFrequency: 'yearly', lastModified: now },
   ]
@@ -74,7 +74,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     ...GUIDES.map((g) => ({
-      url: `${base}/guides/${g.slug}`,
+      url: `${base}/blog/${g.slug}`,
       priority: 0.6,
       changeFrequency: 'yearly' as const,
       lastModified: new Date(g.date),

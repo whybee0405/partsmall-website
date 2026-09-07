@@ -18,12 +18,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const guide = getGuide(slug)
-  if (!guide) return { title: 'Guide not found' }
+  if (!guide) return { title: 'Post not found' }
 
   return {
     title: guide.title,
     description: guide.excerpt,
-    alternates: { canonical: `/guides/${guide.slug}` },
+    alternates: { canonical: `/blog/${guide.slug}` },
     openGraph: {
       type: 'article',
       title: guide.title,
@@ -33,7 +33,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function GuidePage({
+export default async function BlogPostPage({
   params,
 }: {
   params: Promise<{ slug: string }>
@@ -64,8 +64,8 @@ export default async function GuidePage({
       <PageHeader
         title={guide.title}
         breadcrumbs={[
-          { href: '/guides', label: 'Guides' },
-          { href: `/guides/${guide.slug}`, label: guide.category },
+          { href: '/blog', label: 'Blog' },
+          { href: `/blog/${guide.slug}`, label: guide.category },
         ]}
       >
         <div className="flex items-center gap-4">
@@ -136,7 +136,7 @@ export default async function GuidePage({
             {more.map((g) => (
               <li key={g.slug}>
                 <Link
-                  href={`/guides/${g.slug}`}
+                  href={`/blog/${g.slug}`}
                   className="group flex items-center justify-between gap-6 border-t-2 border-ink pt-4"
                 >
                   <span>

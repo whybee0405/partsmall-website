@@ -464,18 +464,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Guides ────────────────────────────────────────────────────────
+      {/* ── Blog ──────────────────────────────────────────────────────────
           Editorial row. Written for the person at the car, which is also what
           brings workshop searches in. */}
       <section className="band-tight border-t border-hairline bg-paper">
         <div className="shell">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
-            <h2 className="t-h1 max-w-[20ch] text-navy-900">Guides from the parts counter.</h2>
+            <h2 className="t-h1 max-w-[20ch] text-navy-900">From the parts counter.</h2>
             <Link
-              href="/guides"
+              href="/blog"
               className="group inline-flex items-center gap-2 pb-1 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
             >
-              All guides
+              Visit the blog
               <ArrowRight
                 size={17}
                 weight="bold"
@@ -488,7 +488,7 @@ export default function HomePage() {
           <ul className="mt-9 grid gap-8 md:grid-cols-3">
             {GUIDES.slice(0, 3).map((g, i) => (
               <Reveal as="li" key={g.slug} delay={i * 0.07}>
-                <Link href={`/guides/${g.slug}`} className="group block">
+                <Link href={`/blog/${g.slug}`} className="group block">
                   <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
                     <Image
                       src={g.image}
