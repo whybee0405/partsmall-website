@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { ArrowRight, Phone, ShieldCheck } from '@phosphor-icons/react/dist/ssr'
+import { ArrowRight, Phone, ShieldCheck, Star, Quotes } from '@phosphor-icons/react/dist/ssr'
 import { ButtonLink, buttonArrowClass } from '@/components/ui/Button'
 import { Reveal } from '@/components/ui/Reveal'
 import { NetworkMap } from '@/components/NetworkMap'
@@ -10,6 +10,7 @@ import { BranchFinder } from '@/components/BranchFinder'
 import { CategoryIcon } from '@/components/CategoryIcon'
 import { CountUp } from '@/components/ui/CountUp'
 import { NETWORK } from '@/lib/data/branches'
+import { REVIEWS, REVIEWS_SUMMARY } from '@/lib/data/reviews'
 import {
   CATEGORIES,
   BRANDS,
@@ -45,18 +46,29 @@ export default function HomePage() {
           aria-hidden="true"
         />
 
-        <div className="shell relative py-14 lg:py-20">
+        <div className="shell relative py-14 text-center lg:py-20">
           <p className="t-label text-signal">Korean vehicle parts</p>
-          <h1 className="t-display mt-3 max-w-[16ch] text-on-navy">
+          <h1 className="t-display mx-auto mt-3 max-w-[16ch] text-on-navy">
             Southern Africa's top supplier.
           </h1>
 
-          <p className="t-lead mt-5 max-w-[54ch] text-on-navy-muted">
+          <p className="t-lead mx-auto mt-5 max-w-[54ch] text-on-navy-muted">
             Korean vehicle parts held across {NETWORK.southAfrica} South African
             branches, with a counter team that confirms fitment before you drive.
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-6 flex items-center justify-center gap-2.5">
+            <div className="flex" aria-hidden="true">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} size={16} weight="fill" className="text-signal" />
+              ))}
+            </div>
+            <p className="text-[0.85rem] font-semibold text-on-navy-muted">
+              {REVIEWS_SUMMARY.rating}/5 from {REVIEWS_SUMMARY.count} {REVIEWS_SUMMARY.source}
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/branches" variant="signal">
               Find a branch
               <ArrowRight size={18} weight="bold" aria-hidden="true" className={buttonArrowClass} />
@@ -122,7 +134,7 @@ export default function HomePage() {
           <Reveal delay={0.12} className="mt-7">
             <Link
               href="/branches"
-              className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+              className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
               See all {NETWORK.total} branches and country points
               <ArrowRight
@@ -133,6 +145,72 @@ export default function HomePage() {
               />
             </Link>
           </Reveal>
+        </div>
+      </section>
+
+      {/* ── Reviews ───────────────────────────────────────────────────────
+          Real, verbatim Google reviews for these branches — see
+          lib/data/reviews.ts for sourcing. Sits right after the branch
+          finder so the trust signal lands just after someone has looked up
+          their nearest branch. */}
+      <section className="border-t border-hairline bg-paper-2">
+        <div className="shell band-tight">
+          <Reveal className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-[52ch]">
+              <h2 className="t-h1 text-navy-900">What the branches hear.</h2>
+              <p className="t-lead mt-4">
+                Real reviews from customers at branches across the network.
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-3 rounded-[var(--radius-base)] border border-hairline-strong bg-card px-4 py-3">
+              <div className="flex" aria-hidden="true">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={18} weight="fill" className="text-signal-deep" />
+                ))}
+              </div>
+              <div>
+                <p className="t-data text-[0.95rem] font-bold text-ink">
+                  {REVIEWS_SUMMARY.rating} out of 5
+                </p>
+                <p className="text-[0.78rem] text-steel">
+                  {REVIEWS_SUMMARY.count} {REVIEWS_SUMMARY.source}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <ul className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {REVIEWS.map((r, i) => (
+              <Reveal as="li" key={r.name} delay={Math.min(i * 0.05, 0.3)} className="h-full">
+                <div className="flex h-full flex-col rounded-[var(--radius-base)] border border-hairline-strong bg-card p-5">
+                  <Quotes size={22} weight="fill" aria-hidden="true" className="text-hairline-strong" />
+                  <p className="mt-3 flex-1 text-[0.92rem] leading-relaxed text-ink-soft">
+                    {r.quote}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between gap-3 border-t border-hairline pt-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-[0.9rem] font-semibold text-ink">{r.name}</p>
+                      {r.branchSlug ? (
+                        <Link
+                          href={`/branches/${r.branchSlug}`}
+                          className="t-label text-steel transition-colors hover:text-navy-700"
+                        >
+                          {r.branchLabel} branch
+                        </Link>
+                      ) : (
+                        <p className="t-label text-steel">{r.branchLabel} branch</p>
+                      )}
+                    </div>
+                    <div className="flex shrink-0" aria-label="5 out of 5 stars">
+                      {Array.from({ length: 5 }).map((_, s) => (
+                        <Star key={s} size={13} weight="fill" aria-hidden="true" className="text-signal-deep" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -151,7 +229,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/parts"
-              className="group inline-flex items-center gap-2 pb-1 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+              className="group inline-flex items-center gap-2 pb-1 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
               All {PART_TYPES.length} part types
               <ArrowRight
@@ -247,7 +325,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/vehicles"
-              className="group mt-4 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+              className="group mt-4 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
               All makes and models
               <ArrowRight
@@ -473,7 +551,7 @@ export default function HomePage() {
             <h2 className="t-h1 max-w-[20ch] text-navy-900">From the parts counter.</h2>
             <Link
               href="/blog"
-              className="group inline-flex items-center gap-2 pb-1 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+              className="group inline-flex items-center gap-2 pb-1 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
               Visit the blog
               <ArrowRight

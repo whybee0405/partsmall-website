@@ -35,11 +35,12 @@ const variants: Record<Variant, string> = {
 export const buttonArrowClass =
   'transition-transform duration-150 ease-[var(--ease-out-quart)] group-hover:translate-x-1'
 
-// 48px and 40px. Both clear the 44px touch target once the tap area is
-// counted, and md is used for anything primary on mobile.
+// md is 48px everywhere. sm is 40px at desktop pointer sizes but grows to
+// the 44px touch-target floor below the sm breakpoint, where every sm
+// button is being tapped rather than clicked.
 const sizes: Record<Size, string> = {
   md: 'h-12 px-5 text-[0.95rem]',
-  sm: 'h-10 px-4 text-[0.875rem]',
+  sm: 'h-10 max-sm:h-11 px-4 text-[0.875rem]',
 }
 
 type BaseProps = { variant?: Variant; size?: Size; className?: string; children: ReactNode }

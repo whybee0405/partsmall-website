@@ -34,7 +34,7 @@ export default function FaqPage() {
             <a
               key={c.slug}
               href={`#${c.slug}`}
-              className="t-label inline-flex h-9 items-center rounded-[var(--radius-base)] border border-hairline-strong bg-card px-3 text-steel transition-colors hover:border-ink-soft hover:text-ink"
+              className="t-label inline-flex h-9 max-sm:h-11 items-center rounded-[var(--radius-base)] border border-hairline-strong bg-card px-3 text-steel transition-colors hover:border-ink-soft hover:text-ink"
             >
               {c.label}
             </a>
@@ -71,7 +71,7 @@ export default function FaqPage() {
                         {f.href && (
                           <Link
                             href={f.href}
-                            className="group/link mt-2.5 inline-flex items-center gap-1.5 text-[0.88rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+                            className="group/link mt-2.5 inline-flex items-center gap-1.5 text-[0.88rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
                           >
                             Read more
                             <ArrowRight

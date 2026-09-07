@@ -107,6 +107,10 @@ export type Guide = {
   readMinutes: number
   date: string
   image: string
+  /** Describes what the photo actually shows, for the full-size hero on the
+   * article page. Card thumbnails elsewhere stay alt="" deliberately — the
+   * heading right next to them already says what the post is about. */
+  imageAlt: string
   body: string[]
 }
 
@@ -124,6 +128,7 @@ export const GUIDES: Guide[] = [
     readMinutes: 4,
     date: '2026-07-14',
     image: '/images/parts/pm-brk-1001.webp',
+    imageAlt: 'A set of four brake pads in their branded cardboard packaging, photographed against a dark blue background.',
     body: [
       'Every Parts-Mall reference follows the same shape: PM, a three-letter system code, then a numeric block. PM-BRK-1001 is a braking part. PM-SUS-4002 is suspension and steering. PM-ELS-3001 is electrical and sensors.',
       'The three-letter code maps directly onto the thirteen catalogue systems. BRK braking, ENG engine, ELS electrical and sensors, SUS suspension and steering, FIL filters, TRN transmission and clutch, COO cooling, FUE fuel, BDY body and trim, BDG bearings, GSK gaskets and seals, BLT belts and chains, ACC accessories.',
@@ -140,6 +145,7 @@ export const GUIDES: Guide[] = [
     readMinutes: 5,
     date: '2026-06-28',
     image: '/images/guide-brakes.webp',
+    imageAlt: 'A mechanic in blue gloves working on a brake calliper and disc rotor on a vehicle raised on a lift.',
     body: [
       'Brake pads are the single highest-volume line across the branch network, and they are also the line that comes back most often. Almost every return traces to one of four things.',
       'Check the calliper make first. The same vehicle in the same year can leave the factory with two different calliper suppliers, and the pad shape follows the calliper, not the badge. Look at the casting mark on the calliper body.',
@@ -157,6 +163,7 @@ export const GUIDES: Guide[] = [
     readMinutes: 6,
     date: '2026-06-09',
     image: '/images/parts/pm-eng-2002.webp',
+    imageAlt: 'An aluminium engine cylinder head component photographed against a dark blue background.',
     body: [
       'The honest answer is that it depends on the component, the age of the vehicle and what the customer is paying for. Three rough rules cover most of it.',
       'Safety-critical and hard-to-access components favour OEM or the strongest private-brand line. Anything behind a timing cover, anything holding the car up, and anything you would need to strip the car twice to redo. The labour cost of doing it again dwarfs the parts saving.',
@@ -174,6 +181,7 @@ export const GUIDES: Guide[] = [
     readMinutes: 3,
     date: '2026-05-22',
     image: '/images/partner-portrait.webp',
+    imageAlt: 'A workshop owner standing in his garage, a car raised on a lift behind him.',
     body: [
       'Trade accounts run through head office, and are then serviced by the branch closest to your workshop or yard.',
       'Send the enquiry with four things: your registered business name, the province or country you operate in, roughly what you buy in a month, and the vehicle makes you see most. Those four answers tell the team which branch to route you to and which lines to stock deeper.',
@@ -190,6 +198,7 @@ export const GUIDES: Guide[] = [
     readMinutes: 5,
     date: '2026-04-30',
     image: '/images/warehouse-aisle.webp',
+    imageAlt: 'A long aisle of steel pallet racking in the distribution warehouse, stacked with boxed parts, a picker working mid-aisle.',
     body: [
       'Kia and Hyundai dominate the counter, which is what you would expect given the group heritage, but the specific movers are worth knowing if you carry your own shelf stock.',
       'Front pads for the Rio, Cerato, i20 and Accent are the highest-turn braking line. If you carry one braking reference, carry that one.',
@@ -207,6 +216,7 @@ export const GUIDES: Guide[] = [
     readMinutes: 3,
     date: '2026-04-11',
     image: '/images/hero-counter.webp',
+    imageAlt: 'Two men at a parts counter, one handing a boxed part across to the other, with labelled parts bins on shelving behind them.',
     body: [
       'The fastest calls all sound the same. The caller leads with the vehicle, then the part, then the reference if they have one.',
       'Give the make, model and year first. Then the engine code or capacity, because that is what splits most applications. Then the specific component, described the way it appears on the car rather than the way it appears in a catalogue.',

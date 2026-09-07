@@ -150,7 +150,7 @@ export default function WholesalePage() {
               </p>
               <Link
                 href="/branches"
-                className="group mt-3 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+                className="group mt-3 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
               >
                 Find your nearest branch
                 <ArrowRight

@@ -21,6 +21,32 @@ export default function NotFound() {
           <ButtonLink href="/branches" variant="outline">
             Find a branch
           </ButtonLink>
+          <ButtonLink href="/" variant="ghost">
+            Back to homepage
+          </ButtonLink>
+        </div>
+
+        <div className="mt-10 border-t border-hairline pt-6">
+          <p className="t-label text-steel">Or go straight to a section</p>
+          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+            {[
+              { href: '/parts', label: 'Parts' },
+              { href: '/vehicles', label: 'Vehicles' },
+              { href: '/branches', label: 'Branches' },
+              { href: '/wholesale', label: 'Wholesale' },
+              { href: '/blog', label: 'Blog' },
+              { href: '/about', label: 'Company' },
+            ].map((s) => (
+              <li key={s.href}>
+                <Link
+                  href={s.href}
+                  className="font-semibold text-navy-700 hover:text-navy-800 max-sm:flex max-sm:min-h-11 max-sm:items-center"
+                >
+                  {s.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <p className="mt-8 text-[0.92rem] text-steel">

@@ -26,7 +26,7 @@ export default function TermsPage() {
             <a
               key={s.id}
               href={`#${s.id}`}
-              className="t-label inline-flex h-9 items-center rounded-[var(--radius-base)] border border-hairline-strong bg-card px-3 text-steel transition-colors hover:border-ink-soft hover:text-ink"
+              className="t-label inline-flex h-9 max-sm:h-11 items-center rounded-[var(--radius-base)] border border-hairline-strong bg-card px-3 text-steel transition-colors hover:border-ink-soft hover:text-ink"
             >
               {s.title}
             </a>

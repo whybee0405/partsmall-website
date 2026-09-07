@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { CheckCircle, Spinner, WarningCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/Button'
@@ -35,6 +35,11 @@ export function EnquiryForm({
   const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [errors, setErrors] = useState<Errors>({})
   const [serverError, setServerError] = useState<string | null>(null)
+  const confirmationRef = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => {
+    if (state === 'done') confirmationRef.current?.focus()
+  }, [state])
 
   const validate = (data: FormData): Errors => {
     const e: Errors = {}
@@ -94,14 +99,19 @@ export function EnquiryForm({
 
   if (state === 'done') {
     return (
-      <div className="rounded-[var(--radius-base)] border border-[oklch(0.86_0.06_155)] bg-signal-soft p-7">
+      <div
+        role="status"
+        className="rounded-[var(--radius-base)] border border-[oklch(0.86_0.06_155)] bg-signal-soft p-7"
+      >
         <CheckCircle
           size={30}
           weight="fill"
           aria-hidden="true"
           className="text-signal-deep"
         />
-        <h3 className="t-h3 mt-3 text-ink">That is with the team</h3>
+        <h3 ref={confirmationRef} tabIndex={-1} className="t-h3 mt-3 text-ink outline-none">
+          That is with the team
+        </h3>
         <p className="mt-2 max-w-[52ch] text-[0.95rem] leading-relaxed text-ink-soft">
           You will hear from a named person, not a ticket number. Expect a call or an
           email within two working days. If the vehicle cannot wait that long, call your

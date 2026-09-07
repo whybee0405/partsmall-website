@@ -165,7 +165,10 @@ export default async function BranchPage({
                   </dt>
                   <dd className="mt-2 text-[0.98rem] leading-relaxed text-ink">
                     {row.href ? (
-                      <a href={row.href} className="text-navy-700 hover:text-navy-800">
+                      <a
+                        href={row.href}
+                        className="inline-flex text-navy-700 hover:text-navy-800 max-sm:min-h-11 max-sm:items-center"
+                      >
                         {row.value}
                       </a>
                     ) : (
@@ -229,7 +232,7 @@ export default async function BranchPage({
               </p>
               <Link
                 href="/wholesale"
-                className="group mt-3 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+                className="group mt-3 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
               >
                 Distributor and franchise enquiries
                 <ArrowRight

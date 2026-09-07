@@ -60,7 +60,7 @@ export default function ContactPage() {
                 <p className="mt-2.5 text-[0.92rem] leading-relaxed text-steel">{c.body}</p>
                 <Link
                   href={c.href}
-                  className="group mt-4 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+                  className="group mt-4 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
                 >
                   {c.cta}
                   <ArrowRight
@@ -116,7 +116,7 @@ export default function ContactPage() {
                 <dd className="mt-2">
                   <a
                     href={`mailto:${COMPANY.headOffice.email}`}
-                    className="text-[1rem] font-semibold text-navy-700 hover:text-navy-800"
+                    className="inline-flex text-[1rem] font-semibold text-navy-700 hover:text-navy-800 max-sm:min-h-11 max-sm:items-center"
                   >
                     {COMPANY.headOffice.email}
                   </a>

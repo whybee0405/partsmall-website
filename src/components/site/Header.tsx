@@ -91,7 +91,7 @@ export function Header() {
           <Link
             href="/"
             aria-label="Parts-Mall Africa, home"
-            className="shrink-0 rounded-[var(--radius-base)]"
+            className="flex shrink-0 items-center rounded-[var(--radius-base)] max-sm:min-h-11"
           >
             <Wordmark className="h-7 sm:h-8" />
           </Link>

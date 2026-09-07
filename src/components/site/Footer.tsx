@@ -50,7 +50,7 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="slab" role="contentinfo">
+    <footer className="slab max-sm:pb-20" role="contentinfo">
       <div className="shell band-tight">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_repeat(4,minmax(0,0.7fr))] lg:gap-7">
           <div>
@@ -66,7 +66,7 @@ export function Footer() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="t-label flex h-9 items-center gap-1 rounded-[var(--radius-base)] border border-on-navy-rule px-2.5 text-on-navy-muted transition-colors hover:border-on-navy hover:text-on-navy"
+                  className="t-label flex h-9 max-sm:h-11 items-center gap-1 rounded-[var(--radius-base)] border border-on-navy-rule px-2.5 text-on-navy-muted transition-colors hover:border-on-navy hover:text-on-navy"
                 >
                   {s.label}
                   <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
@@ -85,7 +85,7 @@ export function Footer() {
                   <li key={l.href + l.label}>
                     <Link
                       href={l.href}
-                      className="text-[0.92rem] text-on-navy/85 transition-colors hover:text-on-navy"
+                      className="text-[0.92rem] text-on-navy/85 transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center"
                     >
                       {l.label}
                     </Link>
@@ -133,13 +133,19 @@ export function Footer() {
             {new Date().getFullYear()} {COMPANY.legalName}. All rights reserved.
           </p>
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <Link href="/privacy" className="transition-colors hover:text-on-navy">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-on-navy">
+            <Link
+              href="/terms"
+              className="transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center"
+            >
               Terms of Service
             </Link>
-            <CookiePreferencesButton className="transition-colors hover:text-on-navy" />
+            <CookiePreferencesButton className="transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center" />
           </nav>
           <p className="t-data text-[0.78rem]">
             {NETWORK.southAfrica} branches / {NETWORK.provinces} provinces /{' '}

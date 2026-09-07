@@ -6,6 +6,7 @@ import { CustomCursor } from '@/components/CustomCursor'
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { ChatWidget } from '@/components/ChatWidget'
 import { CookieBanner } from '@/components/CookieBanner'
+import { MobileStickyCta } from '@/components/MobileStickyCta'
 import { COMPANY } from '@/lib/data/company'
 import './globals.css'
 
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: '/images/og-default.png',
+        url: '/images/og-default.jpg',
         width: 1200,
         height: 630,
         alt: 'Parts-Mall Africa — Korean vehicle parts supplier in Southern Africa.',
@@ -77,7 +78,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/images/og-default.png'],
+    images: ['/images/og-default.jpg'],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: '/' },
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en-ZA"
       className={`${archivo.variable} ${publicSans.variable} ${martianMono.variable}`}
+      suppressHydrationWarning
     >
       <head>
         {/* Runs before first paint. Only once this lands does the scroll-reveal
@@ -121,6 +123,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FloatingWhatsApp />
         <ChatWidget />
         <CookieBanner />
+        <MobileStickyCta />
       </body>
     </html>
   )

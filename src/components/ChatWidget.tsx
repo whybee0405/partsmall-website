@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChatCircleDots, X, PaperPlaneRight, Phone, WhatsappLogo, NavigationArrow } from '@phosphor-icons/react'
 import { telHref, mapsHref, whatsappNumber, type Branch } from '@/lib/data/branches'
+import { usePathname } from 'next/navigation'
 import { useCookieBannerOpen } from '@/lib/consent'
+import { stickyCtaHidden } from '@/components/MobileStickyCta'
 
 type Message = {
   role: 'user' | 'assistant'
@@ -31,6 +33,8 @@ export function ChatWidget() {
   const [sending, setSending] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const bannerOpen = useCookieBannerOpen()
+  const pathname = usePathname()
+  const hasCta = !stickyCtaHidden(pathname)
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -109,7 +113,15 @@ export function ChatWidget() {
         aria-expanded={open}
         aria-label={open ? 'Close chat assistant' : 'Open chat assistant'}
         className={`fixed left-6 z-[90] flex h-14 w-14 items-center justify-center rounded-full bg-navy-700 text-on-navy shadow-[var(--shadow-panel)] transition-[bottom,transform] duration-200 hover:scale-105 active:scale-95 ${
-          bannerOpen && !open ? 'bottom-28 sm:bottom-24' : 'bottom-6'
+          hasCta
+            ? open
+              ? 'bottom-44 sm:bottom-6'
+              : bannerOpen
+                ? 'bottom-52 sm:bottom-24'
+                : 'bottom-24 sm:bottom-6'
+            : bannerOpen && !open
+              ? 'bottom-28 sm:bottom-24'
+              : 'bottom-6'
         }`}
       >
         {!open && (
@@ -123,7 +135,11 @@ export function ChatWidget() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 left-6 z-[95] flex h-[min(32rem,70vh)] w-[min(24rem,calc(100vw-3rem))] flex-col overflow-hidden rounded-[var(--radius-base)] border border-hairline-strong bg-card shadow-[var(--shadow-panel)]">
+        <div
+          className={`fixed left-6 z-[95] flex h-[min(32rem,70vh)] w-[min(24rem,calc(100vw-3rem))] flex-col overflow-hidden rounded-[var(--radius-base)] border border-hairline-strong bg-card shadow-[var(--shadow-panel)] ${
+            hasCta ? 'bottom-44 sm:bottom-24' : 'bottom-24'
+          }`}
+        >
           <div className="flex items-center justify-between border-b border-hairline bg-navy-900 px-4 py-3">
             <div>
               <p className="text-[0.95rem] font-semibold text-on-navy">Parts-Mall Assistant</p>

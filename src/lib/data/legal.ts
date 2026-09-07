@@ -120,7 +120,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: 'contact',
     title: '13. Contact us and the Information Regulator',
     body: [
-      'For any question about this policy, or to exercise your rights, contact our Information Officer at [privacy contact email] or write to us at 50 Herman Street, R24 Business Park, Building G, Unit 1, Meadowdale, Germiston 1401, South Africa.',
+      'For any question about this policy, or to exercise your rights, contact our Information Officer at pma.sales1@parts-mall.com or write to us at 50 Herman Street, R24 Business Park, Building G, Unit 1, Meadowdale, Germiston 1401, South Africa.',
       'If you believe we have not resolved your concern, you may lodge a complaint with South Africa\'s Information Regulator: website inforegulator.org.za, general enquiries enquiries@inforegulator.org.za, complaints POPIAComplaints@inforegulator.org.za. Current postal and physical address details are published on their website.',
     ],
   },
@@ -210,7 +210,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: 'contact',
     title: '12. Contact us',
     body: [
-      'Questions about these terms can be sent to [legal/terms contact email] or to our head office at 50 Herman Street, R24 Business Park, Building G, Unit 1, Meadowdale, Germiston 1401, South Africa.',
+      'Questions about these terms can be sent to pma.sales1@parts-mall.com or to our head office at 50 Herman Street, R24 Business Park, Building G, Unit 1, Meadowdale, Germiston 1401, South Africa.',
     ],
   },
 ]

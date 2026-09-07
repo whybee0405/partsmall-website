@@ -134,7 +134,7 @@ export function BranchFinder({
                 type="button"
                 onClick={() => setProvince(p)}
                 aria-pressed={on}
-                className={`t-label h-9 rounded-[var(--radius-base)] border px-2.5 transition-colors ${
+                className={`t-label flex h-9 max-sm:h-11 items-center rounded-[var(--radius-base)] border px-2.5 transition-colors ${
                   on
                     ? 'border-navy-900 bg-navy-900 text-on-navy'
                     : 'border-hairline bg-card text-steel hover:border-ink-soft hover:text-ink'
@@ -161,7 +161,7 @@ export function BranchFinder({
           </p>
           <Link
             href="/contact"
-            className="group mt-5 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+            className="group mt-5 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
           >
             Ask head office
             <ArrowRight
@@ -182,10 +182,11 @@ export function BranchFinder({
               <div className="min-w-0">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   {/* Padded out so the tap target clears 24px comfortably
-                      without changing the row rhythm. */}
+                      without changing the row rhythm on desktop; below the
+                      sm breakpoint it grows to a full 44px thumb target. */}
                   <Link
                     href={`/branches/${b.slug}`}
-                    className="t-h3 -my-1 inline-block py-1 text-ink transition-colors hover:text-navy-700"
+                    className="t-h3 -my-1 inline-block py-1 text-ink transition-colors hover:text-navy-700 max-sm:my-0 max-sm:flex max-sm:min-h-11 max-sm:items-center max-sm:py-0"
                   >
                     {b.name}
                   </Link>

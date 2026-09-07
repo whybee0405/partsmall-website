@@ -20,3 +20,7 @@ partsmall.db-journal
 # Local tool runtime state, not project source
 .claude/
 .superpowers/
+
+# Uncompressed originals kept as a local rollback for the re-encoded hero
+# videos — not meant to be shipped or versioned.
+/video-originals/

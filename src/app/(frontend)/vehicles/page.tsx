@@ -42,7 +42,10 @@ export default function VehiclesPage() {
               <div key={mk.slug} className="mt-12 first:mt-0">
                 <div className="flex items-baseline justify-between gap-4 border-t-2 border-ink pt-3">
                   <h2 className="t-h3 text-ink">
-                    <Link href={`/vehicles/${mk.slug}`} className="hover:text-navy-700">
+                    <Link
+                      href={`/vehicles/${mk.slug}`}
+                      className="hover:text-navy-700 max-sm:inline-flex max-sm:min-h-11 max-sm:items-center"
+                    >
                       {mk.label}
                     </Link>
                   </h2>
@@ -93,7 +96,7 @@ export default function VehiclesPage() {
             </p>
             <Link
               href="/branches"
-              className="group mt-6 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800"
+              className="group mt-6 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
               Find your nearest branch
               <ArrowRight

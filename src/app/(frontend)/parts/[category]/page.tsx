@@ -160,7 +160,7 @@ export default async function CategoryPage({
                   <li key={mk.slug}>
                     <Link
                       href={`/vehicles/${mk.slug}`}
-                      className="t-label inline-flex h-8 items-center rounded-[var(--radius-base)] border border-hairline bg-card px-2.5 text-steel transition-colors hover:border-ink-soft hover:text-ink"
+                      className="t-label inline-flex h-8 max-sm:h-11 items-center rounded-[var(--radius-base)] border border-hairline bg-card px-2.5 text-steel transition-colors hover:border-ink-soft hover:text-ink"
                     >
                       {mk.label}
                     </Link>

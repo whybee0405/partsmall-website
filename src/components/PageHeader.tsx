@@ -63,7 +63,7 @@ export function PageHeader({
               <li>
                 <Link
                   href="/"
-                  className={`t-label transition-colors ${
+                  className={`t-label transition-colors max-sm:flex max-sm:min-h-11 max-sm:items-center ${
                     hasImage
                       ? 'text-on-navy-muted hover:text-on-navy'
                       : 'text-steel hover:text-ink'
@@ -82,7 +82,7 @@ export function PageHeader({
                   />
                   <Link
                     href={c.href}
-                    className={`t-label transition-colors ${
+                    className={`t-label transition-colors max-sm:flex max-sm:min-h-11 max-sm:items-center ${
                       hasImage
                         ? 'text-on-navy-muted hover:text-on-navy'
                         : 'text-steel hover:text-ink'

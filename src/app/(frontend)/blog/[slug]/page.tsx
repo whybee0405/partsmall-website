@@ -90,7 +90,7 @@ export default async function BlogPostPage({
         <div className="shell">
           <Image
             src={guide.image}
-            alt=""
+            alt={guide.imageAlt}
             width={1600}
             height={1200}
             priority
