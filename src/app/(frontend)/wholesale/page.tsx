@@ -4,8 +4,11 @@ import Link from 'next/link'
 import { ArrowRight, EnvelopeSimple, WhatsappLogo, NavigationArrow } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { Reveal } from '@/components/ui/Reveal'
-import { NETWORK, whatsappNumber } from '@/lib/data/branches'
+import { whatsappNumber } from '@/lib/data/branches'
+import { getNetworkStats } from '@/lib/payload/branches'
 import { COMPANY, CORPORATE_FACTS, headOfficeMapUrl } from '@/lib/data/company'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Distributor and franchise opportunities',
@@ -32,7 +35,9 @@ const PROCESS = [
   },
 ]
 
-export default function WholesalePage() {
+export default async function WholesalePage() {
+  const network = await getNetworkStats()
+
   return (
     <>
       <PageHeader
@@ -88,8 +93,8 @@ export default function WholesalePage() {
               />
               <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-6">
                 {[
-                  { v: NETWORK.southAfrica, l: 'branches to draw stock from' },
-                  { v: NETWORK.countries, l: 'countries in the local network' },
+                  { v: '40+', l: 'branches to draw stock from' },
+                  { v: network.countries, l: 'countries in the local network' },
                   ...CORPORATE_FACTS.slice(0, 2).map((f) => ({ v: f.value, l: f.label })),
                 ].map((s) => (
                   <div key={s.l} className="border-t-2 border-signal pt-3">

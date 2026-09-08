@@ -3,13 +3,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin } from '@phosphor-icons/react/dist/ssr'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
-import { GUIDES, getGuide, COMPANY } from '@/lib/data/company'
+import { COMPANY } from '@/lib/data/company'
+import { getAllGuides, getGuide } from '@/lib/payload/guides'
 
-export function generateStaticParams() {
-  return GUIDES.map((g) => ({ slug: g.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -17,7 +17,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const guide = getGuide(slug)
+  const guide = await getGuide(slug)
   if (!guide) return { title: 'Post not found' }
 
   // Absolute title, not the templated one — the site suffix would push
@@ -42,10 +42,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const guide = getGuide(slug)
+  const [guide, allGuides] = await Promise.all([getGuide(slug), getAllGuides()])
   if (!guide) notFound()
 
-  const more = GUIDES.filter((g) => g.slug !== guide.slug).slice(0, 2)
+  const more = allGuides.filter((g) => g.slug !== guide.slug).slice(0, 2)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -104,12 +104,8 @@ export default async function BlogPostPage({
               {guide.excerpt}
             </p>
 
-            <div className="mt-8 space-y-6">
-              {guide.body.map((para, i) => (
-                <p key={i} className="text-[1.05rem] leading-[1.72] text-ink-soft">
-                  {para}
-                </p>
-              ))}
+            <div className="guide-body mt-8">
+              <RichText data={guide.body as never} />
             </div>
 
             <aside className="mt-14 border-t-2 border-ink pt-6">

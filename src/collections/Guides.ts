@@ -2,12 +2,16 @@ import type { CollectionConfig } from 'payload'
 
 export const Guides: CollectionConfig = {
   slug: 'guides',
+  labels: {
+    singular: 'Blog Post',
+    plural: 'Blog Posts',
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
     group: 'Content',
     description:
-      'Trade guides and fitment notes. These are the pages that bring workshop searches in, so write them for the person at the car.',
+      'The site’s blog — trade guides and fitment notes. These are the pages that bring workshop searches in, so write them for the person at the car.',
   },
   access: { read: () => true },
   versions: { drafts: true },

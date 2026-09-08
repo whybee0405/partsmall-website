@@ -4,13 +4,13 @@ import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
-import { MAKES, getMake, modelsForMake, modelYearSpan } from '@/lib/data/vehicles'
-import { CATEGORIES } from '@/lib/data/catalogue'
+import { modelYearSpan } from '@/lib/data/vehicles'
+import { getMake } from '@/lib/payload/makes'
+import { modelsForMake } from '@/lib/payload/models'
+import { getAllCategories } from '@/lib/payload/categories'
 import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
 
-export function generateStaticParams() {
-  return MAKES.map((mk) => ({ make: mk.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -18,10 +18,10 @@ export async function generateMetadata({
   params: Promise<{ make: string }>
 }): Promise<Metadata> {
   const { make } = await params
-  const mk = getMake(make)
+  const mk = await getMake(make)
   if (!mk) return { title: 'Not found' }
 
-  const models = modelsForMake(mk.slug)
+  const models = await modelsForMake(mk.slug)
   const modelList = models
     .slice(0, 3)
     .map((x) => x.label)
@@ -29,8 +29,8 @@ export async function generateMetadata({
   // A make with very few models (GWM and Haval has two) produces a short
   // enough sentence that the longer closing clause still fits; a make with
   // many models needs the shorter one to stay under the ceiling.
-  const long = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 33 branches, fitment confirmed by the counter.`
-  const short = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 33 South African branches.`
+  const long = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 40+ branches, fitment confirmed by the counter.`
+  const short = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 40+ South African branches.`
 
   return {
     title: `${mk.label} parts`,
@@ -45,10 +45,10 @@ export default async function MakePage({
   params: Promise<{ make: string }>
 }) {
   const { make } = await params
-  const mk = getMake(make)
+  const mk = await getMake(make)
   if (!mk) notFound()
 
-  const models = modelsForMake(mk.slug)
+  const [models, CATEGORIES] = await Promise.all([modelsForMake(mk.slug), getAllCategories()])
 
   return (
     <>

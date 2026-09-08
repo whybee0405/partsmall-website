@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "cross-env PAYLOAD_SEED=true tsx src/scripts/seed.ts",
+    "seed": "cross-env PAYLOAD_SEED=true tsx src/scripts/seed.ts && cross-env PAYLOAD_SEED=true tsx src/scripts/backfill-media.ts",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap"
   },

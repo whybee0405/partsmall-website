@@ -2049,16 +2049,14 @@ export type Brand = {
 }
 
 export const BRANDS: Brand[] = [
-  { slug: 'parts-mall-pmc', label: 'PMC', tier: 'private', note: 'The flagship Parts-Mall line. ISO 9001 and TS 16949 certified.', logo: '/images/brands/pmc.png' },
-  { slug: 'nt', label: 'NT', tier: 'private', note: 'Braking, cooling and timing components.' },
-  { slug: 'car-dex', label: 'Car-Dex', tier: 'private', note: 'Filtration and callipers. ISO 9001 and TS 16949 certified.', logo: '/images/brands/car-dex.png' },
-  { slug: 'pomax', label: 'Pomax', tier: 'private', note: 'Engine internals and bearings.' },
-  { slug: 'mx', label: 'MX', tier: 'private', note: 'Sensors and wheel bearings.' },
-  { slug: 'ex-trim', label: 'Ex-Trim', tier: 'private', note: 'Body, trim and cable assemblies.' },
-  { slug: 'vichura', label: 'Vichura', tier: 'private', note: 'Timing sets and condensers.' },
-  { slug: 'pro-tec', label: 'Pro-Tec', tier: 'private', note: 'Suspension, gaskets and release bearings.' },
-  { slug: 'dashi', label: 'Dashi', tier: 'private', note: 'Ignition and gasket sets. ISO 14001 certified.', logo: '/images/brands/dashi.png' },
-  { slug: 'oem-genuine', label: 'OEM and Genuine', tier: 'oem', note: 'Original equipment, supplied where the application calls for it.' },
+  { slug: 'pmc', label: 'PMC', tier: 'private', note: 'Parts-Mall’s flagship line for fast-moving replacement parts.', logo: '/images/brands/pmc-official.jpg' },
+  { slug: 'car-dex', label: 'CAR-DEX', tier: 'private', note: 'Suspension parts for Korean vehicle applications.', logo: '/images/brands/car-dex-official.jpg' },
+  { slug: 'dashi', label: 'DASHI', tier: 'private', note: 'Reconditioned electrical and replacement components.', logo: '/images/brands/dashi-official.jpg' },
+  { slug: 'ex-trim-car-body-parts', label: 'EX-TRIM CAR BODY PARTS', tier: 'private', note: 'Body panels and exterior replacement parts.', logo: '/images/brands/ex-trim-official.png' },
+  { slug: 'parts-mall-essence', label: 'PARTS-MALL ESSENCE', tier: 'private', note: 'Premium Parts-Mall line for selected replacement parts.', logo: '/images/brands/pmc-essence-official.jpg' },
+  { slug: 'wingster', label: 'Wingster', tier: 'private', note: 'Friction and braking components for demanding use.', logo: '/images/brands/wingster-official.png' },
+  { slug: 'a-gist', label: 'A-GIST', tier: 'private', note: 'Premium replacement parts for Korean vehicle applications.', logo: '/images/brands/a-gist-official.png' },
+  { slug: 'mando', label: 'MANDO', tier: 'private', note: 'Korean automotive replacement parts.', logo: '/images/brands/mando-official.png' },
 ]
 
 // ── Lookups ────────────────────────────────────────────────────────────────

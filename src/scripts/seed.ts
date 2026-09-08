@@ -177,6 +177,16 @@ async function main() {
     count(result)
   }
 
+  // The homepage represents the active range exactly. Remove the legacy
+  // seed-only records that predated the current eight brands.
+  const seededBrandSlugs = new Set(BRANDS.map((b) => b.slug))
+  const allBrands = await payload.find({ collection: 'brands', limit: 100 })
+  for (const brand of allBrands.docs) {
+    if (!seededBrandSlugs.has(brand.slug)) {
+      await payload.delete({ collection: 'brands', id: brand.id })
+    }
+  }
+
   console.log('Seeding guides...')
   for (const g of GUIDES) {
     const { result } = await upsert(payload, 'guides', g.slug, {

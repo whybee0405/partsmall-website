@@ -3,7 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { PageHeader } from '@/components/PageHeader'
 import { Reveal } from '@/components/ui/Reveal'
-import { GUIDES } from '@/lib/data/company'
+import { getAllGuides } from '@/lib/payload/guides'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -12,7 +14,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blog' },
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const GUIDES = await getAllGuides()
   const [lead, ...rest] = GUIDES
 
   return (

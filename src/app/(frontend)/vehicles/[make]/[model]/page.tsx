@@ -5,13 +5,14 @@ import { ArrowRight, MapPin, Info } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
 import { CategoryIcon } from '@/components/CategoryIcon'
-import { MODELS, getMake, getModel, modelYearSpan } from '@/lib/data/vehicles'
-import { getPartType, getCategory } from '@/lib/data/catalogue'
+import { modelYearSpan } from '@/lib/data/vehicles'
+import { getMake } from '@/lib/payload/makes'
+import { getAllModels, getModel } from '@/lib/payload/models'
+import { getPartType } from '@/lib/payload/partTypes'
+import { getCategory } from '@/lib/payload/categories'
 import { breadcrumbLd, collectionLd, JsonLd, SITE_URL, metaDescription } from '@/lib/seo'
 
-export function generateStaticParams() {
-  return MODELS.map((mo) => ({ make: mo.make, model: mo.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -19,14 +20,14 @@ export async function generateMetadata({
   params: Promise<{ make: string; model: string }>
 }): Promise<Metadata> {
   const { make, model } = await params
-  const mk = getMake(make)
-  const mo = getModel(make, model)
+  const mk = await getMake(make)
+  const mo = await getModel(make, model)
   if (!mk || !mo) return { title: 'Not found' }
 
   return {
     title: `${mk.label} ${mo.label} parts`,
     description: metaDescription(
-      `${mk.label} ${mo.label} replacement parts, ${modelYearSpan(mo)}. Brakes, clutch, filters, bearings and more, supplied through 33 South African branches.`,
+      `${mk.label} ${mo.label} replacement parts, ${modelYearSpan(mo)}. Brakes, clutch, filters, bearings and more, supplied through 40+ South African branches.`,
     ),
     alternates: { canonical: `/vehicles/${mk.slug}/${mo.slug}` },
   }
@@ -38,13 +39,23 @@ export default async function ModelPage({
   params: Promise<{ make: string; model: string }>
 }) {
   const { make, model } = await params
-  const mk = getMake(make)
-  const mo = getModel(make, model)
+  const mk = await getMake(make)
+  const mo = await getModel(make, model)
   if (!mk || !mo) notFound()
 
-  const parts = mo.parts
-    .map((slug) => getPartType(slug))
-    .filter((x): x is NonNullable<typeof x> => Boolean(x))
+  const parts = (await Promise.all(mo.parts.map((slug) => getPartType(slug)))).filter(
+    (x): x is NonNullable<typeof x> => Boolean(x),
+  )
+  const partCategories = new Map(
+    (await Promise.all(parts.map((p) => getCategory(p.category)))).map((cat, i) => [
+      parts[i].slug,
+      cat,
+    ]),
+  )
+
+  const siblingModels = (await getAllModels()).filter(
+    (x) => x.make === mk.slug && x.slug !== mo.slug,
+  )
 
   const vehicleLd = {
     '@context': 'https://schema.org',
@@ -161,7 +172,7 @@ export default async function ModelPage({
 
             <ul className="mt-7 grid sm:grid-cols-2">
               {parts.map((p) => {
-                const cat = getCategory(p.category)
+                const cat = partCategories.get(p.slug)
                 return (
                   <li key={p.slug} className="bg-paper ring-1 ring-inset ring-hairline">
                     <Link
@@ -226,7 +237,7 @@ export default async function ModelPage({
                 Other {mk.label} models
               </h2>
               <ul className="mt-2">
-                {MODELS.filter((x) => x.make === mk.slug && x.slug !== mo.slug).map((x) => (
+                {siblingModels.map((x) => (
                   <li key={x.slug} className="border-b border-hairline">
                     <Link
                       href={`/vehicles/${mk.slug}/${x.slug}`}

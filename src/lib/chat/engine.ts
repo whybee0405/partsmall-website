@@ -1,4 +1,4 @@
-import { searchBranches, PROVINCE_ORDER, type Branch } from '@/lib/data/branches'
+import { BRANCHES, searchBranches, PROVINCE_ORDER, type Branch } from '@/lib/data/branches'
 import { COMPANY } from '@/lib/data/company'
 import { FAQS } from '@/lib/data/faqs'
 import { MAKES } from '@/lib/data/vehicles'
@@ -188,6 +188,7 @@ export function getRuleReply(
     const locQuery = extractLocationQuery(trimmed)
     const matchedProvince = PROVINCE_ORDER.find((p) => trimmed.toLowerCase().includes(p.toLowerCase()))
     const results = searchBranches(
+      BRANCHES,
       matchedProvince ? '' : locQuery,
       matchedProvince ?? 'All',
       location,

@@ -441,3 +441,94 @@ html.custom-cursor-active * {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   Ticker tape — the mobile reviews rail. Duplicated content, translated by
+   exactly half its own width, loops with no visible seam. Pauses on touch
+   or hover so a card can actually be read; the reduced-motion block above
+   already collapses the animation to a single, near-instant frame.
+   ========================================================================== */
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.ticker-track:hover,
+.ticker-track:active {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Guide body — the blog post richText renderer's output. Payload's default
+   Lexical converters emit plain semantic HTML (p, h2, ul, a, strong…), so
+   this is the one place on the site styling reaches an element by tag name
+   rather than a class, matching what the old plain-paragraph rendering
+   looked like plus sane defaults for anything an editor adds beyond that.
+   ========================================================================== */
+
+.guide-body > * + * {
+  margin-top: 1.5rem;
+}
+
+.guide-body p {
+  font-size: 1.05rem;
+  line-height: 1.72;
+  color: var(--color-ink-soft);
+}
+
+.guide-body h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: var(--text-h3);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.guide-body h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 108%;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+.guide-body ul,
+.guide-body ol {
+  padding-left: 1.25rem;
+  color: var(--color-ink-soft);
+}
+
+.guide-body ul {
+  list-style: disc;
+}
+
+.guide-body ol {
+  list-style: decimal;
+}
+
+.guide-body li + li {
+  margin-top: 0.5rem;
+}
+
+.guide-body a {
+  color: var(--color-navy-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.guide-body strong {
+  font-weight: 700;
+  color: var(--color-ink);
+}

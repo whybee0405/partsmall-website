@@ -2,16 +2,24 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
-import { MAKES, MODELS, modelsForMake } from '@/lib/data/vehicles'
+import { getAllMakes } from '@/lib/payload/makes'
+import { getAllModels } from '@/lib/payload/models'
 import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Car parts by make and model',
-  description: `Find replacement parts for ${MODELS.length} models across ${MAKES.length} makes, including Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Ford, Nissan and Toyota, and what each needs.`,
-  alternates: { canonical: '/vehicles' },
+export const dynamic = 'force-dynamic'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [makes, models] = await Promise.all([getAllMakes(), getAllModels()])
+  return {
+    title: 'Car parts by make and model',
+    description: `Find replacement parts for ${models.length} models across ${makes.length} makes, including Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval, and what each needs.`,
+    alternates: { canonical: '/vehicles' },
+  }
 }
 
-export default function VehiclesPage() {
+export default async function VehiclesPage() {
+  const [MAKES, MODELS] = await Promise.all([getAllMakes(), getAllModels()])
+
   return (
     <>
       <JsonLd
@@ -37,7 +45,7 @@ export default function VehiclesPage() {
       <section className="band">
         <div className="shell">
           {MAKES.map((mk) => {
-            const models = modelsForMake(mk.slug)
+            const models = MODELS.filter((mo) => mo.make === mk.slug)
             return (
               <div key={mk.slug} className="mt-12 first:mt-0">
                 <div className="flex items-baseline justify-between gap-4 border-t-2 border-ink pt-3">

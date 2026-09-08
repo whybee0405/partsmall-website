@@ -12,7 +12,6 @@ import {
   Spinner,
 } from '@phosphor-icons/react'
 import {
-  BRANCHES,
   PROVINCE_ORDER,
   mapsHref,
   telHref,
@@ -32,12 +31,18 @@ type Located = Branch & { km?: number }
  * and directions are always visible on every row rather than hidden behind a
  * hover or a detail page. WhatsApp is first-class because in this market it
  * is how the trade actually sends a photo of the old part.
+ *
+ * `branches` comes from the server — this is a client component and can't
+ * query Payload itself, so whichever page renders this fetches the live
+ * branch list and passes it down.
  */
 export function BranchFinder({
+  branches,
   limit,
   showFilters = true,
   showMap = true,
 }: {
+  branches: Branch[]
   limit?: number
   showFilters?: boolean
   showMap?: boolean
@@ -49,14 +54,14 @@ export function BranchFinder({
   const [geoError, setGeoError] = useState<string | null>(null)
 
   const results = useMemo<Located[]>(
-    () => searchBranches(query, province, origin, limit),
-    [query, province, origin, limit],
+    () => searchBranches(branches, query, province, origin, limit),
+    [branches, query, province, origin, limit],
   )
-  // Unlimited, for the map — so "6 of 38" doesn't read as "everywhere else is
+  // Unlimited, for the map — so "6 of 44" doesn't read as "everywhere else is
   // a non-match" when it's really just the list being capped for the page.
   const matchedSlugs = useMemo(
-    () => searchBranches(query, province, origin).map((b) => b.slug),
-    [query, province, origin],
+    () => searchBranches(branches, query, province, origin).map((b) => b.slug),
+    [branches, query, province, origin],
   )
 
   const locate = () => {
@@ -238,7 +243,7 @@ export function BranchFinder({
 
       {showMap && (
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <BranchMapLeaflet branches={BRANCHES} highlightSlugs={matchedSlugs} />
+          <BranchMapLeaflet branches={branches} highlightSlugs={matchedSlugs} />
         </div>
       )}
     </div>

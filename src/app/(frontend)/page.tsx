@@ -4,31 +4,70 @@ import type { Metadata } from 'next'
 import { ArrowRight, Phone, ShieldCheck, Star, Quotes } from '@phosphor-icons/react/dist/ssr'
 import { ButtonLink, buttonArrowClass } from '@/components/ui/Button'
 import { Reveal } from '@/components/ui/Reveal'
-import { NetworkMap } from '@/components/NetworkMap'
 import { HeroStory } from '@/components/HeroStory'
 import { BranchFinder } from '@/components/BranchFinder'
 import { CategoryIcon } from '@/components/CategoryIcon'
 import { CountUp } from '@/components/ui/CountUp'
-import { NETWORK } from '@/lib/data/branches'
+import { getAllBranches, computeNetworkStats } from '@/lib/payload/branches'
 import { REVIEWS, REVIEWS_SUMMARY } from '@/lib/data/reviews'
-import {
-  CATEGORIES,
-  BRANDS,
-  CERTIFICATIONS,
-  PART_TYPES,
-  typesInCategory,
-} from '@/lib/data/catalogue'
-import { MAKES, MODELS } from '@/lib/data/vehicles'
-import { CORPORATE_FACTS, GUIDES } from '@/lib/data/company'
+import { CERTIFICATIONS } from '@/lib/data/catalogue'
+import { getAllCategories } from '@/lib/payload/categories'
+import { getAllPartTypes } from '@/lib/payload/partTypes'
+import { getAllMakes } from '@/lib/payload/makes'
+import { getAllModels } from '@/lib/payload/models'
+import { getAllBrands } from '@/lib/payload/brands'
+import { getAllGuides } from '@/lib/payload/guides'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   description:
-    'Korean vehicle parts across 33 South African branches. Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan and Toyota, fitment confirmed by the counter.',
+    'Korean vehicle parts across 40+ South African branches. Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval, fitment confirmed by the counter.',
   alternates: { canonical: '/' },
 }
 
-export default function HomePage() {
+/** Shared by the mobile ticker (duplicated, unrevealed) and the sm+ reveal grid. */
+function ReviewCard({ r }: { r: (typeof REVIEWS)[number] }) {
+  return (
+    <div className="flex h-full flex-col rounded-[var(--radius-base)] border border-hairline-strong bg-card p-5">
+      <Quotes size={22} weight="fill" aria-hidden="true" className="text-hairline-strong" />
+      <p className="mt-3 flex-1 text-[0.92rem] leading-relaxed text-ink-soft">{r.quote}</p>
+      <div className="mt-4 flex items-center justify-between gap-3 border-t border-hairline pt-3">
+        <div className="min-w-0">
+          <p className="truncate text-[0.9rem] font-semibold text-ink">{r.name}</p>
+          {r.branchSlug ? (
+            <Link
+              href={`/branches/${r.branchSlug}`}
+              className="t-label text-steel transition-colors hover:text-navy-700"
+            >
+              {r.branchLabel} branch
+            </Link>
+          ) : (
+            <p className="t-label text-steel">{r.branchLabel} branch</p>
+          )}
+        </div>
+        <div className="flex shrink-0" aria-label="5 out of 5 stars">
+          {Array.from({ length: 5 }).map((_, s) => (
+            <Star key={s} size={13} weight="fill" aria-hidden="true" className="text-signal-deep" />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default async function HomePage() {
+  const [branches, MAKES, MODELS, CATEGORIES, PART_TYPES, BRANDS, GUIDES] = await Promise.all([
+    getAllBranches(),
+    getAllMakes(),
+    getAllModels(),
+    getAllCategories(),
+    getAllPartTypes(),
+    getAllBrands(),
+    getAllGuides(),
+  ])
   const [feature, ...rest] = CATEGORIES
+  const network = computeNetworkStats(branches)
 
   return (
     <>
@@ -47,13 +86,13 @@ export default function HomePage() {
         />
 
         <div className="shell relative py-14 text-center lg:py-20">
-          <p className="t-label text-signal">Korean vehicle parts</p>
-          <h1 className="t-display mx-auto mt-3 max-w-[16ch] text-on-navy">
-            Southern Africa's top supplier.
+          <p className="t-label text-signal">Korean Spares Southern Africa</p>
+          <h1 className="t-display mx-auto mt-3 max-w-[20ch] text-on-navy">
+            Korea's #1 Automotive Parts Supplier
           </h1>
 
           <p className="t-lead mx-auto mt-5 max-w-[54ch] text-on-navy-muted">
-            Korean vehicle parts held across {NETWORK.southAfrica} South African
+            Korean vehicle parts held across 40+ South African
             branches, with a counter team that confirms fitment before you drive.
           </p>
 
@@ -86,7 +125,7 @@ export default function HomePage() {
         <div className="shell">
           <dl className="grid grid-cols-2 divide-hairline md:grid-cols-4 md:divide-x">
             {[
-              { v: NETWORK.total, l: 'branches and country points across Southern Africa' },
+              { v: 40, suffix: '+', l: 'branches and country points across Southern Africa' },
               { v: 189, l: 'buyers across 63 countries worldwide' },
               { v: 20, suffix: '+', l: 'official agents across 10 countries' },
               { v: 1998, static: true, l: 'group founded in Korea' },
@@ -116,27 +155,45 @@ export default function HomePage() {
 
       {/* ── Branch finder ─────────────────────────────────────────────────
           The fastest path for the mechanic with a car on the lift. Placed
-          high deliberately: this is the page's primary conversion. */}
-      <section className="band">
+          high deliberately: this is the page's primary conversion, and now
+          also carries the page's one "network" authority moment — merged in
+          from what used to be a separate slab further down that repeated the
+          same trust-strip stats and rendered a second copy of the same map. */}
+      <section className="band" id="network">
         <div className="shell">
-          <Reveal className="max-w-[52ch]">
-            <h2 className="t-h1 text-navy-900">Find a Parts-Mall branch near you.</h2>
+          <Reveal className="max-w-[58ch]">
+            <p className="t-label text-signal-deep">Real branches, real coordinates</p>
+            <h2 className="t-h1 mt-3 text-navy-900">Find a Parts-Mall branch near you.</h2>
             <p className="t-lead mt-4">
               Search by town, province, or share your location, then call or WhatsApp
-              your nearest branch for stock and fitment.
+              your nearest branch for stock and fitment — 40+ branches
+              across {network.provinces} provinces, plus country points in Botswana,
+              Eswatini, Mozambique, Namibia and Zimbabwe.
             </p>
           </Reveal>
 
           <Reveal delay={0.08} className="mt-9">
-            <BranchFinder limit={6} showFilters={false} />
+            <BranchFinder branches={branches} limit={6} showFilters={false} />
           </Reveal>
 
-          <Reveal delay={0.12} className="mt-7">
+          <Reveal delay={0.12} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
               href="/branches"
               className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
-              See all {NETWORK.total} branches and country points
+              See all 40+ branches and country points
+              <ArrowRight
+                size={17}
+                weight="bold"
+                aria-hidden="true"
+                className="transition-transform duration-150 ease-[var(--ease-out-quart)] group-hover:translate-x-1"
+              />
+            </Link>
+            <Link
+              href="/about"
+              className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold text-steel transition-colors hover:text-navy-800 max-sm:min-h-11"
+            >
+              The group story, exporting since 1998
               <ArrowRight
                 size={17}
                 weight="bold"
@@ -179,36 +236,107 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <ul className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Mobile: self-playing ticker, edges masked by a vignette so cards
+              read as flowing past rather than getting clipped. Pauses on
+              touch/hover, and sits still for prefers-reduced-motion — see
+              .ticker-track in globals.css. Duplicated once for a seamless
+              loop, so these cards skip the scroll-reveal the sm+ grid gets. */}
+          <div className="relative mt-9 overflow-hidden sm:hidden">
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-paper-2 to-transparent"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-paper-2 to-transparent"
+              aria-hidden="true"
+            />
+            <ul className="ticker-track flex w-max gap-5">
+              {[...REVIEWS, ...REVIEWS].map((r, i) => (
+                <li key={`${r.name}-${i}`} className="h-full w-[78vw] max-w-[22rem] shrink-0">
+                  <ReviewCard r={r} />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* sm+: static reveal grid. */}
+          <ul className="mt-9 hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-3">
             {REVIEWS.map((r, i) => (
               <Reveal as="li" key={r.name} delay={Math.min(i * 0.05, 0.3)} className="h-full">
-                <div className="flex h-full flex-col rounded-[var(--radius-base)] border border-hairline-strong bg-card p-5">
-                  <Quotes size={22} weight="fill" aria-hidden="true" className="text-hairline-strong" />
-                  <p className="mt-3 flex-1 text-[0.92rem] leading-relaxed text-ink-soft">
-                    {r.quote}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between gap-3 border-t border-hairline pt-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-[0.9rem] font-semibold text-ink">{r.name}</p>
-                      {r.branchSlug ? (
-                        <Link
-                          href={`/branches/${r.branchSlug}`}
-                          className="t-label text-steel transition-colors hover:text-navy-700"
-                        >
-                          {r.branchLabel} branch
-                        </Link>
-                      ) : (
-                        <p className="t-label text-steel">{r.branchLabel} branch</p>
-                      )}
-                    </div>
-                    <div className="flex shrink-0" aria-label="5 out of 5 stars">
-                      {Array.from({ length: 5 }).map((_, s) => (
-                        <Star key={s} size={13} weight="fill" aria-hidden="true" className="text-signal-deep" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <ReviewCard r={r} />
               </Reveal>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── Brands and certification ──────────────────────────────────────
+          Typographic plates rather than invented logos, and the certifications
+          that actually back the warranty claim. The page's first
+          breathing-room slab — a genuine authority moment, positioned right
+          after the reviews so the two trust signals land back to back. */}
+      <section className="slab band-tight">
+        <div className="shell">
+          <Reveal className="max-w-[54ch]">
+            <h2 className="t-h1 text-on-navy">The private-brand parts lines we carry.</h2>
+            <p className="mt-4 text-[1.05rem] leading-relaxed text-on-navy-muted">
+              Eight private-brand lines carry Parts-Mall Corporation warranty backing,
+              confirmed by the supplying branch at dispatch.
+            </p>
+          </Reveal>
+
+          <ul className="mt-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+            {BRANDS.map((b, i) => (
+              <Reveal
+                as="li"
+                key={b.slug}
+                delay={Math.min(i * 0.05, 0.3)}
+                className="bg-navy-900 ring-1 ring-inset ring-on-navy-rule"
+              >
+                <Link
+                  href={`/parts?brand=${encodeURIComponent(b.label)}`}
+                  className="group flex h-full flex-col justify-between gap-4 p-5 transition-colors duration-200 hover:bg-white/5"
+                >
+                  {b.logo ? (
+                    <span className="inline-flex w-fit items-center rounded-[var(--radius-base)] bg-paper px-3 py-2 ring-1 ring-inset ring-hairline">
+                      <Image
+                        src={b.logo}
+                        alt={`${b.label} logo`}
+                        width={140}
+                        height={56}
+                        className="h-8 w-auto object-contain object-left"
+                      />
+                    </span>
+                  ) : (
+                    <span
+                      className="font-display text-[1.35rem] font-extrabold leading-none tracking-[-0.02em] text-on-navy transition-colors group-hover:text-signal"
+                      style={{ fontStretch: '118%' }}
+                    >
+                      {b.label}
+                    </span>
+                  )}
+                  <span className="text-[0.8rem] leading-snug text-on-navy-muted">{b.note}</span>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+
+          <ul className="mt-10 flex flex-wrap gap-x-10 gap-y-5 border-t-2 border-signal pt-6">
+            {CERTIFICATIONS.map((c) => (
+              <li key={c.label} className="flex items-start gap-2.5">
+                <ShieldCheck
+                  size={19}
+                  weight="fill"
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-signal"
+                />
+                <span>
+                  <span className="t-data block text-[0.9rem] font-bold text-on-navy">
+                    {c.label}
+                  </span>
+                  <span className="block text-[0.82rem] text-on-navy-muted">{c.detail}</span>
+                </span>
+              </li>
             ))}
           </ul>
         </div>
@@ -217,11 +345,16 @@ export default function HomePage() {
       {/* ── Catalogue ─────────────────────────────────────────────────────
           Bento with an exact cell count: one 2x2 feature plus twelve 1x1
           tiles fills a four-column grid completely, no empty cells. */}
-      <section className="band-tight border-t border-hairline">
+      <section className="band-tight">
         <div className="shell">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-[46ch]">
-              <h2 className="t-h1 text-navy-900">Car parts by category.</h2>
+              <h2
+                className="t-h1 text-navy-900"
+                style={{ fontSize: 'clamp(1.5rem, 6vw, var(--text-h1))' }}
+              >
+                Car parts by category.
+              </h2>
               <p className="t-lead mt-4">
                 {PART_TYPES.length} part types across {CATEGORIES.length} systems, from
                 braking and engine to filters and electrical.
@@ -289,7 +422,7 @@ export default function HomePage() {
                     {c.label}
                   </h3>
                   <span className="t-data mt-1.5 block text-[0.7rem] text-steel transition-colors group-hover:text-on-navy-muted">
-                    {typesInCategory(c.slug)
+                    {PART_TYPES.filter((t) => t.category === c.slug)
                       .slice(0, 3)
                       .map((t) => t.label)
                       .join(', ')}
@@ -368,143 +501,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── The network ───────────────────────────────────────────────────
-          The one genuine authority moment on this page, so it gets the slab.
-          Real coordinates, real counts. */}
-      <section className="slab" id="network">
-        <div className="shell band">
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,31rem)] lg:gap-16">
-            <div>
-              <p className="t-label text-signal">Real branches, real coordinates</p>
-              <h2 className="t-h1 mt-4 max-w-[18ch] text-on-navy">
-                Our branch network across Southern Africa.
-              </h2>
-              <p className="mt-5 max-w-[54ch] text-[1.05rem] leading-relaxed text-on-navy-muted">
-                {NETWORK.southAfrica} branches across {NETWORK.provinces} provinces, plus
-                country points in Botswana, Eswatini, Mozambique, Namibia and Zimbabwe.
-                Behind them sits a Korean group that has been exporting parts since 1998.
-              </p>
-
-              <dl className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
-                {CORPORATE_FACTS.map((f) => (
-                  <div key={f.label} className="border-t-2 border-signal pt-3.5">
-                    <dd className="t-data text-[1.9rem] font-bold leading-none text-on-navy">
-                      {f.value}
-                    </dd>
-                    <dt className="mt-2 text-[0.92rem] font-semibold text-on-navy">
-                      {f.label}
-                    </dt>
-                    <p className="mt-1 text-[0.82rem] leading-snug text-on-navy-muted">
-                      {f.note}
-                    </p>
-                  </div>
-                ))}
-              </dl>
-
-              <div className="mt-10 flex flex-wrap gap-3">
-                <ButtonLink href="/branches" variant="invert">
-                  Find a branch
-                </ButtonLink>
-                <ButtonLink
-                  href="/about"
-                  variant="outline"
-                  className="border-on-navy-rule text-on-navy hover:border-on-navy hover:bg-white/5"
-                >
-                  The group story
-                </ButtonLink>
-              </div>
-            </div>
-
-            <NetworkMap className="lg:pt-2" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Brands and certification ──────────────────────────────────────
-          Typographic plates rather than invented logos, and the certifications
-          that actually back the warranty claim. */}
-      <section className="band-tight border-b border-hairline">
-        <div className="shell">
-          <Reveal className="max-w-[54ch]">
-            <h2 className="t-h1 text-navy-900">The private-brand parts lines we carry.</h2>
-            <p className="t-lead mt-4">
-              All nine private-brand lines carry Parts-Mall Corporation warranty backing,
-              confirmed by the supplying branch at dispatch.
-            </p>
-          </Reveal>
-
-          <ul className="mt-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-            {BRANDS.map((b, i) => (
-              <Reveal
-                as="li"
-                key={b.slug}
-                delay={Math.min(i * 0.05, 0.3)}
-                className="bg-paper ring-1 ring-inset ring-hairline"
-              >
-                <Link
-                  href={`/parts?brand=${encodeURIComponent(b.label)}`}
-                  className="group flex h-full flex-col justify-between gap-4 p-5 transition-colors duration-200 hover:bg-card"
-                >
-                  {b.logo ? (
-                    <Image
-                      src={b.logo}
-                      alt={`${b.label} logo`}
-                      width={140}
-                      height={56}
-                      className="h-9 w-auto object-contain object-left"
-                    />
-                  ) : (
-                    <span
-                      className="font-display text-[1.35rem] font-extrabold leading-none tracking-[-0.02em] text-navy-900 transition-colors group-hover:text-navy-700"
-                      style={{ fontStretch: '118%' }}
-                    >
-                      {b.label}
-                    </span>
-                  )}
-                  <span className="text-[0.8rem] leading-snug text-steel">{b.note}</span>
-                </Link>
-              </Reveal>
-            ))}
-          </ul>
-
-          <ul className="mt-10 flex flex-wrap gap-x-10 gap-y-5 border-t-2 border-ink pt-6">
-            {CERTIFICATIONS.map((c) => (
-              <li key={c.label} className="flex items-start gap-2.5">
-                <ShieldCheck
-                  size={19}
-                  weight="fill"
-                  aria-hidden="true"
-                  className="mt-0.5 shrink-0 text-signal-deep"
-                />
-                <span>
-                  <span className="t-data block text-[0.9rem] font-bold text-ink">
-                    {c.label}
-                  </span>
-                  <span className="block text-[0.82rem] text-steel">{c.detail}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
       {/* ── Wholesale ─────────────────────────────────────────────────────
-          Image-led split. The second and last image+text split on this page. */}
-      <section className="band">
+          Image-led split, and the page's second breathing-room slab — "the
+          partner pitch" the .slab utility was written for. Placed after the
+          discovery sections so it reads as a deliberate pivot to a different
+          audience (distributors, not retail workshops), not an interruption
+          mid-browse. */}
+      <section className="slab band">
         <div className="shell">
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <Reveal className="order-2 lg:order-1">
-              <p className="t-label text-signal-deep">Distributors and franchisees</p>
-              <h2 className="t-h1 mt-4 max-w-[16ch] text-navy-900">
+              <p className="t-label text-signal">Distributors and franchisees</p>
+              <h2 className="t-h1 mt-4 max-w-[16ch] text-on-navy">
                 Grow the network in your market.
               </h2>
-              <p className="t-lead mt-5">
+              <p className="mt-5 text-[1.05rem] leading-relaxed text-on-navy-muted">
                 Parts-Mall is expanding its distributor and franchise network across
                 Southern Africa. If your business already moves volume in vehicle parts,
                 head office is where that conversation starts directly.
               </p>
 
-              <ul className="mt-8 space-y-0 border-t-2 border-ink">
+              <ul className="mt-8 space-y-0 border-t-2 border-signal">
                 {[
                   'Territory-based supply for regional distributors and resellers',
                   'Franchise partnerships backed by group stock and brand systems',
@@ -513,7 +530,7 @@ export default function HomePage() {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="border-b border-hairline py-3.5 text-[0.95rem] text-ink-soft"
+                    className="border-b border-on-navy-rule py-3.5 text-[0.95rem] text-on-navy-muted"
                   >
                     {item}
                   </li>
@@ -545,7 +562,7 @@ export default function HomePage() {
       {/* ── Blog ──────────────────────────────────────────────────────────
           Editorial row. Written for the person at the car, which is also what
           brings workshop searches in. */}
-      <section className="band-tight border-t border-hairline bg-paper">
+      <section className="band-tight bg-paper">
         <div className="shell">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <h2 className="t-h1 max-w-[20ch] text-navy-900">From the parts counter.</h2>
@@ -563,9 +580,14 @@ export default function HomePage() {
             </Link>
           </Reveal>
 
-          <ul className="mt-9 grid gap-8 md:grid-cols-3">
+          <ul className="mt-9 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
             {GUIDES.slice(0, 3).map((g, i) => (
-              <Reveal as="li" key={g.slug} delay={i * 0.07}>
+              <Reveal
+                as="li"
+                key={g.slug}
+                delay={i * 0.07}
+                className="w-[82%] max-w-[22rem] shrink-0 snap-start md:w-auto md:max-w-none"
+              >
                 <Link href={`/blog/${g.slug}`} className="group block">
                   <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
                     <Image

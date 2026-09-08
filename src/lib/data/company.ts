@@ -87,7 +87,7 @@ export const FAQS = [
   },
   {
     q: 'Which vehicle makes do you support?',
-    a: 'Supply is led by Korean and related applications: Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval, Ford, Daihatsu, Nissan and Toyota. Confirm exact fitment with your branch.',
+    a: 'Supply is led by Korean and related applications: Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval. Confirm exact fitment with your branch.',
   },
   {
     q: 'Can I buy online and have parts delivered?',
@@ -193,7 +193,7 @@ export const GUIDES: Guide[] = [
     slug: 'korean-service-parts-by-model',
     title: 'The Korean service parts branches move most',
     excerpt:
-      'Across 33 South African branches, a small group of references carries a disproportionate share of counter volume across the network.',
+      'Across 40+ South African branches, a small group of references carries a disproportionate share of counter volume across the network.',
     category: 'Fitment',
     readMinutes: 5,
     date: '2026-04-30',
