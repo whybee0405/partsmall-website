@@ -7,13 +7,12 @@ import { PageHeader } from '@/components/PageHeader'
 import { FaqList } from '@/components/FaqList'
 import { CategoryIcon } from '@/components/CategoryIcon'
 import { ButtonLink } from '@/components/ui/Button'
-import { CATEGORIES, getCategory, typesInCategory } from '@/lib/data/catalogue'
-import { MAKES } from '@/lib/data/vehicles'
+import { getCategory } from '@/lib/payload/categories'
+import { getAllPartTypes } from '@/lib/payload/partTypes'
+import { getAllMakes } from '@/lib/payload/makes'
 import { breadcrumbLd, collectionLd, faqLd, JsonLd, metaDescription } from '@/lib/seo'
 
-export function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ category: c.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -21,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ category: string }>
 }): Promise<Metadata> {
   const { category } = await params
-  const cat = getCategory(category)
+  const cat = await getCategory(category)
   if (!cat) return { title: 'Not found' }
 
   return {
@@ -37,10 +36,14 @@ export default async function CategoryPage({
   params: Promise<{ category: string }>
 }) {
   const { category } = await params
-  const cat = getCategory(category)
+  const [cat, allPartTypes, MAKES] = await Promise.all([
+    getCategory(category),
+    getAllPartTypes(),
+    getAllMakes(),
+  ])
   if (!cat) notFound()
 
-  const types = typesInCategory(cat.slug)
+  const types = allPartTypes.filter((t) => t.category === cat.slug)
 
   return (
     <>

@@ -1,18 +1,34 @@
 import type { MetadataRoute } from 'next'
-import { BRANCHES } from '@/lib/data/branches'
-import { CATEGORIES, PART_TYPES } from '@/lib/data/catalogue'
-import { MAKES, MODELS, allFitments } from '@/lib/data/vehicles'
-import { GUIDES } from '@/lib/data/company'
+import { getAllBranches } from '@/lib/payload/branches'
+import { getAllMakes } from '@/lib/payload/makes'
+import { getAllModels, allFitments } from '@/lib/payload/models'
+import { getAllCategories } from '@/lib/payload/categories'
+import { getAllPartTypes } from '@/lib/payload/partTypes'
+import { getAllGuides } from '@/lib/payload/guides'
 
 const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://partsmall.co.za'
+
+export const dynamic = 'force-dynamic'
 
 /**
  * Priorities reflect commercial intent rather than depth. The model-by-part
  * intersection pages are the deepest in the tree and among the most valuable,
  * because they match how people actually search: make, model, year, part.
+ *
+ * Every collection listed here is now sourced live from Payload — see the
+ * migration plan at magical-dancing-turtle.md.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
+  const [branches, makes, models, fitments, categories, partTypes, guides] = await Promise.all([
+    getAllBranches(),
+    getAllMakes(),
+    getAllModels(),
+    allFitments(),
+    getAllCategories(),
+    getAllPartTypes(),
+    getAllGuides(),
+  ])
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, priority: 1, changeFrequency: 'weekly', lastModified: now },
@@ -32,13 +48,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticRoutes,
 
     // Parts axis.
-    ...CATEGORIES.map((c) => ({
+    ...categories.map((c) => ({
       url: `${base}/parts/${c.slug}`,
       priority: 0.8,
       changeFrequency: 'monthly' as const,
       lastModified: now,
     })),
-    ...PART_TYPES.map((t) => ({
+    ...partTypes.map((t) => ({
       url: `${base}/parts/${t.category}/${t.slug}`,
       priority: 0.8,
       changeFrequency: 'monthly' as const,
@@ -46,13 +62,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     // Vehicle axis.
-    ...MAKES.map((mk) => ({
+    ...makes.map((mk) => ({
       url: `${base}/vehicles/${mk.slug}`,
       priority: 0.8,
       changeFrequency: 'monthly' as const,
       lastModified: now,
     })),
-    ...MODELS.map((mo) => ({
+    ...models.map((mo) => ({
       url: `${base}/vehicles/${mo.make}/${mo.slug}`,
       priority: 0.8,
       changeFrequency: 'monthly' as const,
@@ -60,7 +76,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     // The intersection pages. These carry the highest commercial intent.
-    ...allFitments().map((f) => ({
+    ...fitments.map((f) => ({
       url: `${base}/vehicles/${f.make}/${f.model}/${f.partType}`,
       priority: 0.9,
       changeFrequency: 'monthly' as const,
@@ -68,14 +84,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     // Branch pages rank locally.
-    ...BRANCHES.map((b) => ({
+    ...branches.map((b) => ({
       url: `${base}/branches/${b.slug}`,
       priority: 0.8,
       changeFrequency: 'monthly' as const,
       lastModified: now,
     })),
 
-    ...GUIDES.map((g) => ({
+    ...guides.map((g) => ({
       url: `${base}/blog/${g.slug}`,
       priority: 0.6,
       changeFrequency: 'yearly' as const,

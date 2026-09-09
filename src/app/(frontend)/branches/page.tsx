@@ -4,16 +4,21 @@ import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { BranchFinder } from '@/components/BranchFinder'
 import { NetworkMap } from '@/components/NetworkMap'
-import { branchesByProvince, NETWORK } from '@/lib/data/branches'
+import { getAllBranches, branchesByProvince, getNetworkStats } from '@/lib/payload/branches'
 
-export const metadata: Metadata = {
-  title: 'Branch finder',
-  description: `Find your nearest Parts-Mall branch. ${NETWORK.southAfrica} branches across ${NETWORK.provinces} South African provinces, plus points in Botswana, Eswatini, Mozambique, Namibia and Zimbabwe.`,
-  alternates: { canonical: '/branches' },
+export const dynamic = 'force-dynamic'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const network = await getNetworkStats()
+  return {
+    title: 'Branch finder',
+    description: `Find your nearest Parts-Mall branch. 40+ branches across ${network.provinces} South African provinces, plus points in Botswana, Eswatini, Mozambique, Namibia and Zimbabwe.`,
+    alternates: { canonical: '/branches' },
+  }
 }
 
-export default function BranchesPage() {
-  const groups = branchesByProvince()
+export default async function BranchesPage() {
+  const [branches, groups] = await Promise.all([getAllBranches(), branchesByProvince()])
 
   return (
     <>
@@ -27,7 +32,7 @@ export default function BranchesPage() {
 
       <section className="band">
         <div className="shell">
-          <BranchFinder showMap={false} />
+          <BranchFinder branches={branches} showMap={false} />
         </div>
       </section>
 

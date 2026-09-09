@@ -23,6 +23,7 @@ export function PageHeader({
   children,
   backgroundImage,
   imageAlt = '',
+  imagePosition = 'center',
 }: {
   title: string
   lead?: string
@@ -30,6 +31,7 @@ export function PageHeader({
   children?: ReactNode
   backgroundImage?: string
   imageAlt?: string
+  imagePosition?: string
 }) {
   const hasImage = Boolean(backgroundImage)
 
@@ -48,6 +50,7 @@ export function PageHeader({
             priority
             sizes="100vw"
             className="object-cover"
+            style={{ objectPosition: imagePosition }}
           />
           <div
             className="absolute inset-0 bg-gradient-to-t from-navy-900/92 via-navy-900/72 to-navy-900/45"

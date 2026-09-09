@@ -11,18 +11,13 @@ import {
 import { PageHeader } from '@/components/PageHeader'
 import { FaqList } from '@/components/FaqList'
 import { ButtonLink } from '@/components/ui/Button'
-import {
-  PART_TYPES,
-  getPartType,
-  getCategory,
-  typesInCategory,
-} from '@/lib/data/catalogue'
-import { modelsWithPartType, getMake } from '@/lib/data/vehicles'
+import { getPartType, typesInCategory } from '@/lib/payload/partTypes'
+import { getCategory } from '@/lib/payload/categories'
+import { modelsWithPartType } from '@/lib/payload/models'
+import { getMake } from '@/lib/payload/makes'
 import { breadcrumbLd, faqLd, JsonLd, metaDescription } from '@/lib/seo'
 
-export function generateStaticParams() {
-  return PART_TYPES.map((t) => ({ category: t.category, type: t.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -30,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ category: string; type: string }>
 }): Promise<Metadata> {
   const { type } = await params
-  const t = getPartType(type)
+  const t = await getPartType(type)
   if (!t) return { title: 'Not found' }
 
   return {
@@ -46,15 +41,17 @@ export default async function PartTypePage({
   params: Promise<{ category: string; type: string }>
 }) {
   const { category, type } = await params
-  const t = getPartType(type)
-  const cat = getCategory(category)
+  const [t, cat] = await Promise.all([getPartType(type), getCategory(category)])
   if (!t || !cat || t.category !== cat.slug) notFound()
 
-  const siblings = typesInCategory(cat.slug).filter((x) => x.slug !== t.slug)
+  const siblings = (await typesInCategory(cat.slug)).filter((x) => x.slug !== t.slug)
   // The vehicle pages that exist for this part type. This is the internal
   // linking that makes the model-level pages discoverable and pushes authority
   // down into them.
-  const vehicles = modelsWithPartType(t.slug)
+  const vehicles = await modelsWithPartType(t.slug)
+  const vehicleMakes = new Map(
+    (await Promise.all(vehicles.map((v) => getMake(v.make)))).map((mk, i) => [vehicles[i].make, mk]),
+  )
 
   return (
     <>
@@ -148,7 +145,7 @@ export default async function PartTypePage({
                 </p>
                 <ul className="mt-6 grid gap-x-8 sm:grid-cols-2">
                   {vehicles.map((v) => {
-                    const mk = getMake(v.make)
+                    const mk = vehicleMakes.get(v.make)
                     return (
                       <li key={`${v.make}-${v.slug}`} className="border-b border-hairline">
                         <Link

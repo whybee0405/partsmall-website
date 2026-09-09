@@ -3,16 +3,25 @@ import { ArrowUpRight, EnvelopeSimple, NavigationArrow } from '@phosphor-icons/r
 import { Wordmark } from '@/components/ui/Wordmark'
 import { CookiePreferencesButton } from '@/components/CookiePreferencesButton'
 import { COMPANY, headOfficeMapUrl } from '@/lib/data/company'
-import { NETWORK } from '@/lib/data/branches'
-import { CATEGORIES } from '@/lib/data/catalogue'
-import { MAKES } from '@/lib/data/vehicles'
+import { getNetworkStats } from '@/lib/payload/branches'
+import type { Make } from '@/lib/data/vehicles'
+import { getAllMakes } from '@/lib/payload/makes'
+import type { Category } from '@/lib/data/catalogue'
+import { getAllCategories } from '@/lib/payload/categories'
 
-const columns = [
+const footerTextLink =
+  'group relative inline-flex text-on-navy/85 transition-colors duration-200 hover:text-on-navy focus-visible:text-on-navy after:absolute after:bottom-[-0.22rem] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-signal after:transition-transform after:duration-300 after:ease-[var(--ease-out-quart)] hover:after:scale-x-100 focus-visible:after:scale-x-100 max-sm:min-h-11 max-sm:items-center'
+
+const footerActionLink =
+  'group inline-flex h-11 items-center gap-2 rounded-[var(--radius-base)] border border-on-navy-rule px-4 text-[0.9rem] font-semibold text-on-navy transition-all duration-200 hover:-translate-y-0.5 hover:border-on-navy hover:bg-white/5 focus-visible:-translate-y-0.5 focus-visible:border-on-navy focus-visible:bg-white/5'
+
+function buildColumns(makes: Make[], categories: Category[]) {
+  return [
   {
     title: 'Parts by system',
     links: [
       { href: '/parts', label: 'All systems' },
-      ...CATEGORIES.slice(0, 5).map((c) => ({
+      ...categories.slice(0, 5).map((c) => ({
         href: `/parts/${c.slug}`,
         label: c.label,
       })),
@@ -22,7 +31,7 @@ const columns = [
     title: 'Parts by vehicle',
     links: [
       { href: '/vehicles', label: 'All makes' },
-      ...MAKES.slice(0, 5).map((mk) => ({
+      ...makes.slice(0, 5).map((mk) => ({
         href: `/vehicles/${mk.slug}`,
         label: mk.label,
       })),
@@ -46,9 +55,17 @@ const columns = [
       { href: '/contact', label: 'Contact head office' },
     ],
   },
-]
+  ]
+}
 
-export function Footer() {
+export async function Footer() {
+  const [network, makes, categories] = await Promise.all([
+    getNetworkStats(),
+    getAllMakes(),
+    getAllCategories(),
+  ])
+  const columns = buildColumns(makes, categories)
+
   return (
     <footer className="slab max-sm:pb-20" role="contentinfo">
       <div className="shell band-tight">
@@ -66,10 +83,15 @@ export function Footer() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="t-label flex h-9 max-sm:h-11 items-center gap-1 rounded-[var(--radius-base)] border border-on-navy-rule px-2.5 text-on-navy-muted transition-colors hover:border-on-navy hover:text-on-navy"
+                  className="group t-label flex h-9 max-sm:h-11 items-center gap-1 rounded-[var(--radius-base)] border border-on-navy-rule px-2.5 text-on-navy-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-on-navy hover:bg-white/5 hover:text-on-navy focus-visible:-translate-y-0.5 focus-visible:border-on-navy focus-visible:bg-white/5 focus-visible:text-on-navy"
                 >
                   {s.label}
-                  <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
+                  <ArrowUpRight
+                    size={12}
+                    weight="bold"
+                    aria-hidden="true"
+                    className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5"
+                  />
                 </a>
               ))}
             </div>
@@ -85,7 +107,7 @@ export function Footer() {
                   <li key={l.href + l.label}>
                     <Link
                       href={l.href}
-                      className="text-[0.92rem] text-on-navy/85 transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center"
+                      className={`${footerTextLink} text-[0.92rem]`}
                     >
                       {l.label}
                     </Link>
@@ -111,18 +133,28 @@ export function Footer() {
           <div className="flex flex-wrap gap-2">
             <a
               href={`mailto:${COMPANY.headOffice.email}`}
-              className="inline-flex h-11 items-center gap-2 rounded-[var(--radius-base)] border border-on-navy-rule px-4 text-[0.9rem] font-semibold text-on-navy transition-colors hover:border-on-navy"
+              className={footerActionLink}
             >
-              <EnvelopeSimple size={17} weight="bold" aria-hidden="true" />
+              <EnvelopeSimple
+                size={17}
+                weight="bold"
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:-translate-y-0.5 group-focus-visible:-translate-y-0.5"
+              />
               {COMPANY.headOffice.email}
             </a>
             <a
               href={headOfficeMapUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 items-center gap-2 rounded-[var(--radius-base)] border border-on-navy-rule px-4 text-[0.9rem] font-semibold text-on-navy transition-colors hover:border-on-navy"
+              className={footerActionLink}
             >
-              <NavigationArrow size={17} weight="bold" aria-hidden="true" />
+              <NavigationArrow
+                size={17}
+                weight="bold"
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5"
+              />
               Directions
             </a>
           </div>
@@ -135,21 +167,21 @@ export function Footer() {
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link
               href="/privacy"
-              className="transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center"
+              className={footerTextLink}
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center"
+              className={footerTextLink}
             >
               Terms of Service
             </Link>
-            <CookiePreferencesButton className="transition-colors hover:text-on-navy max-sm:flex max-sm:min-h-11 max-sm:items-center" />
+          <CookiePreferencesButton className={footerTextLink} />
           </nav>
           <p className="t-data text-[0.78rem]">
-            {NETWORK.southAfrica} branches / {NETWORK.provinces} provinces /{' '}
-            {NETWORK.countries} countries
+            40+ branches / {network.provinces} provinces /{' '}
+            {network.countries} countries
           </p>
         </div>
       </div>

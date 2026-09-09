@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { getBranch } from '@/lib/data/branches'
+import { getAllBranches } from '@/lib/payload/branches'
 
 type EventType = 'page_view' | 'page_exit' | 'form_submit' | 'whatsapp_click'
 type Row = { type: EventType; path: string; sessionId?: string; duration?: number | null; createdAt: string; visitorHash?: string; referrer?: string | null; whatsappTopic?: 'part_inquiry' | 'distributor_franchise_inquiry' | 'general_inquiry'; branchSlug?: string | null }
@@ -24,6 +24,8 @@ function countBy<T extends string>(rows: Row[], key: (row: Row) => T) { const re
 
 export async function AnalyticsView({ payload, searchParams }: { payload: any; searchParams?: Params }) {
   const now = new Date()
+  const branches = await getAllBranches()
+  const branchName = (slug: string) => branches.find((branch) => branch.slug === slug)?.name ?? slug
   const preset = value(searchParams, 'preset')
   const presetDays = preset === 'daily' ? 1 : preset === 'weekly' ? 7 : preset === 'monthly' ? 30 : 30
   const defaultEnd = dateInput(now)
@@ -90,7 +92,7 @@ export async function AnalyticsView({ payload, searchParams }: { payload: any; s
       <label style={{ display: 'grid', gap: 4, fontSize: 12 }}>Group data<select name="group" defaultValue={grouping} style={control}><option value="day">Daily</option><option value="week">Weekly</option><option value="month">Monthly</option></select></label>
       <label style={{ display: 'grid', gap: 4, fontSize: 12 }}>Path<input name="path" defaultValue={pathFilter} placeholder="contains…" style={control} /></label>
       <label style={{ display: 'grid', gap: 4, fontSize: 12 }}>Traffic source<select name="source" defaultValue={sourceFilter} style={control}><option value="">All sources</option>{sourceOptions.map((option) => <option key={option} value={option}>{option}</option>)}</select></label>
-      <label style={{ display: 'grid', gap: 4, fontSize: 12 }}>WhatsApp destination<select name="destination" defaultValue={destinationFilter} style={control}><option value="">All destinations</option>{destinationOptions.map((option) => <option key={option} value={option}>{option === 'head-office' ? 'Head office' : getBranch(option)?.name ?? option}</option>)}</select></label>
+      <label style={{ display: 'grid', gap: 4, fontSize: 12 }}>WhatsApp destination<select name="destination" defaultValue={destinationFilter} style={control}><option value="">All destinations</option>{destinationOptions.map((option) => <option key={option} value={option}>{option === 'head-office' ? 'Head office' : branchName(option)}</option>)}</select></label>
       <button type="submit" style={{ ...control, background: 'var(--theme-success-500)', color: 'var(--theme-elevation-0)', fontWeight: 600 }}>Apply report</button><a href={exportHref} style={{ ...reportLink, fontWeight: 600 }}>Export selected range</a>
     </form>
     <p style={{ fontSize: 13, color: 'var(--theme-elevation-500)', marginTop: -8, marginBottom: 18 }}>{start} to {end}, compared with the immediately preceding {Math.round(periodMs / DAY)} day period.</p>

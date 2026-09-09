@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { PageHeader } from '@/components/PageHeader'
 import { Reveal } from '@/components/ui/Reveal'
 import { ButtonLink } from '@/components/ui/Button'
-import { NETWORK } from '@/lib/data/branches'
 import {
   TIMELINE,
   GLOBAL_ENTITIES,
@@ -11,6 +10,8 @@ import {
   CORPORATE_FACTS,
   FAQS,
 } from '@/lib/data/company'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Company',
@@ -38,11 +39,12 @@ export default function AboutPage() {
       />
 
       <PageHeader
-        title="A Korean parts group, run from Germiston."
+        title="A Korean parts group, run from Meadowdale."
         lead="Parts-Mall Africa is the group's sales subsidiary and distribution hub for the African continent. The stock is here, the counter staff are local, and the supply chain behind them has been running since 1998."
         breadcrumbs={[{ href: '/about', label: 'Company' }]}
-        backgroundImage="/images/head-office.webp"
-        imageAlt="The Parts-Mall head office and distribution building in Meadowdale, Germiston."
+        backgroundImage="/images/head-office.png"
+        imageAlt="The Parts-Mall Corporation headquarters and distribution building in South Korea."
+        imagePosition="center 30%"
       />
 
       {/* The parent's own words. Quoted rather than paraphrased, because a
@@ -187,7 +189,7 @@ export default function AboutPage() {
         <div className="shell flex flex-wrap items-end justify-between gap-8">
           <div>
             <h2 className="t-h1 max-w-[18ch] text-navy-900">
-              {NETWORK.total} points, and one of them is near you.
+              40+ points, and one of them is near you.
             </h2>
           </div>
           <div className="flex flex-wrap gap-3">

@@ -13,13 +13,12 @@ import {
 import { PageHeader } from '@/components/PageHeader'
 import { FaqList } from '@/components/FaqList'
 import { ButtonLink } from '@/components/ui/Button'
-import {
-  allFitments,
-  getMake,
-  getModel,
-  modelYearSpan,
-} from '@/lib/data/vehicles'
-import { getPartType, getCategory, type Faq } from '@/lib/data/catalogue'
+import { modelYearSpan } from '@/lib/data/vehicles'
+import { getMake } from '@/lib/payload/makes'
+import { getModel } from '@/lib/payload/models'
+import { getPartType } from '@/lib/payload/partTypes'
+import { getCategory } from '@/lib/payload/categories'
+import type { Faq } from '@/lib/data/catalogue'
 import { breadcrumbLd, faqLd, vehiclePartLd, JsonLd, metaDescription } from '@/lib/seo'
 
 /**
@@ -32,13 +31,7 @@ import { breadcrumbLd, faqLd, vehiclePartLd, JsonLd, metaDescription } from '@/l
  * separate URL for every model year.
  */
 
-export function generateStaticParams() {
-  return allFitments().map((f) => ({
-    make: f.make,
-    model: f.model,
-    type: f.partType,
-  }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -46,9 +39,9 @@ export async function generateMetadata({
   params: Promise<{ make: string; model: string; type: string }>
 }): Promise<Metadata> {
   const { make, model, type } = await params
-  const mk = getMake(make)
-  const mo = getModel(make, model)
-  const pt = getPartType(type)
+  const mk = await getMake(make)
+  const mo = await getModel(make, model)
+  const pt = await getPartType(type)
   if (!mk || !mo || !pt) return { title: 'Not found' }
 
   const span = modelYearSpan(mo)
@@ -59,7 +52,7 @@ export async function generateMetadata({
   return {
     title: { absolute: `${mk.label} ${mo.label} ${pt.label}` },
     description: metaDescription(
-      `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Supplied and fitment-confirmed through 33 South African branches before dispatch. ${pt.summary}`,
+      `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Supplied and fitment-confirmed through 40+ South African branches before dispatch. ${pt.summary}`,
     ),
     alternates: { canonical: `/vehicles/${mk.slug}/${mo.slug}/${pt.slug}` },
   }
@@ -71,21 +64,21 @@ export default async function VehiclePartPage({
   params: Promise<{ make: string; model: string; type: string }>
 }) {
   const { make, model, type } = await params
-  const mk = getMake(make)
-  const mo = getModel(make, model)
-  const pt = getPartType(type)
+  const mk = await getMake(make)
+  const mo = await getModel(make, model)
+  const pt = await getPartType(type)
   if (!mk || !mo || !pt || !mo.parts.includes(pt.slug)) notFound()
 
-  const cat = getCategory(pt.category)
+  const cat = await getCategory(pt.category)
   const span = modelYearSpan(mo)
   const vehicle = `${mk.label} ${mo.label}`
   const path = `/vehicles/${mk.slug}/${mo.slug}/${pt.slug}`
 
   const partNote = mo.partNotes?.[pt.slug]
 
-  const siblings = mo.parts
-    .filter((s) => s !== pt.slug)
-    .map((s) => getPartType(s))
+  const siblings = (
+    await Promise.all(mo.parts.filter((s) => s !== pt.slug).map((s) => getPartType(s)))
+  )
     .filter((x): x is NonNullable<typeof x> => Boolean(x))
     .slice(0, 8)
 
@@ -140,7 +133,7 @@ export default async function VehiclePartPage({
           Parts-Mall supplies {pt.label.toLowerCase()} for the {vehicle} across the{' '}
           {span} range, through {''}
           <Link href="/branches" className="font-semibold text-navy-700 underline underline-offset-4 hover:text-navy-800">
-            33 branches
+            40+ branches
           </Link>{' '}
           in South Africa. {pt.summary}
         </p>

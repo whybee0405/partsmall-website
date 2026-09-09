@@ -16,8 +16,10 @@ import {
  * heroMap.generated.ts — never hand-approximated, never AI-guessed) driving
  * a flight-tracker camera, with five story clips playing in sync with the
  * camera's phases. The map, camera and pulses are cheap SVG/SMIL and run on
- * every device; the video layer is desktop-only, same rule the site already
- * applies to decorative motion.
+ * every device. The video layer also runs on every device — see the chained
+ * loading in StoryVideoLayer, which starts each clip only once the previous
+ * one has buffered, so mobile connections never get five simultaneous
+ * fetches. Reduced-motion is the only thing that turns either layer off.
  */
 
 const CAM_ASPECT = 16 / 9
@@ -323,7 +325,39 @@ function StoryVideoLayer() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    videosRef.current.forEach((v) => v?.play().catch(() => {}))
+    // Chained loading: each clip only starts fetching once the previous one
+    // has buffered far enough to play through (or a fallback timer gives up
+    // waiting), so all five never fight for the same bandwidth at once —
+    // that simultaneous fetch was the actual cause of mobile buffering, not
+    // the video layer itself. A stalled or errored clip can't block the
+    // rest of the sequence: the fallback always advances the chain.
+    let cancelled = false
+    const FALLBACK_MS = 4000
+
+    function startNext(i: number) {
+      if (cancelled || i >= videosRef.current.length) return
+      const v = videosRef.current[i]
+      if (!v) return
+      v.play().catch(() => {})
+
+      let advanced = false
+      const timer = setTimeout(() => {
+        advanced = true
+        startNext(i + 1)
+      }, FALLBACK_MS)
+      v.addEventListener(
+        'canplaythrough',
+        () => {
+          if (advanced) return
+          advanced = true
+          clearTimeout(timer)
+          startNext(i + 1)
+        },
+        { once: true },
+      )
+    }
+    startNext(0)
+
     const start = performance.now()
     let raf: number
     const tick = () => {
@@ -337,7 +371,10 @@ function StoryVideoLayer() {
     }
     raf = requestAnimationFrame(tick)
     setReady(true)
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
@@ -363,20 +400,17 @@ function StoryVideoLayer() {
 }
 
 export function HeroStory() {
-  const [isDesktop, setIsDesktop] = useState(false)
   const [motionOK, setMotionOK] = useState(false)
 
   useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 1024px)').matches
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    setIsDesktop(desktop)
     setMotionOK(!reducedMotion)
   }, [])
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-navy-900">
       <HeroMapSvg animated={motionOK} />
-      {isDesktop && motionOK && <StoryVideoLayer />}
+      {motionOK && <StoryVideoLayer />}
     </div>
   )
 }

@@ -24,7 +24,9 @@ services:
     restart: unless-stopped
 
     ports:
-      - '127.0.0.1:${HOST_PORT:-3050}:3000'
+      # Bound to all interfaces (not just 127.0.0.1) so the client can view the
+      # temporary demo at http://<server-ip>:3050 before a domain is set up.
+      - '${HOST_PORT:-3050}:3000'
 
     environment:
       NODE_ENV: production

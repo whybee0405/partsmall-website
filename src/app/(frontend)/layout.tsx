@@ -6,10 +6,12 @@ import { CustomCursor } from '@/components/CustomCursor'
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { ChatWidget } from '@/components/ChatWidget'
 import { CookieBanner } from '@/components/CookieBanner'
-import { MobileStickyCta } from '@/components/MobileStickyCta'
 import { AnalyticsTracker } from '@/components/analytics/AnalyticsTracker'
 import { COMPANY } from '@/lib/data/company'
+import { getAllBranches } from '@/lib/payload/branches'
 import './globals.css'
+
+export const dynamic = 'force-dynamic'
 
 /**
  * Type.
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
     template: '%s | Parts-Mall Africa',
   },
   description:
-    'Parts-Mall Africa supplies Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan and Toyota replacement parts through 33 branches across South Africa and 5 pan-African country points. Trade accounts, branch stock checks and wholesale supply.',
+    'Parts-Mall Africa supplies Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval replacement parts through 40+ branches across South Africa and 5 pan-African country points. Trade accounts, branch stock checks and wholesale supply.',
   keywords: [
     'car parts South Africa',
     'Korean car parts',
@@ -93,7 +95,9 @@ export const viewport: Viewport = {
   themeColor: '#16244a',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const branches = await getAllBranches()
+
   return (
     <html
       lang="en-ZA"
@@ -121,10 +125,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <CustomCursor />
-        <FloatingWhatsApp />
+        <FloatingWhatsApp branches={branches} />
         <ChatWidget />
         <CookieBanner />
-        <MobileStickyCta />
         <AnalyticsTracker />
       </body>
     </html>

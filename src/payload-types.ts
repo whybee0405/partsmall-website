@@ -170,7 +170,10 @@ export interface Branch {
    * Leave blank to reuse the phone number.
    */
   whatsapp?: string | null;
-  email: string;
+  /**
+   * Leave blank if this branch has no public email yet.
+   */
+  email?: string | null;
   hours?: string | null;
   /**
    * Decimal latitude, e.g. -26.2124
@@ -483,7 +486,7 @@ export interface Brand {
   createdAt: string;
 }
 /**
- * Trade guides and fitment notes. These are the pages that bring workshop searches in, so write them for the person at the car.
+ * The site’s blog — trade guides and fitment notes. These are the pages that bring workshop searches in, so write them for the person at the car.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "guides".

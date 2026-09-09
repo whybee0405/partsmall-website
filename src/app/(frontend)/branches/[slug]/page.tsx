@@ -13,18 +13,10 @@ import {
 } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { EnquiryForm } from '@/components/EnquiryForm'
-import {
-  BRANCHES,
-  getBranch,
-  distanceKm,
-  mapsHref,
-  telHref,
-  whatsappNumber,
-} from '@/lib/data/branches'
+import { distanceKm, mapsHref, telHref, whatsappNumber } from '@/lib/data/branches'
+import { getBranch, getAllBranches } from '@/lib/payload/branches'
 
-export function generateStaticParams() {
-  return BRANCHES.map((b) => ({ slug: b.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -32,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const branch = getBranch(slug)
+  const branch = await getBranch(slug)
   if (!branch) return { title: 'Branch not found' }
 
   // A handful of branch names carry a second town in parentheses-free form
@@ -59,10 +51,12 @@ export default async function BranchPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const branch = getBranch(slug)
+  const branch = await getBranch(slug)
   if (!branch) notFound()
 
-  const nearby = BRANCHES.filter((b) => b.slug !== branch.slug)
+  const allBranches = await getAllBranches()
+  const nearby = allBranches
+    .filter((b) => b.slug !== branch.slug)
     .map((b) => ({ ...b, km: distanceKm(branch, b) }))
     .sort((a, b) => a.km - b.km)
     .slice(0, 4)
@@ -73,7 +67,7 @@ export default async function BranchPage({
     '@type': 'AutoPartsStore',
     name: `Parts-Mall ${branch.name}`,
     telephone: `+${whatsappNumber(branch.phone)}`,
-    email: branch.email,
+    ...(branch.email ? { email: branch.email } : {}),
     address: {
       '@type': 'PostalAddress',
       streetAddress: branch.address,
@@ -146,12 +140,16 @@ export default async function BranchPage({
               {[
                 { icon: MapPin, label: 'Address', value: branch.address },
                 { icon: Clock, label: 'Trading hours', value: branch.hours },
-                {
-                  icon: EnvelopeSimple,
-                  label: 'Email',
-                  value: branch.email,
-                  href: `mailto:${branch.email}`,
-                },
+                ...(branch.email
+                  ? [
+                      {
+                        icon: EnvelopeSimple,
+                        label: 'Email',
+                        value: branch.email,
+                        href: `mailto:${branch.email}`,
+                      },
+                    ]
+                  : []),
                 {
                   icon: MapPin,
                   label: branch.province === 'Pan-Africa' ? 'Country' : 'Province',

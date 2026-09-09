@@ -219,7 +219,7 @@ export function Header() {
               Find your nearest branch
             </ButtonLink>
             <p className="text-[0.85rem] leading-relaxed text-on-navy-muted">
-              33 branches across 9 provinces, plus 5 pan-African country points.
+              40+ branches across 9 provinces, plus 5 pan-African country points.
             </p>
           </div>
         </div>

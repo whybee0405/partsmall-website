@@ -71,7 +71,11 @@ export const Branches: CollectionConfig = {
         },
       ],
     },
-    { name: 'email', type: 'email', required: true },
+    {
+      name: 'email',
+      type: 'email',
+      admin: { description: 'Leave blank if this branch has no public email yet.' },
+    },
     {
       name: 'hours',
       type: 'text',

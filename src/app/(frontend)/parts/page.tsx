@@ -5,17 +5,29 @@ import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { CategoryIcon } from '@/components/CategoryIcon'
 import { Reveal } from '@/components/ui/Reveal'
-import { CATEGORIES, PART_TYPES, typesInCategory } from '@/lib/data/catalogue'
-import { MAKES } from '@/lib/data/vehicles'
+import { getAllCategories } from '@/lib/payload/categories'
+import { getAllPartTypes } from '@/lib/payload/partTypes'
+import { getAllMakes } from '@/lib/payload/makes'
 import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Car parts by system',
-  description: `Replacement car parts across ${CATEGORIES.length} systems and ${PART_TYPES.length} part types: Kia, Hyundai, Chevrolet, Ssangyong, Ford, Nissan and Toyota. What each part does, how it fails.`,
-  alternates: { canonical: '/parts' },
+export const dynamic = 'force-dynamic'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [categories, partTypes] = await Promise.all([getAllCategories(), getAllPartTypes()])
+  return {
+    title: 'Car parts by system',
+    description: `Replacement car parts across ${categories.length} systems and ${partTypes.length} part types: Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval. What each part does, how it fails.`,
+    alternates: { canonical: '/parts' },
+  }
 }
 
-export default function PartsPage() {
+export default async function PartsPage() {
+  const [CATEGORIES, PART_TYPES, MAKES] = await Promise.all([
+    getAllCategories(),
+    getAllPartTypes(),
+    getAllMakes(),
+  ])
+
   return (
     <>
       <JsonLd
@@ -42,7 +54,7 @@ export default function PartsPage() {
         <div className="shell">
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORIES.map((c) => {
-              const count = typesInCategory(c.slug).length
+              const count = PART_TYPES.filter((t) => t.category === c.slug).length
               return (
               <li key={c.slug} className="bg-paper ring-1 ring-inset ring-hairline">
                 <Link

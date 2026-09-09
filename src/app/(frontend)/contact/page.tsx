@@ -11,11 +11,11 @@ import {
 import { PageHeader } from '@/components/PageHeader'
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { COMPANY, headOfficeMapUrl } from '@/lib/data/company'
-import { NETWORK } from '@/lib/data/branches'
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: `Contact Parts-Mall Africa head office in Meadowdale, Germiston. For stock checks and fitment, contact your nearest of ${NETWORK.total} network points directly.`,
+  description:
+    'Contact Parts-Mall Africa head office in Meadowdale, Germiston. For stock checks and fitment, contact your nearest of 40+ network points directly.',
   alternates: { canonical: '/contact' },
 }
 

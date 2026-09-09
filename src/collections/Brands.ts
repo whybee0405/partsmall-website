@@ -7,7 +7,7 @@ export const Brands: CollectionConfig = {
     defaultColumns: ['label', 'tier', 'order'],
     group: 'Catalogue',
     description:
-      'The nine private-brand lines plus the OEM option. Upload an official vector mark to replace the typographic plate the site renders by default.',
+      'The eight Parts-Mall brands currently carried. Upload an official vector mark to replace the typographic plate the site renders by default.',
   },
   access: { read: () => true },
   defaultSort: 'order',
