@@ -1,4 +1,7 @@
 import type { CSSProperties } from 'react'
+import type { AdminViewServerProps } from 'payload'
+import { DefaultTemplate } from '@payloadcms/next/templates'
+import { Gutter } from '@payloadcms/ui'
 import { getAllBranches } from '@/lib/payload/branches'
 
 type EventType = 'page_view' | 'page_exit' | 'form_submit' | 'whatsapp_click'
@@ -22,7 +25,24 @@ function Stat({ label, value, change }: { label: string; value: string; change?:
 
 function countBy<T extends string>(rows: Row[], key: (row: Row) => T) { const result = new Map<T, number>(); for (const row of rows) result.set(key(row), (result.get(key(row)) ?? 0) + 1); return [...result.entries()].sort((a, b) => b[1] - a[1]) }
 
-export async function AnalyticsView({ payload, searchParams }: { payload: any; searchParams?: Params }) {
+export async function AnalyticsView({ initPageResult, params, searchParams }: AdminViewServerProps) {
+  const { req, locale, permissions, visibleEntities } = initPageResult
+  const templateProps = {
+    i18n: req.i18n,
+    locale,
+    params,
+    payload: req.payload,
+    permissions,
+    searchParams,
+    user: req.user || undefined,
+    visibleEntities,
+  }
+
+  if (!req.user) {
+    return <DefaultTemplate {...templateProps}><Gutter><div style={{ padding: '24px 0 32px' }}>You must be logged in to view analytics reports.</div></Gutter></DefaultTemplate>
+  }
+
+  const payload = req.payload
   const now = new Date()
   const branches = await getAllBranches()
   const branchName = (slug: string) => branches.find((branch) => branch.slug === slug)?.name ?? slug
@@ -80,7 +100,7 @@ export async function AnalyticsView({ payload, searchParams }: { payload: any; s
   const control: CSSProperties = { padding: '7px 9px', borderRadius: 4, border: '1px solid var(--theme-elevation-150)', background: 'var(--theme-input-bg)', color: 'var(--theme-text)', fontSize: 13 }
   const reportLink: CSSProperties = { ...control, textDecoration: 'none', display: 'inline-block', background: 'var(--theme-elevation-50)' }
 
-  return <div>
+  return <DefaultTemplate {...templateProps}><Gutter><div style={{ padding: '24px 0 32px' }}>
     <h1 style={{ marginBottom: 4 }}>Analytics workspace</h1><p style={{ color: 'var(--theme-elevation-500)', marginTop: 0, marginBottom: 20 }}>Flexible first-party reporting. Visitor identifiers rotate daily and never identify a person across visits.</p>
     <div style={{ border: '1px solid var(--theme-elevation-150)', borderRadius: 6, padding: 16, marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'baseline' }}><strong>Automatic report views</strong><span style={{ color: 'var(--theme-elevation-500)', fontSize: 13 }}>Always recalculated when opened</span></div>
@@ -106,7 +126,7 @@ export async function AnalyticsView({ payload, searchParams }: { payload: any; s
       <section><h2 style={{ fontSize: 17, marginBottom: 10 }}>Traffic sources</h2>{bySource.length ? <DataTable headings={['Source', 'Views']} rows={bySource.map(([source, count]) => [source, count.toLocaleString()])} /> : <Empty />}</section>
     </div>
     <section style={{ marginTop: 28 }}><h2 style={{ fontSize: 17, marginBottom: 10 }}>WhatsApp inquiry mix</h2>{byWhatsAppTopic.length ? <DataTable headings={['Inquiry type', 'Clicks']} rows={byWhatsAppTopic.map(([topic, count]) => [labelFor(topic), count.toLocaleString()])} /> : <Empty message="No WhatsApp inquiry selections in this range." />}</section>
-  </div>
+  </div></Gutter></DefaultTemplate>
 }
 
 function Empty({ message = 'No matching events in this range.' }: { message?: string }) { return <p style={{ color: 'var(--theme-elevation-500)', fontSize: 13 }}>{message}</p> }
