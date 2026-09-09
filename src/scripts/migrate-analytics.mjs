@@ -40,4 +40,14 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS analytics_events_branch_slug_idx ON analytics_events (branch_slug);
 `)
 
+// Payload stores all collections as possible targets for an admin document
+// lock. Existing installations need this relation column added separately
+// because SQLite cannot update that table definition automatically.
+const lockedDocumentColumns = new Set(
+  db.prepare('PRAGMA table_info(payload_locked_documents_rels)').all().map((column) => column.name),
+)
+if (!lockedDocumentColumns.has('analytics_events_id')) {
+  db.exec('ALTER TABLE payload_locked_documents_rels ADD COLUMN analytics_events_id integer REFERENCES analytics_events(id) ON DELETE CASCADE')
+}
+
 db.close()
