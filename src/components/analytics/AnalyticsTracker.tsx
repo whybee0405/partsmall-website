@@ -11,11 +11,16 @@ type AnalyticsEventType = 'page_view' | 'page_exit' | 'form_submit' | 'whatsapp_
 type WhatsAppTopic = 'part_inquiry' | 'distributor_franchise_inquiry' | 'general_inquiry'
 
 function sessionId() {
+  const createId = () => {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID()
+    return `pm-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+  }
+
   try {
     let id = window.sessionStorage.getItem(SESSION_KEY)
-    if (!id) { id = crypto.randomUUID(); window.sessionStorage.setItem(SESSION_KEY, id) }
+    if (!id) { id = createId(); window.sessionStorage.setItem(SESSION_KEY, id) }
     return id
-  } catch { return crypto.randomUUID() }
+  } catch { return createId() }
 }
 
 function eventBody(type: AnalyticsEventType, path: string, duration?: number, whatsapp?: { topic: WhatsAppTopic; branchSlug: string }) {
