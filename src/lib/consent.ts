@@ -29,7 +29,7 @@ export function setConsent(status: ConsentStatus) {
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: status }))
 }
 
-/** True only once the future analytics tool is allowed to run. */
+/** True only once first-party analytics is allowed to run. */
 export function hasAnalyticsConsent() {
   return getConsent() === 'accepted'
 }

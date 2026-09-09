@@ -75,6 +75,7 @@ export interface Config {
     brands: Brand;
     guides: Guide;
     enquiries: Enquiry;
+    'analytics-events': AnalyticsEvent;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -92,6 +93,7 @@ export interface Config {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     guides: GuidesSelect<false> | GuidesSelect<true>;
     enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
+    'analytics-events': AnalyticsEventsSelect<false> | AnalyticsEventsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -559,6 +561,40 @@ export interface Enquiry {
   createdAt: string;
 }
 /**
+ * Anonymous first-party analytics. Use Analytics in the sidebar for the report.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-events".
+ */
+export interface AnalyticsEvent {
+  id: number;
+  type: 'page_view' | 'page_exit' | 'form_submit' | 'whatsapp_click';
+  path: string;
+  /**
+   * Random sessionStorage ID for a single tab visit. Never a cookie.
+   */
+  sessionId?: string | null;
+  /**
+   * Visible seconds before exit, capped at 30 minutes.
+   */
+  duration?: number | null;
+  /**
+   * Origin only. Query strings and referring paths are not collected.
+   */
+  referrer?: string | null;
+  whatsappTopic?: ('part_inquiry' | 'distributor_franchise_inquiry' | 'general_inquiry') | null;
+  /**
+   * head-office, or the branch slug when a branch WhatsApp option was selected.
+   */
+  branchSlug?: string | null;
+  /**
+   * Daily SHA-256 hash of IP, browser and secret. Raw IP is never retained.
+   */
+  visitorHash?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -640,6 +676,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'enquiries';
         value: number | Enquiry;
+      } | null)
+    | ({
+        relationTo: 'analytics-events';
+        value: number | AnalyticsEvent;
       } | null)
     | ({
         relationTo: 'media';
@@ -871,6 +911,22 @@ export interface EnquiriesSelect<T extends boolean = true> {
   part?: T;
   status?: T;
   sourcePath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-events_select".
+ */
+export interface AnalyticsEventsSelect<T extends boolean = true> {
+  type?: T;
+  path?: T;
+  sessionId?: T;
+  duration?: T;
+  referrer?: T;
+  whatsappTopic?: T;
+  branchSlug?: T;
+  visitorHash?: T;
   updatedAt?: T;
   createdAt?: T;
 }

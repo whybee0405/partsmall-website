@@ -7,6 +7,7 @@ import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { ChatWidget } from '@/components/ChatWidget'
 import { CookieBanner } from '@/components/CookieBanner'
 import { MobileStickyCta } from '@/components/MobileStickyCta'
+import { AnalyticsTracker } from '@/components/analytics/AnalyticsTracker'
 import { COMPANY } from '@/lib/data/company'
 import './globals.css'
 
@@ -124,6 +125,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ChatWidget />
         <CookieBanner />
         <MobileStickyCta />
+        <AnalyticsTracker />
       </body>
     </html>
   )

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { CheckCircle, Spinner, WarningCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/Button'
 import { Field, Input, Textarea, Select } from '@/components/ui/Field'
+import { trackEnquiryAnalytics } from '@/components/analytics/AnalyticsTracker'
 
 type EnquiryType = 'wholesale' | 'branch' | 'general' | 'distributor'
 
@@ -87,6 +88,7 @@ export function EnquiryForm({
         }),
       })
       if (!res.ok) throw new Error(String(res.status))
+      trackEnquiryAnalytics()
       setState('done')
       form.reset()
     } catch {

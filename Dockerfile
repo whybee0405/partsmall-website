@@ -69,6 +69,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/data ./data
+COPY --from=builder --chown=nextjs:nodejs /app/src/scripts/migrate-analytics.mjs ./migrate-analytics.mjs
 
 # Uploads land here. Compose mounts a volume over it.
 RUN mkdir -p /app/public/media && chown -R nextjs:nodejs /app/public/media /app/data
@@ -79,4 +80,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=25s --retries=3 \
   CMD curl -fsS http://127.0.0.1:3000/robots.txt || exit 1
 
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "node --experimental-sqlite migrate-analytics.mjs && node server.js"]

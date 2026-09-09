@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin, Info } from '@phosphor-icons/react/dist/ssr'
@@ -163,10 +164,18 @@ export default async function ModelPage({
               {parts.map((p) => {
                 const cat = getCategory(p.category)
                 return (
-                  <li key={p.slug} className="bg-paper ring-1 ring-inset ring-hairline">
+                  <li key={p.slug} className="relative overflow-hidden bg-paper ring-1 ring-inset ring-hairline">
+                    <Image
+                      src={cat?.image ?? '/images/vehicles-bg.webp'}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover opacity-[0.09]"
+                    />
+                    <div className="absolute inset-0 bg-paper/82" aria-hidden="true" />
                     <Link
                       href={`/vehicles/${mk.slug}/${mo.slug}/${p.slug}`}
-                      className="group flex h-full flex-col gap-3 p-5 transition-colors duration-200 hover:bg-card"
+                      className="group relative flex h-full flex-col gap-3 p-5 transition-colors duration-200 hover:bg-card/82"
                     >
                       <div className="flex items-start justify-between gap-3">
                         {cat && (

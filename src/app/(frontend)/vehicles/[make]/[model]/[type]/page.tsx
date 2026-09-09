@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
@@ -280,6 +281,19 @@ export default async function VehiclePartPage({
           </div>
 
           <aside className="lg:sticky lg:top-28 lg:self-start">
+            <figure className="relative mb-5 h-44 overflow-hidden rounded-[var(--radius-base)] border border-hairline bg-navy-900 sm:h-52">
+              <Image
+                src={cat?.image ?? '/images/vehicles-bg.webp'}
+                alt={`Parts-Mall ${pt.label.toLowerCase()} product range.`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 22rem"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-900/72 via-navy-900/12 to-transparent" aria-hidden="true" />
+              <figcaption className="t-label absolute inset-x-4 bottom-3 text-on-navy">
+                {pt.label}
+              </figcaption>
+            </figure>
             <div className="rounded-[var(--radius-base)] border border-hairline bg-card p-6">
               {/* Not a repeat of the H1. A duplicate heading wastes the
                   outline and tells a crawler nothing new. */}

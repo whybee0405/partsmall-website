@@ -21,6 +21,11 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { PartsMallIcon as PartsMallIcon_6da4a679435ce9b009e54f5708b0a336 } from '@/components/admin/PartsMallLogo'
+import { PartsMallLogo as PartsMallLogo_6da4a679435ce9b009e54f5708b0a336 } from '@/components/admin/PartsMallLogo'
+import { AnalyticsNavLink as AnalyticsNavLink_274ba3c2a93de65c0f81308ced6a7e0d } from '@/components/analytics/AnalyticsNavLink'
+import { AnalyticsDashboard as AnalyticsDashboard_fc6850ed6a8bfe9bc78a9786f565674a } from '@/components/analytics/AnalyticsDashboard'
+import { AnalyticsView as AnalyticsView_14b64d09bcaefa82063874452b17985e } from '@/components/analytics/AnalyticsView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -48,5 +53,10 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/admin/PartsMallLogo#PartsMallIcon": PartsMallIcon_6da4a679435ce9b009e54f5708b0a336,
+  "@/components/admin/PartsMallLogo#PartsMallLogo": PartsMallLogo_6da4a679435ce9b009e54f5708b0a336,
+  "@/components/analytics/AnalyticsNavLink#AnalyticsNavLink": AnalyticsNavLink_274ba3c2a93de65c0f81308ced6a7e0d,
+  "@/components/analytics/AnalyticsDashboard#AnalyticsDashboard": AnalyticsDashboard_fc6850ed6a8bfe9bc78a9786f565674a,
+  "@/components/analytics/AnalyticsView#AnalyticsView": AnalyticsView_14b64d09bcaefa82063874452b17985e,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

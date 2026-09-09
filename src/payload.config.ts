@@ -15,6 +15,7 @@ import { Models } from './collections/Models'
 import { Brands } from './collections/Brands'
 import { Guides } from './collections/Guides'
 import { Enquiries } from './collections/Enquiries'
+import { AnalyticsEvents } from './collections/AnalyticsEvents'
 import { SiteSettings } from './globals/SiteSettings'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -22,6 +23,20 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 export default buildConfig({
   admin: {
     user: Users.slug,
+    components: {
+      graphics: {
+        Logo: '@/components/admin/PartsMallLogo#PartsMallLogo',
+        Icon: '@/components/admin/PartsMallLogo#PartsMallIcon',
+      },
+      beforeDashboard: ['@/components/analytics/AnalyticsDashboard#AnalyticsDashboard'],
+      afterNavLinks: ['@/components/analytics/AnalyticsNavLink#AnalyticsNavLink'],
+      views: {
+        analytics: {
+          Component: '@/components/analytics/AnalyticsView#AnalyticsView',
+          path: '/analytics',
+        },
+      },
+    },
     meta: {
       titleSuffix: ' — Parts-Mall Africa',
     },
@@ -36,6 +51,7 @@ export default buildConfig({
     Brands,
     Guides,
     Enquiries,
+    AnalyticsEvents,
     Media,
     Users,
   ],
