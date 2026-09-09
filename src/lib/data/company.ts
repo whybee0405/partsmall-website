@@ -12,7 +12,7 @@ export const COMPANY = {
   headOffice: {
     name: 'Parts-Mall Meadowdale',
     email: 'pma.sales1@parts-mall.com',
-    whatsappPhone: '072 875 8042',
+    whatsappPhone: '076 311 7593',
     address: [
       '50 Herman Street',
       'R24 Business Park, Building G, Unit 1',
