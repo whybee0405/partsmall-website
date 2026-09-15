@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
@@ -16,6 +17,7 @@ import { getCategory } from '@/lib/payload/categories'
 import { modelsWithPartType } from '@/lib/payload/models'
 import { getMake } from '@/lib/payload/makes'
 import { breadcrumbLd, faqLd, JsonLd, metaDescription } from '@/lib/seo'
+import { partTypePhoto } from '@/lib/partPhotography'
 
 export const dynamic = 'force-dynamic'
 
@@ -175,6 +177,16 @@ export default async function PartTypePage({
           </div>
 
           <aside className="lg:sticky lg:top-28 lg:self-start">
+            <div className="mb-6 overflow-hidden rounded-[var(--radius-base)] bg-paper-2 ring-1 ring-inset ring-hairline">
+              <Image
+                src={partTypePhoto(t.slug, cat.slug)}
+                alt={`${t.label} from the Parts-Mall product range.`}
+                width={1200}
+                height={900}
+                sizes="(max-width: 1024px) 100vw, 22rem"
+                className="w-full object-cover"
+              />
+            </div>
             <div className="rounded-[var(--radius-base)] border border-hairline bg-card p-6">
               <Wrench size={22} weight="fill" aria-hidden="true" className="text-signal-deep" />
               <h2 className="t-h3 mt-3 text-ink">Get it confirmed</h2>

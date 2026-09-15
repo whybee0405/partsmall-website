@@ -9,6 +9,7 @@ import { getAllCategories } from '@/lib/payload/categories'
 import { getAllPartTypes } from '@/lib/payload/partTypes'
 import { getAllMakes } from '@/lib/payload/makes'
 import { breadcrumbLd, collectionLd, JsonLd } from '@/lib/seo'
+import { categoryPhoto } from '@/lib/partPhotography'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,23 +47,23 @@ export default async function PartsPage() {
         title="Every system, explained."
         lead={`${CATEGORIES.length} systems and ${PART_TYPES.length} part types. Each page covers what the component does, how it fails, and exactly what the counter needs confirmed before an order goes through.`}
         breadcrumbs={[{ href: '/parts', label: 'Parts' }]}
-        backgroundImage="/images/hero-counter.webp"
-        imageAlt="A counter team member checking a part number at the trade counter."
+        backgroundImage="/images/parts/parts-systems-product-range.webp"
+        imageAlt="Parts-Mall braking, clutch, filter, electrical and cooling components."
       />
 
       <section className="band">
         <div className="shell">
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-px bg-hairline ring-1 ring-hairline sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORIES.map((c) => {
               const count = PART_TYPES.filter((t) => t.category === c.slug).length
               return (
-              <li key={c.slug} className="bg-paper ring-1 ring-inset ring-hairline">
+              <li key={c.slug} className="bg-paper">
                 <Link
                   href={`/parts/${c.slug}`}
                   className="group relative flex h-full flex-col gap-4 overflow-hidden p-6"
                 >
                   <Image
-                    src={c.image}
+                    src={categoryPhoto(c.slug)}
                     alt=""
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

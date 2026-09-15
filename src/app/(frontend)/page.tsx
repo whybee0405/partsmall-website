@@ -562,7 +562,7 @@ export default async function HomePage() {
       {/* ── Blog ──────────────────────────────────────────────────────────
           Editorial row. Written for the person at the car, which is also what
           brings workshop searches in. */}
-      <section className="band-tight bg-paper">
+      {GUIDES.length > 0 && <section className="band-tight bg-paper">
         <div className="shell">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <h2 className="t-h1 max-w-[20ch] text-navy-900">From the parts counter.</h2>
@@ -616,7 +616,7 @@ export default async function HomePage() {
             ))}
           </ul>
         </div>
-      </section>
+      </section>}
 
       {/* ── Closing ───────────────────────────────────────────────────────
           One decision to make, stated plainly. Centered and image-led, a

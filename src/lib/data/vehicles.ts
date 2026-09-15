@@ -153,7 +153,7 @@ const CORE = [
   'oil-filters',
   'air-filters',
   'wheel-bearings',
-  'cv-joints',
+  'control-arms',
   'alternators',
 ]
 
@@ -240,7 +240,7 @@ export const MODELS: Model[] = [
     [...CORE, 'ball-joints', 'bushings', 'steering-columns'],
   ),
   m('sportage', 'kia', 'Sportage', 'SUV',
-    'The Kia Sportage is a compact SUV sold in South Africa in petrol and diesel form, with CV joints and braking among its most requested replacement lines.',
+      'The Kia Sportage is a compact SUV sold in South Africa in petrol and diesel form, with control arms and braking among its most requested replacement lines.',
     [
       { years: '2005 to 2010', engines: '2.0 petrol and 2.0 diesel' },
       { years: '2010 to 2016', engines: '1.6 and 2.0 petrol, 2.0 diesel' },
@@ -248,7 +248,7 @@ export const MODELS: Model[] = [
     ],
     [...CORE, 'ball-joints', 'bushings', 'radiators', 'condensers'],
     'The Sportage runs in both petrol and diesel form across three generations, so confirm the engine as well as the year.',
-    { 'cv-joints': 'Outer CV joints are a common Sportage request. Check the boot condition on both sides while the vehicle is raised.' },
+    { 'control-arms': 'Control arms are a common Sportage request. Check the bushes and ball joints on both sides while the vehicle is raised.' },
   ),
   m('sorento', 'kia', 'Sorento', 'SUV',
     'The Kia Sorento is a larger SUV sold in South Africa mainly in diesel form, with braking, suspension and timing components the most frequent counter requests.',

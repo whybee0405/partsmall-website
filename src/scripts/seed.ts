@@ -165,6 +165,18 @@ async function main() {
     count(result)
   }
 
+  // CV Joints were retired from the suspension and steering range in favour
+  // of Control Arms. Models have been re-synced above, so the former record
+  // can no longer surface in the public catalogue.
+  const retiredCvJoints = await payload.find({
+    collection: 'part-types',
+    where: { slug: { equals: 'cv-joints' } },
+    limit: 1,
+  })
+  if (retiredCvJoints.docs.length) {
+    await payload.delete({ collection: 'part-types', id: retiredCvJoints.docs[0].id })
+  }
+
   console.log('Seeding brands...')
   for (const [i, b] of BRANDS.entries()) {
     const { result } = await upsert(payload, 'brands', b.slug, {

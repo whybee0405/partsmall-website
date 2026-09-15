@@ -21,7 +21,7 @@ export const SECONDARY = [
   { name: 'Cape Town', lat: -33.9249, lng: 18.4241, kind: 'za' },
   { name: 'Durban', lat: -29.8587, lng: 31.0218, kind: 'za' },
   { name: 'Gaborone, Botswana', lat: -24.6581357, lng: 25.9088474, kind: 'panafrica' },
-  { name: 'Matsapha, Eswatini', lat: -26.494482, lng: 31.308351, kind: 'panafrica' },
+  { name: 'Manzini, Eswatini', lat: -26.494482, lng: 31.308351, kind: 'panafrica' },
   { name: 'Maputo, Mozambique', lat: -25.966213, lng: 32.56745, kind: 'panafrica' },
   { name: 'Windhoek, Namibia', lat: -22.5198897, lng: 17.0744236, kind: 'panafrica' },
   { name: 'Harare, Zimbabwe', lat: -17.8614534, lng: 31.0230739, kind: 'panafrica' },

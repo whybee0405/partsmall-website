@@ -463,7 +463,7 @@ export interface Model {
   createdAt: string;
 }
 /**
- * The nine private-brand lines plus the OEM option. Upload an official vector mark to replace the typographic plate the site renders by default.
+ * The eight Parts-Mall brands currently carried. Upload an official vector mark to replace the typographic plate the site renders by default.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "brands".

@@ -1,8 +1,8 @@
 /**
  * The branch directory.
  *
- * 39 branches across 9 South African provinces, plus 5 pan-African country
- * points. 44 network points in total. Re-synced from parts-mall.co.za's own
+ * 38 branches across 9 South African provinces, plus 5 pan-African country
+ * points. 43 network points in total. Re-synced from parts-mall.co.za's own
  * branch directory (the prior data had drifted — addresses, phone numbers,
  * and Brits' province were all stale). Coordinates are real and are what the
  * network map plots; a handful are town-level rather than street-level where
@@ -44,17 +44,15 @@ export const BRANCHES: Branch[] = [
   { slug: 'soweto', name: 'Soweto', province: 'Gauteng', country: 'South Africa', address: '318/73 Chris Hani Road, Soweto', phone: '010 630 0406', email: 'partsmallsoweto@gmail.com', lat: -26.2627829, lng: 27.9662671, hours: TRADE_HOURS },
   { slug: 'wynberg', name: 'Wynberg', province: 'Gauteng', country: 'South Africa', address: '100 Forest Road, Bramley, Johannesburg, 2018', phone: '011 786 0039', email: 'wynberg@partsmall.co.za', lat: -26.1243982, lng: 28.0854143, hours: TRADE_HOURS },
   { slug: 'lenasia', name: 'Lenasia', province: 'Gauteng', country: 'South Africa', address: '19 Rose Ave, C/O 3 Pelikaan Ave, Lenasia, 1831', phone: '011 854 1856', lat: -26.3212287, lng: 27.8320393, hours: TRADE_HOURS },
-  { slug: 'van-der-hoff', name: 'Van der Hoff', province: 'Gauteng', country: 'South Africa', address: '389 Van Der Hoff Rd, Pretoria Gardens, Tshwane, 0081', phone: '012 065 1074', lat: -25.7227778, lng: 28.1488889, hours: TRADE_HOURS },
+  { slug: 'van-der-hoff', name: 'Pretoria Van Der Hoff', province: 'Gauteng', country: 'South Africa', address: '389 Van Der Hoff Rd, Pretoria Gardens, Tshwane, 0081', phone: '012 065 1074', lat: -25.7227778, lng: 28.1488889, hours: TRADE_HOURS },
   { slug: 'vereeniging', name: 'Vereeniging', province: 'Gauteng', country: 'South Africa', address: 'Shop 3, 36 Voortrekker St, Vereeniging, 1930', phone: '011 499 4004', lat: -26.6823837, lng: 27.9299449, hours: TRADE_HOURS },
 
-  // --- Limpopo (6) --------------------------------------------------------------
+  // --- Limpopo (5) --------------------------------------------------------------
   { slug: 'bela-bela', name: 'Bela-Bela', province: 'Limpopo', country: 'South Africa', address: 'Potgieter Street, R101 Business Park, Unit E1A, Bela Bela, 0480', phone: '082 686 3263', email: 'pma.sales1@parts-mall.com', lat: -24.8806014, lng: 28.2904774, hours: TRADE_HOURS },
   { slug: 'burgersfort', name: 'Burgersfort', province: 'Limpopo', country: 'South Africa', address: '5 Eddie Sedibe Street, Burgersfort, 1150', phone: '064 532 9037', email: 'segwata.infinity@gmail.com', lat: -24.673611, lng: 30.328333, hours: TRADE_HOURS },
   { slug: 'polokwane', name: 'Polokwane', province: 'Limpopo', country: 'South Africa', address: '67 Market St, Polokwane Central, Polokwane, 0700', phone: '015 230 0021', email: 'pma.sales1@parts-mall.com', lat: -23.9058333, lng: 29.4613889, hours: TRADE_HOURS },
   { slug: 'thohoyandou', name: 'Thohoyandou', province: 'Limpopo', country: 'South Africa', address: 'Shop No 16, Sibasa Shopping Centre, Sibasa, Thohoyandou, 0970', phone: '064 524 2463', email: 'partsmallthohoyandou@gmail.com', lat: -22.9676429, lng: 30.4596582, hours: TRADE_HOURS },
   { slug: 'tzaneen', name: 'Tzaneen', province: 'Limpopo', country: 'South Africa', address: '3 Skirving Street, Tzaneen', phone: '084 235 2406', email: 'krp.parts1@gmail.com', lat: -23.8311529, lng: 30.1614004, hours: TRADE_HOURS },
-  { slug: 'marble-hall', name: 'Marble Hall', province: 'Limpopo', country: 'South Africa', address: 'Unit 1, 1 Ewoud Malan Street, Cnr N11, Marble Industrial Park, Marble Hall, 0450', phone: '064 519 3232', lat: -24.9739354, lng: 29.2867715, hours: TRADE_HOURS },
-
   // --- Mpumalanga (4) -------------------------------------------------------
   { slug: 'middelburg', name: 'Middelburg', province: 'Mpumalanga', country: 'South Africa', address: '23 Bhimy Damane Street, Middelburg, 1050', phone: '065 668 0053', email: 'partsmallmiddelburg@gmail.com', lat: -25.765014, lng: 29.4593145, hours: TRADE_HOURS },
   { slug: 'nelspruit', name: 'Mbombela, Nelspruit', province: 'Mpumalanga', country: 'South Africa', address: '10 Cameroon Street, Nelspruit', phone: '013 752 2497', email: 'pma.sales1@parts-mall.com', lat: -25.4729094, lng: 30.9772719, hours: TRADE_HOURS },
@@ -88,7 +86,7 @@ export const BRANCHES: Branch[] = [
 
   // --- Pan-Africa (5) -------------------------------------------------------
   { slug: 'botswana', name: 'Gaborone', province: 'Pan-Africa', country: 'Botswana', address: 'Plot 1239, Unit 3, Haile Selassie Road, Gaborone', phone: '+267 75 694 644', email: 'partsjunctionbw@gmail.com', lat: -24.6581357, lng: 25.9088474, hours: TRADE_HOURS },
-  { slug: 'eswatini', name: 'Matsapha', province: 'Pan-Africa', country: 'Eswatini', address: 'Nkoseluhlazi Street, Manzini, M200', phone: '+268 7829 9060', email: 'pma.sales1@parts-mall.com', lat: -26.4976444, lng: 31.3750815, hours: TRADE_HOURS },
+  { slug: 'eswatini', name: 'Manzini', province: 'Pan-Africa', country: 'Eswatini', address: 'Nkoseluhlazi Street, Manzini, M200', phone: '+268 7829 9060', email: 'pma.sales1@parts-mall.com', lat: -26.4976444, lng: 31.3750815, hours: TRADE_HOURS },
   { slug: 'mozambique', name: 'Maputo', province: 'Pan-Africa', country: 'Mozambique', address: 'Avenida Samora Machel Nr. 1206, Matola, Maputo 1102', phone: '+258 84 301 0935', email: 'mozambique@partsmall.co.za', lat: -25.966917, lng: 32.466956, hours: TRADE_HOURS },
   { slug: 'namibia', name: 'Windhoek', province: 'Pan-Africa', country: 'Namibia', address: '133 Sam Nujoma Drive, Windhoek West', phone: '+264 61 303 116', email: 'pma.sales1@parts-mall.com', lat: -22.5700284, lng: 17.0725706, hours: TRADE_HOURS },
   { slug: 'zimbabwe', name: 'Harare', province: 'Pan-Africa', country: 'Zimbabwe', address: '81 Belvedere Road, Fatima House, Belvedere, Harare', phone: '024 2576903', email: 'zimbabwe@partsmall.co.za', lat: -17.8363176, lng: 31.0333081, hours: TRADE_HOURS },

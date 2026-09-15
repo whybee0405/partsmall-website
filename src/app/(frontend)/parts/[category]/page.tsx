@@ -11,8 +11,16 @@ import { getCategory } from '@/lib/payload/categories'
 import { getAllPartTypes } from '@/lib/payload/partTypes'
 import { getAllMakes } from '@/lib/payload/makes'
 import { breadcrumbLd, collectionLd, faqLd, JsonLd, metaDescription } from '@/lib/seo'
+import { categoryPhoto } from '@/lib/partPhotography'
 
 export const dynamic = 'force-dynamic'
+
+// CMS records are alphabetised for editorial convenience. A gasket is shown
+// first in the engine range because it is the requested entry point for that
+// section, ahead of the internal hard parts.
+const PART_TYPE_DISPLAY_PRIORITY: Record<string, number> = {
+  gaskets: -1,
+}
 
 export async function generateMetadata({
   params,
@@ -43,7 +51,9 @@ export default async function CategoryPage({
   ])
   if (!cat) notFound()
 
-  const types = allPartTypes.filter((t) => t.category === cat.slug)
+  const types = allPartTypes
+    .filter((t) => t.category === cat.slug)
+    .sort((a, b) => (PART_TYPE_DISPLAY_PRIORITY[a.slug] ?? 0) - (PART_TYPE_DISPLAY_PRIORITY[b.slug] ?? 0))
 
   return (
     <>
@@ -132,8 +142,8 @@ export default async function CategoryPage({
           <aside className="lg:sticky lg:top-28 lg:self-start">
             <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
               <Image
-                src={cat.image}
-                alt={`${cat.label} components photographed on a steel surface.`}
+                src={categoryPhoto(cat.slug)}
+                alt={`${cat.label} components from the Parts-Mall product range.`}
                 width={1000}
                 height={747}
                 sizes="(max-width: 1024px) 100vw, 22rem"

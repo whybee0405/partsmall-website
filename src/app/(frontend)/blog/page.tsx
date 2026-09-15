@@ -30,13 +30,15 @@ export default async function BlogPage() {
 
       <section className="band">
         <div className="shell">
-          {/* Lead article gets a wide split. The rest run as a grid, so the
-              page has hierarchy instead of nine identical cards. */}
-          <Reveal>
-            <Link
-              href={`/blog/${lead.slug}`}
-              className="group grid gap-8 md:grid-cols-2 md:items-center md:gap-12"
-            >
+          {lead ? (
+            <>
+              {/* Lead article gets a wide split. The rest run as a grid, so the
+                  page has hierarchy instead of nine identical cards. */}
+              <Reveal>
+                <Link
+                  href={`/blog/${lead.slug}`}
+                  className="group grid gap-8 md:grid-cols-2 md:items-center md:gap-12"
+                >
               <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
                 <Image
                   src={lead.image}
@@ -60,13 +62,13 @@ export default async function BlogPage() {
                 </h2>
                 <p className="t-lead mt-4">{lead.excerpt}</p>
               </div>
-            </Link>
-          </Reveal>
+                </Link>
+              </Reveal>
 
-          <ul className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.map((g, i) => (
-              <Reveal as="li" key={g.slug} delay={(i % 3) * 0.07}>
-                <Link href={`/blog/${g.slug}`} className="group block">
+              <ul className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+                {rest.map((g, i) => (
+                  <Reveal as="li" key={g.slug} delay={(i % 3) * 0.07}>
+                    <Link href={`/blog/${g.slug}`} className="group block">
                   <div className="overflow-hidden rounded-[var(--radius-base)] bg-navy-900">
                     <Image
                       src={g.image}
@@ -89,10 +91,16 @@ export default async function BlogPage() {
                   <p className="mt-2 text-[0.9rem] leading-relaxed text-steel">
                     {g.excerpt}
                   </p>
-                </Link>
-              </Reveal>
-            ))}
-          </ul>
+                    </Link>
+                  </Reveal>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p className="t-lead max-w-[48ch] text-ink-soft">
+              New articles are on their way. Please check back soon.
+            </p>
+          )}
         </div>
       </section>
     </>
