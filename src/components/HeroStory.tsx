@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   COUNTRY_PATHS,
   MAP_W,
@@ -51,11 +51,11 @@ function arcPath(x1: number, y1: number, x2: number, y2: number, bend: number) {
 // --- Timeline: one shared clock drives the camera, the pulses and the video
 // beats below. Change a duration here and everything re-syncs. ---
 const BEATS = [
-  { name: 'port', label: 'Port loading — shipped from Korea', dur: 2.4, src: '/videos/story-port.mp4' },
-  { name: 'ship', label: 'Aerial — on route', dur: 5.2, src: '/videos/story-ship.mp4' },
-  { name: 'warehouse', label: 'Warehouse — offloaded in SA', dur: 2.8, src: '/videos/story-warehouse.mp4' },
-  { name: 'truck', label: 'Truck leaving the warehouse', dur: 2.6, src: '/videos/story-truck.mp4' },
-  { name: 'box', label: 'Box handoff at the branch', dur: 2.6, src: '/videos/story-box.mp4' },
+  { name: 'port', label: 'Port loading — shipped from Korea', dur: 2.4 },
+  { name: 'ship', label: 'Aerial — on route', dur: 5.2 },
+  { name: 'warehouse', label: 'Warehouse — offloaded in SA', dur: 2.8 },
+  { name: 'truck', label: 'Truck leaving the warehouse', dur: 2.6 },
+  { name: 'box', label: 'Box handoff at the branch', dur: 2.6 },
 ] as const
 
 let cursor = 0
@@ -321,80 +321,20 @@ function HeroMapSvg({ animated }: { animated: boolean }) {
 }
 
 function StoryVideoLayer() {
-  const videosRef = useRef<(HTMLVideoElement | null)[]>([])
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    // Chained loading: each clip only starts fetching once the previous one
-    // has buffered far enough to play through (or a fallback timer gives up
-    // waiting), so all five never fight for the same bandwidth at once —
-    // that simultaneous fetch was the actual cause of mobile buffering, not
-    // the video layer itself. A stalled or errored clip can't block the
-    // rest of the sequence: the fallback always advances the chain.
-    let cancelled = false
-    const FALLBACK_MS = 4000
-
-    function startNext(i: number) {
-      if (cancelled || i >= videosRef.current.length) return
-      const v = videosRef.current[i]
-      if (!v) return
-      v.play().catch(() => {})
-
-      let advanced = false
-      const timer = setTimeout(() => {
-        advanced = true
-        startNext(i + 1)
-      }, FALLBACK_MS)
-      v.addEventListener(
-        'canplaythrough',
-        () => {
-          if (advanced) return
-          advanced = true
-          clearTimeout(timer)
-          startNext(i + 1)
-        },
-        { once: true },
-      )
-    }
-    startNext(0)
-
-    const start = performance.now()
-    let raf: number
-    const tick = () => {
-      const t = ((performance.now() - start) / 1000) % LOOP
-      videosRef.current.forEach((v, i) => {
-        const b = TIMED_BEATS[i]
-        const on = t >= b.start && t < b.end
-        if (v) v.style.opacity = on ? '0.4' : '0'
-      })
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    setReady(true)
-    return () => {
-      cancelled = true
-      cancelAnimationFrame(raf)
-    }
-  }, [])
-
   return (
     <div className="absolute inset-0 mix-blend-screen" aria-hidden="true">
-      {TIMED_BEATS.map((b, i) => (
-        <video
-          key={b.name}
-          ref={(el) => {
-            videosRef.current[i] = el
-          }}
-          muted
-          loop
-          playsInline
-          preload="none"
-          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500"
-          style={{ opacity: ready ? undefined : 0 }}
-        >
-          <source src={b.src} type="video/mp4" />
-        </video>
-      ))}
+      {/* One composed 15.6-second stream keeps the map and video in lockstep
+          while requiring just one network request and hardware decoder. */}
+      <video
+        muted
+        loop
+        autoPlay
+        playsInline
+        preload="auto"
+        className="absolute inset-0 h-full w-full object-cover opacity-40"
+      >
+        <source src="/videos/story-loop.mp4" type="video/mp4" />
+      </video>
     </div>
   )
 }
