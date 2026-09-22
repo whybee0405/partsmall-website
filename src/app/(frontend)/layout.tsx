@@ -5,8 +5,8 @@ import { Footer } from '@/components/site/Footer'
 import { CustomCursor } from '@/components/CustomCursor'
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { ChatWidget } from '@/components/ChatWidget'
-import { CookieBanner } from '@/components/CookieBanner'
 import { AnalyticsTracker } from '@/components/analytics/AnalyticsTracker'
+import { GoogleAdsTag } from '@/components/analytics/GoogleAdsTag'
 import { COMPANY } from '@/lib/data/company'
 import { getAllBranches } from '@/lib/payload/branches'
 import './globals.css'
@@ -127,8 +127,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <CustomCursor />
         <FloatingWhatsApp branches={branches} />
         <ChatWidget />
-        <CookieBanner />
         <AnalyticsTracker />
+        <GoogleAdsTag />
       </body>
     </html>
   )

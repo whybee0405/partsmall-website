@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { CONSENT_EVENT, hasAnalyticsConsent } from '@/lib/consent'
 
 const SESSION_KEY = 'pm-analytics-session'
 const ENQUIRY_EVENT = 'pm-analytics-enquiry'
@@ -33,20 +32,11 @@ function post(type: AnalyticsEventType, path: string, duration?: number, beacon 
   fetch('/api/analytics-events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {})
 }
 
-/** Consent-gated client tracker. It stores only a tab-lifetime random session ID. */
+/** Client tracker. It stores only a tab-lifetime random session ID. */
 export function AnalyticsTracker() {
   const pathname = usePathname()
-  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
-    const update = () => setEnabled(hasAnalyticsConsent())
-    update()
-    window.addEventListener(CONSENT_EVENT, update)
-    return () => window.removeEventListener(CONSENT_EVENT, update)
-  }, [])
-
-  useEffect(() => {
-    if (!enabled) return
     const loadedAt = Date.now()
     let exited = false
     const exit = () => { if (!exited) { exited = true; post('page_exit', pathname, Math.round((Date.now() - loadedAt) / 1000), true) } }
@@ -62,7 +52,7 @@ export function AnalyticsTracker() {
     window.addEventListener(ENQUIRY_EVENT, onEnquiry)
     window.addEventListener(WHATSAPP_EVENT, onWhatsApp)
     return () => { exit(); document.removeEventListener('visibilitychange', onVisibility); window.removeEventListener('pagehide', exit); window.removeEventListener(ENQUIRY_EVENT, onEnquiry); window.removeEventListener(WHATSAPP_EVENT, onWhatsApp) }
-  }, [enabled, pathname])
+  }, [pathname])
 
   return null
 }

@@ -35,7 +35,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     title: '2. Information we collect',
     body: [
       'Information you give us directly. When you submit an enquiry — general, branch, trade or distributor — we collect your name, email address, phone number, and the message you send us. Depending on the enquiry type, we may also collect your business name, your province or country, and a general indication of your monthly spend. We do not ask for or store payment card details, ID numbers or passwords anywhere on this site.',
-      'Information collected automatically. We use a first-party analytics tool, built and hosted by us rather than a third-party advertising network, to understand how the site is used. This can include the pages you visit, the page that referred you here, general device and browser information, and an approximate location derived from your IP address. See Section 6 (Cookies) for how this is gated by your consent choice.',
+      'Information collected automatically. We use a first-party analytics tool, built and hosted by us rather than a third-party advertising network, to understand how the site is used. This can include the pages you visit, the page that referred you here, general device and browser information, and an approximate location derived from your IP address. We also use Google Ads to measure whether an advert led to an enquiry, using a cookie set by Google when you arrive from one of our ads. See Section 7 (Cookies) for detail on both.',
       'Information from WhatsApp and phone calls. If you contact a branch or head office by WhatsApp or phone, that conversation is subject to WhatsApp\'s (Meta\'s) own privacy policy once it leaves this site. Where a branch keeps a record of that conversation for stock or fitment follow-up, that record is handled under this policy in the same way as a web enquiry.',
     ],
   },
@@ -51,7 +51,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: 'legal-basis',
     title: '4. Our basis for processing',
     body: [
-      'We process your information on one or more of the following bases recognised by POPIA: your consent (for example, when you choose to submit an enquiry, or accept analytics cookies); the steps necessary to respond to your enquiry or pursue a trade relationship you have initiated; our legitimate business interests in operating and improving a wholesale parts distribution business, balanced against your rights; and compliance with our legal obligations.',
+      'We process your information on one or more of the following bases recognised by POPIA: your consent, when you choose to submit an enquiry; the steps necessary to respond to your enquiry or pursue a trade relationship you have initiated; our legitimate business interests in operating and improving a wholesale parts distribution business — including measuring site usage and whether our advertising is working — balanced against your rights; and compliance with our legal obligations.',
     ],
   },
   {
@@ -74,10 +74,10 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: 'cookies',
     title: '7. Cookies and similar technology',
     body: [
-      'This site does not currently use third-party advertising or tracking cookies. We use two categories of storage on your device:',
-      'Strictly necessary: a single cookie or local storage entry that remembers your cookie preference (accepted or rejected), so we don\'t ask you again on every visit. This is set regardless of your choice, because it is what makes your choice persist.',
-      'Analytics (optional): once you accept, our first-party analytics tool may set a cookie or local storage entry to distinguish visits and measure site usage, as described in Section 2. If you reject or have not yet chosen, this does not run.',
-      'You can change your choice at any time using the "Cookie preferences" link in the site footer, which reopens the consent banner.',
+      'We use two categories of storage on your device, both running by default rather than behind an opt-in prompt:',
+      'First-party analytics: our own analytics tool, described in Section 2, sets a cookie or local storage entry to distinguish visits and measure site usage. This data stays with us and is never sold or shared with an advertising network.',
+      'Google Ads: when you arrive from one of our Google adverts and later message us on WhatsApp, Google sets a cookie so we can measure whether that advert led to an enquiry. This is governed by Google\'s own privacy policy at policies.google.com/privacy. We do not use Google Analytics on this site.',
+      'You can block or delete cookies at any time through your browser settings. Doing so will not stop you using the site, though our analytics and ad measurement will not register that visit.',
     ],
   },
   {

@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ArrowUpRight, EnvelopeSimple, NavigationArrow } from '@phosphor-icons/react/dist/ssr'
 import { Wordmark } from '@/components/ui/Wordmark'
-import { CookiePreferencesButton } from '@/components/CookiePreferencesButton'
 import { COMPANY, headOfficeMapUrl } from '@/lib/data/company'
 import { getNetworkStats } from '@/lib/payload/branches'
 import type { Make } from '@/lib/data/vehicles'
@@ -177,7 +176,6 @@ export async function Footer() {
             >
               Terms of Service
             </Link>
-          <CookiePreferencesButton className={footerTextLink} />
           </nav>
           <p className="t-data text-[0.78rem]">
             40+ branches / {network.provinces} provinces /{' '}
