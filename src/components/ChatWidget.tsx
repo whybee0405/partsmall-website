@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { ChatCircleDots, X, PaperPlaneRight, Phone, WhatsappLogo, NavigationArrow } from '@phosphor-icons/react'
-import { telHref, mapsHref, whatsappNumber, type Branch } from '@/lib/data/branches'
+import { branchWhatsappNumber, telHref, mapsHref, type Branch } from '@/lib/data/branches'
 
 type Message = {
   role: 'user' | 'assistant'
@@ -171,7 +171,7 @@ export function ChatWidget() {
                               <Phone size={14} weight="fill" aria-hidden="true" />
                             </a>
                             <a
-                              href={`https://wa.me/${whatsappNumber(b.phone)}`}
+                              href={`https://wa.me/${branchWhatsappNumber(b)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               aria-label={`WhatsApp ${b.name}`}

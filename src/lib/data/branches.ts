@@ -163,6 +163,14 @@ export function whatsappNumber(phone: string) {
   return digits.startsWith('0') ? `27${digits.slice(1)}` : digits
 }
 
+/**
+ * Returns the branch's dedicated WhatsApp number when the CMS has one, or its
+ * regular phone number otherwise. Whitespace-only CMS values count as blank.
+ */
+export function branchWhatsappNumber(branch: Pick<Branch, 'phone' | 'whatsapp'>) {
+  return whatsappNumber(branch.whatsapp?.trim() || branch.phone)
+}
+
 export function telHref(phone: string) {
   return `tel:+${whatsappNumber(phone)}`
 }

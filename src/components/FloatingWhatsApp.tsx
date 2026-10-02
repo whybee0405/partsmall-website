@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Buildings, CaretDown, Package, Question, WhatsappLogo } from '@phosphor-icons/react'
-import { whatsappNumber, type Branch } from '@/lib/data/branches'
+import { branchWhatsappNumber, whatsappNumber, type Branch } from '@/lib/data/branches'
 import { COMPANY } from '@/lib/data/company'
 import { trackWhatsAppAnalytics } from '@/components/analytics/AnalyticsTracker'
 
@@ -26,7 +26,9 @@ export function FloatingWhatsApp({ branches }: { branches: Branch[] }) {
   const branch = branchSlug ? branches.find((item) => item.slug === branchSlug) : undefined
   const destination = branch?.slug ?? 'head-office'
   const destinationLabel = branch ? `${branch.name} branch` : 'head office'
-  const number = whatsappNumber(branch?.phone ?? COMPANY.headOffice.whatsappPhone)
+  const number = branch
+    ? branchWhatsappNumber(branch)
+    : whatsappNumber(COMPANY.headOffice.whatsappPhone)
 
   useEffect(() => {
     if (!open) return

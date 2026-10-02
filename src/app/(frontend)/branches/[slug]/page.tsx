@@ -13,7 +13,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { EnquiryForm } from '@/components/EnquiryForm'
-import { distanceKm, mapsHref, telHref, whatsappNumber } from '@/lib/data/branches'
+import { branchWhatsappNumber, distanceKm, mapsHref, telHref, whatsappNumber } from '@/lib/data/branches'
 import { getBranch, getAllBranches } from '@/lib/payload/branches'
 
 export const dynamic = 'force-dynamic'
@@ -103,7 +103,7 @@ export default async function BranchPage({
             <span className="t-data">{branch.phone}</span>
           </a>
           <a
-            href={`https://wa.me/${whatsappNumber(branch.phone)}`}
+            href={`https://wa.me/${branchWhatsappNumber(branch)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex h-12 items-center gap-2.5 rounded-[var(--radius-base)] border border-hairline-strong bg-card px-5 font-semibold text-ink transition-colors hover:border-ink"

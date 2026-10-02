@@ -13,9 +13,9 @@ import {
 } from '@phosphor-icons/react'
 import {
   PROVINCE_ORDER,
+  branchWhatsappNumber,
   mapsHref,
   telHref,
-  whatsappNumber,
   searchBranches,
   type Branch,
 } from '@/lib/data/branches'
@@ -217,7 +217,7 @@ export function BranchFinder({
                   <span className="t-data">{b.phone}</span>
                 </a>
                 <a
-                  href={`https://wa.me/${whatsappNumber(b.phone)}`}
+                  href={`https://wa.me/${branchWhatsappNumber(b)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Message the ${b.name} branch on WhatsApp`}
