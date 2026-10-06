@@ -7,6 +7,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
 import { COMPANY } from '@/lib/data/company'
+import { JsonLd, SITE_URL, breadcrumbLd, metaDescription } from '@/lib/seo'
 import { getAllGuides, getGuide } from '@/lib/payload/guides'
 
 export const dynamic = 'force-dynamic'
@@ -24,15 +25,17 @@ export async function generateMetadata({
   // several of these headlines past the 60-character budget.
   return {
     title: { absolute: guide.title },
-    description: guide.excerpt,
+    description: metaDescription(guide.excerpt),
     alternates: { canonical: `/blog/${guide.slug}` },
     openGraph: {
       type: 'article',
       title: guide.title,
-      description: guide.excerpt,
+      description: metaDescription(guide.excerpt),
+      url: `/blog/${guide.slug}`,
       publishedTime: guide.date,
-      images: [{ url: guide.image }],
+      images: guide.image ? [{ url: guide.image, alt: guide.imageAlt }] : undefined,
     },
+    twitter: { card: 'summary_large_image', title: guide.title },
   }
 }
 
@@ -47,22 +50,32 @@ export default async function BlogPostPage({
 
   const more = allGuides.filter((g) => g.slug !== guide.slug).slice(0, 2)
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: guide.title,
-    description: guide.excerpt,
-    datePublished: guide.date,
-    author: { '@type': 'Organization', name: COMPANY.name },
-    publisher: { '@type': 'Organization', name: COMPANY.name },
-  }
+  const url = `${SITE_URL}/blog/${guide.slug}`
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: guide.title,
+      description: guide.excerpt,
+      datePublished: guide.date,
+      dateModified: guide.date,
+      inLanguage: 'en-ZA',
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      image: guide.image
+        ? [guide.image.startsWith('http') ? guide.image : `${SITE_URL}${guide.image}`]
+        : undefined,
+      author: { '@type': 'Organization', name: COMPANY.name, url: SITE_URL },
+      publisher: { '@type': 'Organization', name: COMPANY.name, url: SITE_URL },
+    },
+    breadcrumbLd([
+      { name: 'Blog', path: '/blog' },
+      { name: guide.title, path: `/blog/${guide.slug}` },
+    ]),
+  ]
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <PageHeader
         title={guide.title}

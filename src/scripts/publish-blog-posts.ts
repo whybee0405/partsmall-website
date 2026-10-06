@@ -5,7 +5,8 @@
  * client provides approved content"), so this writes straight into Payload
  * via the local API, the same way backfill-media.ts does for images.
  *
- * Run with: npx tsx src/scripts/publish-blog-posts.ts
+ * Run with: npx tsx src/scripts/publish-blog-posts.ts [slug ...]
+ * Posts dated in the future are skipped until that date (FORCE=1 overrides).
  * Requires DATABASE_URI and a working staticDir ('public/media' relative to
  * cwd) pointed at wherever the target Payload instance actually stores data.
  */
@@ -156,6 +157,9 @@ const SRC = {
 const POST1_SLUG = 'south-africas-auto-parts-market-by-the-numbers'
 const POST2_SLUG = 'fitment-checklist-right-replacement-part-first-time'
 const POST3_SLUG = 'how-to-avoid-counterfeit-car-parts-south-africa'
+const POST4_SLUG = 'kia-hyundai-spare-parts-south-africa'
+const POST5_SLUG = 'car-noises-explained-brakes-suspension-wheel-bearings'
+const POST6_SLUG = 'timing-chain-rattle-cold-start-causes-replacement'
 
 // ---------------------------------------------------------------------------
 // Post 1: stats + wholesale backlinks
@@ -317,7 +321,17 @@ const post2: Block[] = [
       { text: " before you fit anything you're unsure of." },
     ],
   },
+  {
+    p: [
+      { text: 'Working out which part is actually failing comes before ordering. Our guide to ' },
+      { text: 'car noises and the parts behind them', link: `/blog/${POST5_SLUG}` },
+      { text: ' covers brakes, suspension and wheel bearings. Ordering for a Korean-made car? See ' },
+      { text: 'where to buy Kia and Hyundai spare parts in South Africa', link: `/blog/${POST4_SLUG}` },
+      { text: '.' },
+    ],
+  },
 ]
+
 
 // ---------------------------------------------------------------------------
 // Post 3: counterfeit parts
@@ -379,6 +393,393 @@ const post3: Block[] = [
       { text: ' sources and moves stock at volume.' },
     ],
   },
+  {
+    p: [
+      { text: 'Buying for a Kia or Hyundai? Our guide to ' },
+      { text: 'Kia and Hyundai spare parts in South Africa', link: `/blog/${POST4_SLUG}` },
+      { text: ' covers the models and parts branches are asked for most. For a timing-related job, read ' },
+      { text: 'timing chain rattle on cold start', link: `/blog/${POST6_SLUG}` },
+      { text: ' first.' },
+    ],
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Post 4: Kia and Hyundai spare parts (brand + model search terms)
+// ---------------------------------------------------------------------------
+const post4: Block[] = [
+  {
+    p: [
+      { text: "If you're looking for Kia or Hyundai spare parts in South Africa, finding a part is rarely the hard bit. Finding the right one for your exact car, from a supplier who actually has it on the shelf, is where the time goes. Kia and Hyundai have sold in large numbers here, from the Picanto and i10 up to the Tucson, K2700 and H100, and the workshops that service them get asked for the same few dozen parts again and again. This guide covers which models and parts are in highest demand, how to avoid ordering the wrong version, and how to order through a Parts-Mall branch." },
+    ],
+  },
+  { h: 2, text: 'Why Kia and Hyundai parts are easier to source than most brands' },
+  {
+    p: [
+      { text: "The two makes share a great deal of engineering, which works in the buyer's favour. Parts availability across Kia and Hyundai is deeper than for most badges in this market, because the same supply chain feeds both. Parts-Mall started in South Korea in 1998, and the South African network was built around Korean applications from the start. Kia is the highest-volume make across our branches, and branches carry deeper stock on Kia service lines than on almost anything else." },
+    ],
+  },
+  { h: 2, text: 'The Kia and Hyundai models workshops order parts for most' },
+  {
+    ul: [
+      [{ text: 'Kia Rio and Picanto. ', bold: true }, { text: 'These dominate counter volume on braking and routine service items. Start at the ' }, { text: 'Kia Rio parts page', link: '/vehicles/kia/rio' }, { text: ' or the ' }, { text: 'Kia Picanto parts page', link: '/vehicles/kia/picanto' }, { text: '.' }],
+      [{ text: 'Hyundai i10, i20 and Accent. ', bold: true }, { text: 'Everyday small cars with steady demand for pads, filters, bearings and suspension parts. See the ' }, { text: 'Hyundai i10', link: '/vehicles/hyundai/i10' }, { text: ' and ' }, { text: 'Hyundai Accent', link: '/vehicles/hyundai/accent' }, { text: ' pages.' }],
+      [{ text: 'Kia Sportage and Hyundai Tucson. ', bold: true }, { text: 'Higher-mileage SUVs where wheel bearings, control arms and brake parts come up as the odometer climbs. Browse the ' }, { text: 'Kia Sportage', link: '/vehicles/kia/sportage' }, { text: ' and ' }, { text: 'Hyundai Tucson', link: '/vehicles/hyundai/tucson' }, { text: '.' }],
+      [{ text: 'Kia K2700 and Hyundai H100. ', bold: true }, { text: 'Working vehicles. Their owners lose money when the vehicle stands, so clutch, brake and suspension lines are stocked accordingly. See the ' }, { text: 'K2700', link: '/vehicles/kia/k2700' }, { text: ' and ' }, { text: 'H100', link: '/vehicles/hyundai/h100' }, { text: ' pages.' }],
+    ],
+  },
+  {
+    p: [
+      { text: 'Older and discontinued models are covered too, including the Kia Pride and Sephia and the Hyundai Getz. The full model lists are on the ' },
+      { text: 'Kia', link: '/vehicles/kia' },
+      { text: ' and ' },
+      { text: 'Hyundai', link: '/vehicles/hyundai' },
+      { text: ' pages.' },
+    ],
+  },
+  { h: 2, text: 'Which Kia and Hyundai parts get ordered most' },
+  {
+    p: [
+      { text: 'On passenger cars, the usual list is ' },
+      { text: 'brake pads', link: '/parts/braking/brake-pads' },
+      { text: ', ' },
+      { text: 'brake discs', link: '/parts/braking/discs-rotors' },
+      { text: ', ' },
+      { text: 'oil filters', link: '/parts/filters/oil-filters' },
+      { text: ' and air filters, ' },
+      { text: 'wheel bearings', link: '/parts/bearings/wheel-bearings' },
+      { text: ', ' },
+      { text: 'control arms', link: '/parts/suspension-steering/control-arms' },
+      { text: ' and alternators. On the light commercials, it shifts towards ' },
+      { text: 'clutch kits', link: '/parts/transmission-clutch/clutch-kits' },
+      { text: ', clutch release bearings, brake shoes, fuel filters and radiators. If your part is not on that list, the branch can still check it. The site shows what branches are asked for most, not the limit of what the network can supply.' },
+    ],
+  },
+  { h: 2, text: 'Same badge, different part: why the VIN matters' },
+  {
+    p: [
+      { text: 'A Kia Rio or a Hyundai i20 is not one car. Each name spans several generations, and within a generation the same model can leave the factory with different suppliers for a single component. Pad shape follows the brake calliper rather than the badge, for example. Before you order, have the VIN, the engine code and, if you still have the old part, a photo of it. Our ' },
+      { text: 'fitment checklist for South African workshops', link: `/blog/${POST2_SLUG}` },
+      { text: ' walks through the order to check things in.' },
+    ],
+  },
+  { h: 2, text: 'Branded, genuine or copy: what a branch will offer' },
+  {
+    p: [
+      { text: "Parts-Mall doesn't supply one brand only. Branches carry private-brand lines alongside OEM and genuine options where the application calls for them. PMC is the flagship line for fast-moving replacement parts, CAR-DEX covers suspension for Korean applications, A-GIST covers filters, Wingster covers friction and braking, and Mando supplies Korean OEM parts. The private-brand lines are certified to ISO 9001 and TS 16949, the same quality standard used in original equipment production, and the supplying branch confirms warranty terms in writing at dispatch. Because Kia and Hyundai parts are among the most copied in the aftermarket, read our guide on " },
+      { text: 'how to avoid counterfeit car parts', link: `/blog/${POST3_SLUG}` },
+      { text: ' before you buy from anyone you cannot trace.' },
+    ],
+  },
+  { h: 2, text: 'How to order Kia or Hyundai spares from a Parts-Mall branch' },
+  {
+    ul: [
+      [{ text: 'Find your nearest branch. We have 33 branches across all nine South African provinces. Use the ' }, { text: 'branch finder', link: '/branches' }, { text: ' to search by town or sort by distance.' }],
+      [{ text: 'Lead with the vehicle: make, model, year, then the engine code or capacity, then the part described the way it appears on the car.' }],
+      [{ text: 'Send a photo of the old part on WhatsApp if you have it. A part number off the old part narrows the search fastest, even if it is worn.' }],
+      [{ text: 'Ask for stock, price and lead time in the same message, and get the warranty confirmed on the invoice.' }],
+    ],
+  },
+  {
+    p: [
+      { text: 'Parts-Mall Africa is a wholesale branch network, not a webshop, so stock checks and quotes run through your branch rather than a checkout.' },
+    ],
+  },
+  { h: 2, text: 'Kia and Hyundai spare parts: common questions' },
+  { h: 3, text: 'Where can I buy Kia spare parts near me?' },
+  {
+    p: [
+      { text: 'Search the ' },
+      { text: 'Parts-Mall branch finder', link: '/branches' },
+      { text: ' by town, province or your current location. Each branch page has a call button, a WhatsApp button and directions, and the counter team can confirm stock while you are on the line.' },
+    ],
+  },
+  { h: 3, text: 'Do Kia and Hyundai share spare parts?' },
+  {
+    p: [
+      { text: 'Some components overlap between related Kia and Hyundai models because of shared engineering, which helps availability. Overlap is never a reason to skip the fitment check, so confirm any part against your VIN and engine code before ordering.' },
+    ],
+  },
+  { h: 3, text: 'Can I order Kia or Hyundai parts online?' },
+  {
+    p: [
+      { text: 'Not through a checkout. Parts-Mall Africa supplies through its branches and agents, so you call or WhatsApp the branch with your vehicle details and they confirm stock and supply.' },
+    ],
+  },
+  { h: 3, text: 'Do you stock parts for older Kia and Hyundai models?' },
+  {
+    p: [
+      { text: "Many, yes. The site lists older models such as the Kia Pride, Sephia and Spectra and the Hyundai Getz. If your vehicle is not listed, call the nearest branch with the make, model and year and they will confirm what is available." },
+    ],
+  },
+  { h: 3, text: 'Do workshops get trade pricing?' },
+  {
+    p: [
+      { text: 'Standard trade pricing for individual workshops is handled at branch level, so speak to your nearest branch directly. If you resell or distribute at volume, look at the ' },
+      { text: 'distributor and franchise route', link: '/wholesale' },
+      { text: '.' },
+    ],
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Post 5: symptom-led diagnosis (brakes, suspension, wheel bearings)
+// ---------------------------------------------------------------------------
+const post5: Block[] = [
+  {
+    p: [
+      { text: "A grinding noise when you brake, a clunk over speed bumps, a hum that rises and falls with speed. Cars usually announce a worn part well before it fails, and the sound is often the best clue to which part it is. This guide covers the noises workshops and owners ask about most, what each usually points to, and which part to check first. It is general guidance. A proper inspection on a lift is what confirms the diagnosis, and anything involving brakes or steering should not be left waiting." },
+    ],
+  },
+  { h: 2, text: 'Brake noises and what they mean' },
+  { h: 3, text: 'A high-pitched squeal when braking' },
+  {
+    p: [
+      { text: 'Most brake pads carry a small metal wear indicator that touches the disc and squeals when the friction material is getting thin. Squealing can also come from glazed pads or from dust and moisture, especially first thing in the morning. If it is constant, have the pads measured. A typical rule is to replace them once the friction material reaches about 3mm, or sooner if the wear sensor light comes on.' },
+    ],
+  },
+  { h: 3, text: 'A grinding or scraping noise when braking' },
+  {
+    p: [
+      { text: 'Grinding usually means the pad material is gone and the metal backing plate is cutting into the disc. Stop driving it if you can. The longer it continues, the more it costs, because the disc is being destroyed as well. Replace pads and check the discs against their stamped minimum thickness. If a disc is below minimum, scored, or has a lip on the outer edge, replace discs in axle pairs. See ' },
+      { text: 'brake pads', link: '/parts/braking/brake-pads' },
+      { text: ' and ' },
+      { text: 'brake discs', link: '/parts/braking/discs-rotors' },
+      { text: '.' },
+    ],
+  },
+  { h: 3, text: 'A pulsing pedal or a shaking steering wheel under braking' },
+  {
+    p: [
+      { text: "That's typically a disc with uneven thickness or surface, felt through the pedal or the steering wheel. Discs are normally the first thing to check, and a worn wheel bearing or loose suspension joint can add to the shake." },
+    ],
+  },
+  { h: 3, text: 'The car pulls to one side when braking' },
+  {
+    p: [
+      { text: 'A sticking ' },
+      { text: 'brake calliper', link: '/parts/braking/callipers' },
+      { text: ' or uneven pad wear on one side is the usual cause. Pad shape follows the calliper, so note which calliper your car has before ordering pads.' },
+    ],
+  },
+  { h: 3, text: 'A soft or sinking brake pedal' },
+  {
+    p: [
+      { text: 'This one is not a wait-and-see item. A pedal that feels spongy or slowly sinks points to a hydraulic problem such as a leak or air in the system. Get the car inspected the same day and avoid driving it in the meantime.' },
+    ],
+  },
+  { h: 2, text: 'Clunks and knocks from the suspension' },
+  {
+    p: [
+      { text: 'South African road surfaces are hard on suspension, and branches in regions with poorer roads carry deeper stock on bushes, ball joints and shock mountings for exactly that reason. The pattern of the noise tells you where to start.' },
+    ],
+  },
+  {
+    ul: [
+      [{ text: 'A dull clunk over speed bumps and potholes. ', bold: true }, { text: 'Start with ' }, { text: 'stabiliser links', link: '/parts/suspension-steering/stabilizer-links' }, { text: ' and ' }, { text: 'bushings', link: '/parts/suspension-steering/bushings' }, { text: ', which are among the most common and least expensive causes. Then check ' }, { text: 'ball joints', link: '/parts/suspension-steering/ball-joints' }, { text: ' and ' }, { text: 'control arms', link: '/parts/suspension-steering/control-arms' }, { text: '.' }],
+      [{ text: 'A knock when turning at low speed. ', bold: true }, { text: 'Suspect ball joints or ' }, { text: 'tie rod ends', link: '/parts/suspension-steering/tie-rod-ends' }, { text: '.' }],
+      [{ text: 'Vague or wandering steering and uneven tyre wear. ', bold: true }, { text: 'Worn tie rod ends or rack ends, or an alignment that has drifted because a joint has worn.' }],
+    ],
+  },
+  {
+    p: [
+      { text: 'A simple check on a lifted wheel is to grip it at the top and bottom and rock it, then at the sides. Movement points to a worn ball joint, a wheel bearing or a tie rod end. Treat a worn ball joint seriously. If one separates, the wheel can collapse, so it is not a part to drive on for months.' },
+    ],
+  },
+  { h: 2, text: 'A humming or growling noise that changes with speed' },
+  {
+    p: [
+      { text: 'A ' },
+      { text: 'wheel bearing', link: '/parts/bearings/wheel-bearings' },
+      { text: ' that is wearing usually produces a hum or growl that gets louder with speed. It often changes when you steer, because turning shifts the load onto one side. If the noise is loudest when you swing the wheel one way, the bearing on the opposite side is the one to check. Worn or cupped tyres can sound very similar, so rotate or inspect the tyres before you condemn the bearing. Some vehicles use a complete ' },
+      { text: 'hub bearing assembly', link: '/parts/bearings/hub-bearings' },
+      { text: ' rather than a separate bearing, and the branch will confirm which yours takes.' },
+    ],
+  },
+  { h: 2, text: 'A squeal from the front of the engine' },
+  {
+    p: [
+      { text: 'A squeal on start-up or when you turn the steering to full lock is commonly a loose or worn ' },
+      { text: 'drive belt', link: '/parts/belts-chains/chain-belts' },
+      { text: '. If the battery light comes on with it, check the belt and the ' },
+      { text: 'alternator', link: '/parts/electrical-sensors/alternators' },
+      { text: ' it drives. Do not ignore it. On many engines the same belt drives the water pump, and when it goes you lose charging, power steering and possibly cooling.' },
+    ],
+  },
+  { h: 2, text: 'The wear items that never make a noise' },
+  {
+    p: [
+      { text: 'Filters give little warning. Replace the ' },
+      { text: 'oil filter', link: '/parts/filters/oil-filters' },
+      { text: ' with every oil change, following your service book and shortening the interval for dusty roads, short trips and heavy loads. A clogged air filter costs power and fuel, a blocked cabin filter means weak airflow and a musty smell, and a restricted fuel filter shows up as hesitation under load. Browse the ' },
+      { text: 'filters range', link: '/parts/filters' },
+      { text: '.' },
+    ],
+  },
+  { h: 2, text: 'When to stop driving' },
+  {
+    ul: [
+      [{ text: 'Grinding brakes, or a pedal that is soft or sinking.' }],
+      [{ text: 'A clunk combined with loose, vague steering.' }],
+      [{ text: 'Any wobble or shake that gets worse with speed, or a wheel that moves when rocked.' }],
+      [{ text: 'A battery light with a squealing or missing belt.' }],
+    ],
+  },
+  { h: 2, text: 'What to tell the counter when you order' },
+  {
+    p: [
+      { text: 'Say which wheel or axle, when the noise happens (braking, turning, over bumps, at speed) and give the VIN and engine code. Brakes and suspension parts are normally replaced in axle pairs, so ask for both sides. A photo of the old part on WhatsApp usually settles fitment in one message. For the full ordering routine, use our ' },
+      { text: 'fitment checklist', link: `/blog/${POST2_SLUG}` },
+      { text: ', then ' },
+      { text: 'find your nearest branch', link: '/branches' },
+      { text: '.' },
+    ],
+  },
+  { h: 2, text: 'Common questions about car noises and worn parts' },
+  { h: 3, text: 'Why are my brakes still squealing after new pads?' },
+  {
+    p: [
+      { text: 'New pads sometimes squeal while they bed in, and noise can also come from a glazed disc, missing anti-squeal hardware or pads fitted to a disc that was not checked. If it continues after a few days of normal driving, take the car back to the workshop that fitted them.' },
+    ],
+  },
+  { h: 3, text: 'How long do brake pads last?' },
+  {
+    p: [
+      { text: 'There is no fixed interval. Front pads on a car used mostly in town typically last 30,000 to 50,000 km, but towing, hills and heavy loads shorten that considerably. Measure them rather than waiting for a noise.' },
+    ],
+  },
+  { h: 3, text: 'Is a humming noise always a wheel bearing?' },
+  {
+    p: [
+      { text: 'No. Uneven tyre wear and some tyre tread patterns produce a similar hum. Check the tyres first, then lift the car and test the wheel for play and roughness.' },
+    ],
+  },
+  { h: 3, text: 'Can I drive with a clunking suspension?' },
+  {
+    p: [
+      { text: 'Sometimes a clunk is only a worn stabiliser link or bush, but you cannot tell from the driver seat. Have it inspected soon, because a worn ball joint or control arm is a safety fault.' },
+    ],
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Post 6: timing chain rattle, replacement, belt vs chain
+// ---------------------------------------------------------------------------
+const post6: Block[] = [
+  {
+    p: [
+      { text: "A rattle from the front of the engine for a second or two after a cold start is easy to dismiss because it goes away. It is also the classic sign of a worn timing chain system, and on many engines the repair is far cheaper before the chain fails than after. This guide covers what timing chain rattle means, what causes a timing chain to stretch, which parts to replace with it, and how a timing chain differs from a timing belt." },
+    ],
+  },
+  { h: 2, text: 'What the timing chain does' },
+  {
+    p: [
+      { text: 'The timing chain links the crankshaft to the camshafts so the valves open and close in the correct relationship to piston position. It runs in engine oil and is held at the right tension by a hydraulic tensioner, while guides control its path. If the timing drifts or the chain skips, valves can meet pistons.' },
+    ],
+  },
+  { h: 2, text: 'Timing chain rattle on cold start: why it happens' },
+  {
+    p: [
+      { text: 'The hydraulic tensioner relies on oil pressure to take up slack. For a moment after a cold start, before oil pressure fills it, a stretched chain or worn guide is loose enough to rattle against the cover. Once pressure builds, the noise quietens, which is exactly why it gets ignored. A rattle that returns on sudden throttle changes points the same way.' },
+    ],
+  },
+  { h: 2, text: 'Other signs of a stretched timing chain' },
+  {
+    ul: [
+      [{ text: 'A rattle from the timing cover that fades as oil pressure builds.' }],
+      [{ text: 'Camshaft and crankshaft correlation fault codes, with the check engine light on.' }],
+      [{ text: 'Rough running, misfire or a loss of power.' }],
+      [{ text: 'A rattle that comes back under sudden throttle changes.' }],
+    ],
+  },
+  {
+    p: [
+      { text: 'A fault code alone does not prove the chain is at fault. It identifies the circuit reporting the problem, so a workshop will check the sensors and wiring as well before condemning the chain.' },
+    ],
+  },
+  { h: 2, text: 'Why you should not just monitor it' },
+  {
+    p: [
+      { text: 'On an interference engine, a failed timing component does not leave you stranded. It destroys the engine, because the valves meet the pistons and the repair becomes a rebuild. Timing chains were once considered lifetime parts, but on many modern engines chain stretch, worn guides and failing tensioners are common at higher mileage. A cold-start rattle is worth investigating straight away.' },
+    ],
+  },
+  { h: 2, text: 'What causes a timing chain to stretch or rattle' },
+  {
+    p: [
+      { text: 'High mileage is the main factor. After that, the tensioner and guides depend on clean oil at proper pressure, so overdue oil changes, a low oil level and short trips that never fully warm the engine all work against them. Keeping to the service book interval, and shortening it for hard use, is the cheapest protection a timing chain has.' },
+    ],
+  },
+  { h: 2, text: 'What to replace with the timing chain' },
+  {
+    p: [
+      { text: 'Replace the whole assembly rather than just the chain. The chain, guides, tensioner and sprockets wear together, the labour to reach them is identical, and a new chain fitted against a worn tensioner will slap and stretch early. See our range of ' },
+      { text: 'timing chain assemblies', link: '/parts/belts-chains/timing-chains-assemblies' },
+      { text: ' and ' },
+      { text: 'timing chains', link: '/parts/engine/timing-chains' },
+      { text: '. While the cover is off, ask about the timing cover gasket and the front crankshaft seal, since replacing them later means doing the same labour twice. Gaskets are listed in the ' },
+      { text: 'gaskets and seals', link: '/parts/gaskets-seals' },
+      { text: ' range.' },
+    ],
+  },
+  { h: 2, text: 'Timing belt vs timing chain' },
+  {
+    ul: [
+      [{ text: 'Timing belt. ', bold: true }, { text: 'A toothed rubber belt, normally replaced at an interval set by the vehicle maker in distance, time or both. Check the service book. A belt can fail with little warning, which is why the interval matters.' }],
+      [{ text: 'Timing chain. ', bold: true }, { text: 'A metal chain that runs inside the engine in oil. There is no fixed interval on most engines, and replacement is driven by wear and symptoms rather than the calendar.' }],
+    ],
+  },
+  {
+    p: [
+      { text: 'Which one your car has depends on the engine code, not the model name, because the same model can use a belt on one engine and a chain on another. Check the engine code stamped on the block, or send it to your branch with the VIN. The ' },
+      { text: 'Parts-Mall vehicle pages', link: '/vehicles' },
+      { text: ' list the models and engines the network covers.' },
+    ],
+  },
+  { h: 2, text: 'How to order the right timing chain kit' },
+  {
+    ul: [
+      [{ text: 'The engine code from the block, not just the capacity.' }],
+      [{ text: 'Whether the kit includes the tensioner, guides and sprockets.' }],
+      [{ text: 'Whether the engine is an interference design.' }],
+      [{ text: 'Whether you also need the timing cover gasket and front crankshaft seal.' }],
+    ],
+  },
+  {
+    p: [
+      { text: 'A photo of the old chain or tensioner sent over WhatsApp helps, and our ' },
+      { text: 'fitment checklist', link: `/blog/${POST2_SLUG}` },
+      { text: ' covers the rest. Then ' },
+      { text: 'call your nearest branch', link: '/branches' },
+      { text: ' with the VIN and engine code, and to avoid a copy part in a job this size, read our guide to ' },
+      { text: 'counterfeit car parts', link: `/blog/${POST3_SLUG}` },
+      { text: '.' },
+    ],
+  },
+  { h: 2, text: 'Timing chain questions' },
+  { h: 3, text: 'How long does a timing chain last?' },
+  {
+    p: [
+      { text: 'There is no single figure. Most chains are designed to last a long time, but there is no fixed interval on most engines, and wear shows up at higher mileage, faster with poor oil maintenance.' },
+    ],
+  },
+  { h: 3, text: 'Can I keep driving with a rattling timing chain?' },
+  {
+    p: [
+      { text: 'It is not advisable. On an interference engine, a chain that jumps a tooth or fails can destroy the engine, so the sensible move is to have it inspected as soon as you hear the rattle.' },
+    ],
+  },
+  { h: 3, text: 'Should the tensioner and guides be replaced with the chain?' },
+  {
+    p: [
+      { text: 'Yes. They wear as a set, and the labour to reach them is already spent. A worn tensioner shortens the life of a new chain.' },
+    ],
+  },
+  { h: 3, text: 'Does a check engine light mean the timing chain has failed?' },
+  {
+    p: [
+      { text: 'Not necessarily. Camshaft and crankshaft correlation codes can point to the chain, but the sensors and wiring can trigger the same codes, so a diagnosis should confirm it before the engine is opened up.' },
+    ],
+  },
 ]
 
 // ---------------------------------------------------------------------------
@@ -397,9 +798,9 @@ type PostDef = {
 const POSTS: PostDef[] = [
   {
     slug: POST1_SLUG,
-    title: "South Africa's auto parts market by the numbers: why distributors are backing Parts-Mall",
+    title: "South Africa's Auto Parts Market by the Numbers",
     excerpt:
-      "South Africa's automotive aftermarket is valued at over US$3 billion, and an ageing 13-million-vehicle fleet, a record new-car year and a counterfeit-parts crackdown all point the same way. Here's what the data says, and why distributors and franchise partners are backing Parts-Mall to meet it.",
+      "The aftermarket is worth over US$3 billion, the fleet is ageing and new-car sales hit a record. The data shows why distributors back Parts-Mall.",
     category: 'Trade',
     publishedAt: '2026-09-28',
     body: post1,
@@ -409,9 +810,9 @@ const POSTS: PostDef[] = [
   },
   {
     slug: POST2_SLUG,
-    title: 'How to find the right replacement part the first time: a fitment checklist for South African workshops',
+    title: 'Right Replacement Part First Time: Fitment Checklist',
     excerpt:
-      "Ordering the wrong part costs a workshop a return trip, a delivery fee and an apology to the customer. Here's the five-point fitment check that gets it right before the part ever leaves the counter.",
+      "A wrong part costs a return trip, a delivery fee and an apology. Here's the five-point fitment check that gets it right before the part leaves the counter.",
     category: 'Fitment',
     publishedAt: '2026-09-28',
     body: post2,
@@ -421,15 +822,51 @@ const POSTS: PostDef[] = [
   },
   {
     slug: POST3_SLUG,
-    title: 'Genuine, OEM or copy? How to avoid counterfeit car parts in South Africa',
+    title: 'How to Avoid Counterfeit Car Parts in South Africa',
     excerpt:
-      "Counterfeit brake pads, suspension arms and ignition coils are common enough in South Africa that the industry now runs a dedicated reporting line for them. Here's how to tell a genuine or branded part from a copy before it goes anywhere near a vehicle.",
+      "Fake brake pads and suspension arms are common enough that the industry runs a reporting line. Here's how to tell a genuine or branded part from a copy.",
     category: 'Buying',
     publishedAt: '2026-09-28',
     body: post3,
     imageFile: 'post3-counterfeit.png',
     imageAlt:
       'Two sets of brake pads on a workshop counter, one new in branded packaging and one worn, being compared by a hand in a blue nitrile glove.',
+  },
+  {
+    slug: POST4_SLUG,
+    title: 'Kia and Hyundai Spare Parts in South Africa: Where to Buy',
+    excerpt:
+      "Need Kia or Hyundai spares in South Africa? Here's how to order the right part for a Rio, Picanto, i10 or Tucson from a trade branch near you.",
+    category: 'Network',
+    publishedAt: '2026-10-06',
+    body: post4,
+    imageFile: 'post4-kia-hyundai.png',
+    imageAlt:
+      'A staff member in a navy polo hands a mechanic a boxed set of brake pads across a trade counter, with shelves of boxed parts and filters behind.',
+  },
+  {
+    slug: POST5_SLUG,
+    title: 'Car Noises Explained: Brakes, Suspension and Wheel Bearings',
+    excerpt:
+      'Grinding when you brake, a clunk over bumps, a hum that rises with speed. Here is what each noise usually means and which part to check first.',
+    category: 'Fitment',
+    publishedAt: '2026-10-13',
+    body: post5,
+    imageFile: 'post5-car-noises.png',
+    imageAlt:
+      'Gloved hands hold a worn brake disc against the calliper and wheel hub on a car raised on a workshop lift.',
+  },
+  {
+    slug: POST6_SLUG,
+    title: 'Timing Chain Rattle on Cold Start: Causes and Repair',
+    excerpt:
+      'A rattle for a few seconds after a cold start is the classic sign of a stretched timing chain. Here is what causes it and what to replace with the chain.',
+    category: 'Ordering',
+    publishedAt: '2026-10-20',
+    body: post6,
+    imageFile: 'post6-timing-chain.png',
+    imageAlt:
+      'A timing chain, tensioner, guides and sprockets laid out on a steel workbench in front of an engine with its timing cover removed.',
   },
 ]
 
@@ -458,7 +895,16 @@ async function upsertGuide(payload: Payload, post: PostDef) {
     limit: 1,
   })
 
-  const imageId = await uploadImage(payload, post.imageFile, post.imageAlt)
+  const hasImage = await fs
+    .access(path.join(IMAGE_DIR, post.imageFile))
+    .then(() => true)
+    .catch(() => false)
+  if (!hasImage && !existing.docs[0]) {
+    // The blog index and post template both render the hero unconditionally.
+    console.log(`  no image at ${IMAGE_DIR}/${post.imageFile}, skipping: ${post.slug}`)
+    return
+  }
+  const imageId = hasImage ? await uploadImage(payload, post.imageFile, post.imageAlt) : undefined
 
   const data = {
     title: post.title,
@@ -466,7 +912,7 @@ async function upsertGuide(payload: Payload, post: PostDef) {
     excerpt: post.excerpt,
     category: post.category,
     publishedAt: post.publishedAt,
-    image: imageId,
+    ...(imageId ? { image: imageId } : {}),
     body: buildBody(post.body),
     _status: 'published' as const,
   }
@@ -483,7 +929,15 @@ async function upsertGuide(payload: Payload, post: PostDef) {
 async function main() {
   console.log(`Publishing blog posts. DATABASE_URI=${process.env.DATABASE_URI}, cwd=${process.cwd()}, images=${IMAGE_DIR}`)
   const payload = await getPayload({ config })
+  const today = new Date().toISOString().slice(0, 10)
+  const only = process.argv.slice(2)
   for (const post of POSTS) {
+    if (only.length && !only.includes(post.slug)) continue
+    // Staggered release: re-run on or after publishedAt to publish a post.
+    if (post.publishedAt > today && !process.env.FORCE) {
+      console.log(`  scheduled for ${post.publishedAt}, skipping: ${post.slug}`)
+      continue
+    }
     await upsertGuide(payload, post)
   }
   console.log('Done.')
