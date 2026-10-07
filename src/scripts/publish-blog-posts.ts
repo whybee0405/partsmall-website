@@ -850,7 +850,7 @@ const POSTS: PostDef[] = [
     excerpt:
       'Grinding when you brake, a clunk over bumps, a hum that rises with speed. Here is what each noise usually means and which part to check first.',
     category: 'Fitment',
-    publishedAt: '2026-10-13',
+    publishedAt: '2026-10-07',
     body: post5,
     imageFile: 'post5-car-noises.png',
     imageAlt:
@@ -862,7 +862,7 @@ const POSTS: PostDef[] = [
     excerpt:
       'A rattle for a few seconds after a cold start is the classic sign of a stretched timing chain. Here is what causes it and what to replace with the chain.',
     category: 'Ordering',
-    publishedAt: '2026-10-20',
+    publishedAt: '2026-10-07',
     body: post6,
     imageFile: 'post6-timing-chain.png',
     imageAlt:
