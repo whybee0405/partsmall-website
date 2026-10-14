@@ -130,11 +130,12 @@ export default async function BranchPage({
         <div className="shell grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-16">
           <div>
             <Image
-              src={photo?.url || '/images/brand/parts-mall-logo.png'}
+              src={photo?.url || '/images/brand/parts-mall-logo.svg'}
               alt={hasPhoto ? photo?.alt || `Parts-Mall ${branch.name} branch` : 'Parts-Mall Africa logo'}
               width={hasPhoto ? photo?.width || 1920 : 1920}
               height={hasPhoto ? photo?.height || 1288 : 1288}
               sizes="(max-width: 1024px) 100vw, 60vw"
+              unoptimized={!hasPhoto}
               className={`w-full rounded-[var(--radius-base)] ${hasPhoto ? 'h-auto object-cover' : 'aspect-[1920/1288] bg-white object-contain p-8 sm:p-16'}`}
               priority
             />
