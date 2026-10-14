@@ -24,6 +24,12 @@ export type Branch = {
   /** CMS-only fields — not in the static seed data, optional until an admin fills them in. */
   whatsapp?: string | null
   notes?: string | null
+  photo?: number | string | {
+    url?: string | null
+    alt?: string | null
+    width?: number | null
+    height?: number | null
+  } | null
 }
 
 const TRADE_HOURS = 'Mon to Fri 08:00 to 17:00, Sat 08:00 to 13:00'

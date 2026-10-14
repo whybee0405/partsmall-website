@@ -111,7 +111,10 @@ export const Branches: CollectionConfig = {
       name: 'photo',
       type: 'upload',
       relationTo: 'media',
-      admin: { position: 'sidebar', description: 'Optional branch photograph.' },
+      admin: {
+        position: 'sidebar',
+        description: 'Shown on the branch page. Leave blank to display the Parts-Mall logo.',
+      },
     },
     {
       name: 'notes',

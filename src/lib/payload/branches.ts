@@ -25,7 +25,7 @@ export async function getBranch(slug: string): Promise<Branch | undefined> {
   const res = await payload.find({
     collection: 'branches',
     where: { slug: { equals: slug }, active: { equals: true } },
-    depth: 0,
+    depth: 1,
     limit: 1,
   })
   return res.docs[0] as unknown as Branch | undefined
