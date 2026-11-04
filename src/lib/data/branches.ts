@@ -181,10 +181,15 @@ export function telHref(phone: string) {
   return `tel:+${whatsappNumber(phone)}`
 }
 
-export function mapsHref(branch: Pick<Branch, 'address' | 'name'>) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    `Parts-Mall ${branch.name} ${branch.address}`,
-  )}`
+export function mapsHref(branch: Pick<Branch, 'address'> & { country?: string }) {
+  // Search by the street address alone (plus the country when the address doesn't
+  // already name it). A "Parts-Mall <name>" prefix sends Google looking for a
+  // business listing, which is often missing or points at the wrong branch.
+  const query =
+    branch.country && !branch.address.toLowerCase().includes(branch.country.toLowerCase())
+      ? `${branch.address}, ${branch.country}`
+      : branch.address
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
 }
 
 /** Great-circle distance in km. Used by the "nearest branch" flow. */

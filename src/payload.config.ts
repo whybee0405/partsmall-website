@@ -4,6 +4,7 @@ import sharp from 'sharp'
 import { buildConfig } from 'payload'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -58,6 +59,13 @@ export default buildConfig({
   globals: [SiteSettings],
 
   editor: lexicalEditor(),
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        apiKey: process.env.RESEND_API_KEY,
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@parts-mall.co.za',
+        defaultFromName: process.env.EMAIL_FROM_NAME || 'Parts-Mall Africa',
+      })
+    : undefined,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

@@ -9,6 +9,8 @@ import { ButtonLink } from '@/components/ui/Button'
 import { COMPANY } from '@/lib/data/company'
 import { JsonLd, SITE_URL, breadcrumbLd, metaDescription } from '@/lib/seo'
 import { getAllGuides, getGuide } from '@/lib/payload/guides'
+import { getPayloadClient } from '@/lib/payload/client'
+import { countBlogViews } from '@/lib/payload/blogViews'
 
 export const dynamic = 'force-dynamic'
 
@@ -48,6 +50,8 @@ export default async function BlogPostPage({
   const [guide, allGuides] = await Promise.all([getGuide(slug), getAllGuides()])
   if (!guide) notFound()
 
+  const views = await countBlogViews(await getPayloadClient(), guide.slug)
+
   const more = allGuides.filter((g) => g.slug !== guide.slug).slice(0, 2)
 
   const url = `${SITE_URL}/blog/${guide.slug}`
@@ -84,7 +88,7 @@ export default async function BlogPostPage({
           { href: `/blog/${guide.slug}`, label: guide.category },
         ]}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <span className="t-label text-signal-deep">{guide.category}</span>
           <span className="t-data text-[0.76rem] text-steel">
             {guide.readMinutes} min read
@@ -94,8 +98,12 @@ export default async function BlogPostPage({
               day: 'numeric',
               month: 'long',
               year: 'numeric',
+              timeZone: 'UTC',
             })}
           </time>
+          <span className="t-data text-[0.76rem] text-steel" title="Recorded article views; refreshed on the next page load">
+            {views.toLocaleString('en-ZA')} {views === 1 ? 'view' : 'views'}
+          </span>
         </div>
       </PageHeader>
 

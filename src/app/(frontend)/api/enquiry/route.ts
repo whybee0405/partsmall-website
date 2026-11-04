@@ -41,17 +41,22 @@ export async function POST(request: Request) {
     // Relationship IDs are numeric on this adapter, so coerce rather than pass
     // the union straight through.
     let branchId: number | undefined
+    let recipient = process.env.ENQUIRY_TO_EMAIL
     if (body.branchSlug) {
       const found = await payload.find({
         collection: 'branches',
-        where: { slug: { equals: body.branchSlug } },
+        where: { slug: { equals: body.branchSlug }, active: { equals: true } },
         limit: 1,
+        depth: 0,
       })
-      const id = found.docs[0]?.id
+      const branch = found.docs[0]
+      const id = branch?.id
       if (id !== undefined && id !== null) branchId = Number(id)
+      // Resolve the recipient from the CMS, never from a submitted email field.
+      recipient = branch?.email?.trim() || recipient
     }
 
-    await payload.create({
+    const enquiry = await payload.create({
       collection: 'enquiries',
       data: {
         type: type as 'wholesale' | 'branch' | 'general' | 'distributor',
@@ -68,6 +73,31 @@ export async function POST(request: Request) {
         status: 'new',
       },
     })
+
+    if (process.env.RESEND_API_KEY && recipient) {
+      try {
+        await payload.sendEmail({
+          to: recipient,
+          replyTo: email,
+          subject: `New ${type} enquiry #${enquiry.id}`,
+          text: [
+            `Name: ${name}`,
+            `Email: ${email}`,
+            `Phone: ${phone}`,
+            `Company: ${enquiry.company || '-'}`,
+            `Region: ${enquiry.region || '-'}`,
+            `Monthly spend: ${enquiry.monthlySpend || '-'}`,
+            `Branch: ${body.branchSlug || '-'}`,
+            `Part: ${enquiry.part || '-'}`,
+            `Source: ${enquiry.sourcePath || '-'}`,
+            '',
+            message,
+          ].join('\n'),
+        })
+      } catch {
+        payload.logger.error(`Email notification failed for saved enquiry ${enquiry.id}`)
+      }
+    }
 
     return NextResponse.json({ ok: true })
   } catch (error) {

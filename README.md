@@ -299,9 +299,15 @@ point `DATABASE_URI` at your instance. Nothing else changes.
 filesystems like Vercel. Add `@payloadcms/storage-s3` (or Vercel Blob) before
 launch if the client will be uploading branch photography.
 
-**Email.** Payload currently logs email to the console. Add an email adapter when
-you want enquiry notifications delivered. Submissions are already stored in the
-Enquiries collection regardless, so nothing is lost in the meantime.
+**Email.** Payload uses `@payloadcms/email-resend` when `RESEND_API_KEY` is set.
+Set the key in the server environment, `EMAIL_FROM_ADDRESS` to an address on a
+verified Resend domain (default `noreply@parts-mall.co.za`), and optionally
+`EMAIL_FROM_NAME` (default `Parts-Mall Africa`). Set `ENQUIRY_TO_EMAIL` to receive
+notifications from general enquiry forms and as a fallback for branches without
+an email address. Branch forms send to the active branch's current email address
+in the CMS, resolved server-side from the submitted branch slug. CMS password resets use the same
+adapter. Enquiries are saved before sending; a delivery failure is logged and
+does not discard the submission. Docker Compose passes these settings at runtime.
 
 ---
 

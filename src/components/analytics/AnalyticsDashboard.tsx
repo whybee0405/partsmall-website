@@ -1,5 +1,6 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { countBlogViews } from '@/lib/payload/blogViews'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -24,6 +25,21 @@ function Stat({ label, value, accent = false }: { label: string; value: number; 
 export async function AnalyticsDashboard() {
   const payload = await getPayload({ config })
   const now = Date.now()
+  const blogs = await payload.find({
+    collection: 'guides',
+    where: { _status: { equals: 'published' } },
+    limit: 0,
+    depth: 0,
+    select: { title: true, slug: true },
+  })
+  const blogPerformance = await Promise.all(blogs.docs.map(async (blog) => {
+    const [views30d, views] = await Promise.all([
+      countBlogViews(payload, blog.slug, new Date(now - 30 * DAY_MS).toISOString()),
+      countBlogViews(payload, blog.slug),
+    ])
+    return { ...blog, views30d, views }
+  }))
+  const topBlogs = blogPerformance.sort((a, b) => b.views30d - a.views30d || b.views - a.views || a.title.localeCompare(b.title)).slice(0, 5)
   const [pv1d, pv7d, pv30d, enquiries1d, enquiries7d, enquiries30d, whatsapp1d, whatsapp7d, whatsapp30d] = await Promise.all([
     countSince(payload, 'page_view', now - DAY_MS), countSince(payload, 'page_view', now - 7 * DAY_MS), countSince(payload, 'page_view', now - 30 * DAY_MS),
     countSince(payload, 'form_submit', now - DAY_MS), countSince(payload, 'form_submit', now - 7 * DAY_MS), countSince(payload, 'form_submit', now - 30 * DAY_MS),
@@ -62,6 +78,22 @@ export async function AnalyticsDashboard() {
         <Stat label="WhatsApp clicks · 24h" value={whatsapp1d} accent /><Stat label="WhatsApp clicks · 7d" value={whatsapp7d} accent /><Stat label="WhatsApp clicks · 30d" value={whatsapp30d} accent />
       </div>
       <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 100%', minWidth: 0 }}>
+          <h4 style={{ margin: '0 0 10px', fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--theme-elevation-500)' }}>Top performing blogs · 30d</h4>
+          <p style={{ fontSize: 12, color: 'var(--theme-elevation-500)' }}>Ranked by recorded article views in the last 30 days. Total views cover retained analytics history (up to 14 months).</p>
+          {topBlogs.length === 0 ? <p style={{ fontSize: 13 }}>No published blog posts yet.</p> : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead><tr><th scope="col" style={{ textAlign: 'left', padding: '8px 0' }}>Blog post</th><th scope="col" style={{ textAlign: 'right', padding: '8px' }}>Views · 30d</th><th scope="col" style={{ textAlign: 'right', padding: '8px 0' }}>Total views</th></tr></thead>
+              <tbody>{topBlogs.map((blog) => (
+                <tr key={blog.id} style={{ borderTop: '1px solid var(--theme-elevation-150)' }}>
+                  <td style={{ padding: '10px 0' }}><a href={`/blog/${blog.slug}`}>{blog.title}</a></td>
+                  <td style={{ padding: '10px 8px', textAlign: 'right' }}>{blog.views30d.toLocaleString()}</td>
+                  <td style={{ padding: '10px 0', textAlign: 'right' }}>{blog.views.toLocaleString()}</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          )}
+        </div>
         <div style={{ flex: '1 1 320px', minWidth: 280 }}>
           <h4 style={{ margin: '0 0 10px', fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--theme-elevation-500)' }}>Top pages · 30d</h4>
           {topPaths.length === 0 ? <p style={{ fontSize: 13, color: 'var(--theme-elevation-500)' }}>No page views recorded yet.</p> : <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}><tbody>{topPaths.map(([path, count]) => <tr key={path} style={{ borderTop: '1px solid var(--theme-elevation-150)' }}><td style={{ padding: '6px 0', fontFamily: 'monospace' }}>{path}</td><td style={{ padding: '6px 0', textAlign: 'right', color: 'var(--theme-elevation-500)' }}>{count}</td></tr>)}</tbody></table>}

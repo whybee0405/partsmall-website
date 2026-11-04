@@ -61,6 +61,9 @@ export default async function BlogPage() {
                   {lead.title}
                 </h2>
                 <p className="t-lead mt-4">{lead.excerpt}</p>
+                <time dateTime={lead.date} className="t-data mt-4 block text-[0.8rem] text-steel">
+                  Published {new Date(lead.date).toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}
+                </time>
               </div>
                 </Link>
               </Reveal>
@@ -91,6 +94,9 @@ export default async function BlogPage() {
                   <p className="mt-2 text-[0.9rem] leading-relaxed text-steel">
                     {g.excerpt}
                   </p>
+                  <time dateTime={g.date} className="t-data mt-3 block text-[0.75rem] text-steel">
+                    Published {new Date(g.date).toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })}
+                  </time>
                     </Link>
                   </Reveal>
                 ))}
