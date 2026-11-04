@@ -16,8 +16,16 @@ test-results
 partsmall.db
 partsmall.db-journal
 
-# Uploads live in a named volume, not in the image.
+# Leftover Payload upload folder; media now lives in CloudIA CMS.
 public/media
+
+# The CMS's own config, backups and tooling; the site image does not use them.
+cloudia
+cms-backups
+cloudia-updater
+graphify-out
+.codex
+*.xlsx
 
 npm-debug.log*
 yarn-debug.log*

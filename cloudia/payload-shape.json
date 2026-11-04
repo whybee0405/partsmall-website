@@ -1,0 +1,1303 @@
+{
+  "collections": {
+    "branches": {
+      "fields": [
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "name",
+              "label": "Name",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "slug",
+              "label": "Slug",
+              "required": true,
+              "description": "Used in the URL: /branches/your-slug"
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "select",
+              "name": "province",
+              "label": "Province",
+              "required": true,
+              "options": [
+                {
+                  "label": "Gauteng",
+                  "value": "Gauteng"
+                },
+                {
+                  "label": "Limpopo",
+                  "value": "Limpopo"
+                },
+                {
+                  "label": "Mpumalanga",
+                  "value": "Mpumalanga"
+                },
+                {
+                  "label": "North West",
+                  "value": "North West"
+                },
+                {
+                  "label": "Free State",
+                  "value": "Free State"
+                },
+                {
+                  "label": "KwaZulu-Natal",
+                  "value": "KwaZulu-Natal"
+                },
+                {
+                  "label": "Eastern Cape",
+                  "value": "Eastern Cape"
+                },
+                {
+                  "label": "Western Cape",
+                  "value": "Western Cape"
+                },
+                {
+                  "label": "Northern Cape",
+                  "value": "Northern Cape"
+                },
+                {
+                  "label": "Pan-Africa",
+                  "value": "Pan-Africa"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "name": "country",
+              "label": "Country",
+              "required": true,
+              "defaultValue": "South Africa"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "address",
+          "label": "Address",
+          "required": true
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "phone",
+              "label": "Phone",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "whatsapp",
+              "label": "Whatsapp",
+              "description": "Leave blank to reuse the phone number."
+            }
+          ]
+        },
+        {
+          "type": "email",
+          "name": "email",
+          "label": "Email",
+          "description": "Leave blank if this branch has no public email yet."
+        },
+        {
+          "type": "text",
+          "name": "hours",
+          "label": "Hours",
+          "defaultValue": "Mon to Fri 08:00 to 17:00, Sat 08:00 to 13:00"
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "number",
+              "name": "lat",
+              "label": "Lat",
+              "required": true,
+              "description": "Decimal latitude, e.g. -26.2124"
+            },
+            {
+              "type": "number",
+              "name": "lng",
+              "label": "Lng",
+              "required": true,
+              "description": "Decimal longitude, e.g. 28.2617"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "name": "active",
+          "label": "Active",
+          "description": "Uncheck to hide the branch without deleting its record.",
+          "defaultValue": true
+        },
+        {
+          "type": "upload",
+          "name": "photo",
+          "label": "Photo",
+          "relationTo": "media",
+          "description": "Shown on the branch page. Leave blank to display the Parts-Mall logo."
+        },
+        {
+          "type": "textarea",
+          "name": "notes",
+          "label": "Notes",
+          "description": "Optional line shown on the branch page, e.g. \"Counter and trade desk. Bulk collections by arrangement.\""
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "categories": {
+      "fields": [
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "label",
+              "label": "Label",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "slug",
+              "label": "Slug",
+              "required": true,
+              "description": "URL: /parts/your-slug"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "blurb",
+          "label": "Blurb",
+          "required": true,
+          "description": "One line. Used on the homepage tile and the parts index."
+        },
+        {
+          "type": "textarea",
+          "name": "summary",
+          "label": "Summary",
+          "required": true,
+          "description": "The answer-first opening, one or two sentences. Written so it makes sense quoted on its own, because this is what an answer engine lifts. Also used as the meta description."
+        },
+        {
+          "type": "array",
+          "name": "intro",
+          "label": "Intro",
+          "description": "Two or three paragraphs of genuine editorial.",
+          "fields": [
+            {
+              "type": "textarea",
+              "name": "text",
+              "label": "Text",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "array",
+          "name": "faqs",
+          "label": "Faqs",
+          "description": "These publish as FAQ structured data, which is how assistants and featured snippets quote the site. Write the answer as a complete sentence that stands on its own.",
+          "fields": [
+            {
+              "type": "text",
+              "name": "q",
+              "label": "Question",
+              "required": true
+            },
+            {
+              "type": "textarea",
+              "name": "a",
+              "label": "Answer",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "icon",
+          "label": "Icon",
+          "required": true,
+          "description": "Phosphor icon name, e.g. Disc, Engine, Funnel. See phosphoricons.com.",
+          "defaultValue": "Gear"
+        },
+        {
+          "type": "upload",
+          "name": "image",
+          "label": "Image",
+          "relationTo": "media"
+        },
+        {
+          "type": "number",
+          "name": "order",
+          "label": "Order",
+          "description": "Lower numbers appear first.",
+          "defaultValue": 0
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "part-types": {
+      "fields": [
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "label",
+              "label": "Label",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "slug",
+              "label": "Slug",
+              "required": true,
+              "description": "URL: /parts/[category]/your-slug"
+            }
+          ]
+        },
+        {
+          "type": "relationship",
+          "name": "category",
+          "label": "Category",
+          "required": true,
+          "relationTo": "categories"
+        },
+        {
+          "type": "text",
+          "name": "singular",
+          "label": "Singular",
+          "required": true,
+          "description": "The form that reads naturally mid-sentence: \"needs a new clutch kit\", \"needs a new set of brake pads\". Used to build headings on the vehicle pages, so getting it right is what stops those pages sounding machine-written."
+        },
+        {
+          "type": "textarea",
+          "name": "summary",
+          "label": "Summary",
+          "required": true,
+          "description": "Answer-first definition, one or two sentences. Start with the part name: \"Brake pads are the replaceable friction blocks that...\". This is the sentence an assistant will quote and the meta description."
+        },
+        {
+          "type": "textarea",
+          "name": "role",
+          "label": "Role",
+          "required": true,
+          "description": "What the component does within its system."
+        },
+        {
+          "type": "array",
+          "name": "symptoms",
+          "label": "Symptoms",
+          "description": "Signs it is failing, written the way a driver would notice them rather than in workshop terms. Lists are the format snippets lift.",
+          "fields": [
+            {
+              "type": "text",
+              "name": "text",
+              "label": "Text",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "interval",
+          "label": "Interval",
+          "required": true,
+          "description": "When it is normally replaced. Be honest where there is no fixed interval."
+        },
+        {
+          "type": "array",
+          "name": "checks",
+          "label": "Checks",
+          "description": "What the counter needs confirmed before the order is placed.",
+          "fields": [
+            {
+              "type": "text",
+              "name": "text",
+              "label": "Text",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "array",
+          "name": "faqs",
+          "label": "Faqs",
+          "description": "Publishes as FAQ structured data. Every question here is also shown on the page, which Google requires.",
+          "fields": [
+            {
+              "type": "text",
+              "name": "q",
+              "label": "Question",
+              "required": true
+            },
+            {
+              "type": "textarea",
+              "name": "a",
+              "label": "Answer",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "makes": {
+      "fields": [
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "label",
+              "label": "Label",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "slug",
+              "label": "Slug",
+              "required": true,
+              "description": "URL: /vehicles/your-slug"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "summary",
+          "label": "Summary",
+          "required": true,
+          "description": "Answer-first opening naming the make and the models covered. Used as the meta description."
+        },
+        {
+          "type": "array",
+          "name": "intro",
+          "label": "Intro",
+          "fields": [
+            {
+              "type": "textarea",
+              "name": "text",
+              "label": "Text",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "number",
+          "name": "order",
+          "label": "Order",
+          "description": "Lower numbers appear first.",
+          "defaultValue": 0
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "models": {
+      "fields": [
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "label",
+              "label": "Label",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "slug",
+              "label": "Slug",
+              "required": true,
+              "description": "URL: /vehicles/[make]/your-slug"
+            }
+          ]
+        },
+        {
+          "name": "urlSlug",
+          "type": "text",
+          "label": "URL segment",
+          "description": "Only when another make already uses this model slug."
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "relationship",
+              "name": "make",
+              "label": "Make",
+              "required": true,
+              "relationTo": "makes"
+            },
+            {
+              "type": "text",
+              "name": "body",
+              "label": "Body",
+              "required": true,
+              "description": "e.g. Hatchback, Pickup, Panel van"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "summary",
+          "label": "Summary",
+          "required": true,
+          "description": "Answer-first opening naming the make, model and what it is. Used as the meta description."
+        },
+        {
+          "type": "array",
+          "name": "generations",
+          "label": "Generations",
+          "required": true,
+          "description": "The year and engine table. This is how a search including a model year is matched without needing a separate page for every year.",
+          "fields": [
+            {
+              "type": "row",
+              "fields": [
+                {
+                  "type": "text",
+                  "name": "years",
+                  "label": "Years",
+                  "required": true,
+                  "description": "e.g. 2011 to 2017, or 2017 onward"
+                },
+                {
+                  "type": "text",
+                  "name": "engines",
+                  "label": "Engines",
+                  "required": true,
+                  "description": "e.g. 1.2, 1.4 and 1.6 petrol"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "name": "note",
+              "label": "Note",
+              "description": "Optional note for this generation."
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "relationship",
+          "name": "parts",
+          "label": "Parts",
+          "required": true,
+          "hasMany": true,
+          "relationTo": "part-types",
+          "description": "Each part type linked here publishes a page at /vehicles/[make]/[model]/[part-type]. Add the components genuinely replaced on this vehicle, not everything in the catalogue."
+        },
+        {
+          "type": "textarea",
+          "name": "note",
+          "label": "Note",
+          "description": "A general observation about this vehicle, true no matter which part is being bought. Shown on the model page and on every part page for it. Keep anything part-specific out of here and use the field below."
+        },
+        {
+          "type": "array",
+          "name": "partNotes",
+          "label": "Part Notes",
+          "description": "Observations tied to one specific part on this vehicle, shown only on that part page. This is the highest-value field on the site: it is the one sentence a competitor cannot template, and it is what makes each page genuinely worth ranking.",
+          "fields": [
+            {
+              "type": "relationship",
+              "name": "partType",
+              "label": "Part Type",
+              "required": true,
+              "relationTo": "part-types"
+            },
+            {
+              "type": "textarea",
+              "name": "note",
+              "label": "Note",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "brands": {
+      "fields": [
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "label",
+              "label": "Label",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "slug",
+              "label": "Slug",
+              "required": true
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "name": "tier",
+          "label": "Tier",
+          "required": true,
+          "defaultValue": "private",
+          "options": [
+            {
+              "label": "Parts-Mall private brand",
+              "value": "private"
+            },
+            {
+              "label": "OEM and genuine",
+              "value": "oem"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "note",
+          "label": "Note",
+          "required": true,
+          "description": "One line describing what the line covers."
+        },
+        {
+          "type": "upload",
+          "name": "mark",
+          "label": "Mark",
+          "relationTo": "media",
+          "description": "Official SVG or PNG logo. Until one is supplied the site renders a typographic plate rather than inventing a mark."
+        },
+        {
+          "type": "number",
+          "name": "order",
+          "label": "Order",
+          "defaultValue": 0
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "guides": {
+      "fields": [
+        {
+          "type": "text",
+          "name": "title",
+          "label": "Title",
+          "required": true
+        },
+        {
+          "type": "text",
+          "name": "slug",
+          "label": "Slug",
+          "required": true
+        },
+        {
+          "type": "textarea",
+          "name": "excerpt",
+          "label": "Excerpt",
+          "required": true,
+          "description": "Two sentences maximum. Used on the index card and as the search description."
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "select",
+              "name": "category",
+              "label": "Category",
+              "required": true,
+              "options": [
+                {
+                  "label": "Ordering",
+                  "value": "Ordering"
+                },
+                {
+                  "label": "Fitment",
+                  "value": "Fitment"
+                },
+                {
+                  "label": "Buying",
+                  "value": "Buying"
+                },
+                {
+                  "label": "Trade",
+                  "value": "Trade"
+                },
+                {
+                  "label": "Network",
+                  "value": "Network"
+                }
+              ]
+            },
+            {
+              "type": "date",
+              "name": "publishedAt",
+              "label": "Published At",
+              "required": true
+            }
+          ]
+        },
+        {
+          "type": "upload",
+          "name": "image",
+          "label": "Image",
+          "relationTo": "media"
+        },
+        {
+          "type": "richText",
+          "name": "body",
+          "label": "Body",
+          "required": true
+        },
+        {
+          "type": "relationship",
+          "name": "relatedCategory",
+          "label": "Related Category",
+          "relationTo": "categories",
+          "description": "Links the guide back to a catalogue system."
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        },
+        {
+          "type": "select",
+          "name": "_status",
+          "defaultValue": "draft",
+          "options": [
+            {
+              "label": "draft",
+              "value": "draft"
+            },
+            {
+              "label": "published",
+              "value": "published"
+            }
+          ]
+        }
+      ],
+      "global": false,
+      "drafts": true
+    },
+    "enquiries": {
+      "fields": [
+        {
+          "type": "select",
+          "name": "type",
+          "label": "Type",
+          "required": true,
+          "options": [
+            {
+              "label": "Trade account or wholesale",
+              "value": "wholesale"
+            },
+            {
+              "label": "Branch or part enquiry",
+              "value": "branch"
+            },
+            {
+              "label": "General or head office",
+              "value": "general"
+            },
+            {
+              "label": "Distributor or investor",
+              "value": "distributor"
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "name",
+              "label": "Name",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "company",
+              "label": "Company"
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "email",
+              "name": "email",
+              "label": "Email",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "phone",
+              "label": "Phone",
+              "required": true
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "type": "text",
+              "name": "region",
+              "label": "Region",
+              "description": "Province, country or territory."
+            },
+            {
+              "type": "text",
+              "name": "monthlySpend",
+              "label": "Monthly Spend",
+              "description": "Rough monthly buying volume."
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "name": "message",
+          "label": "Message",
+          "required": true
+        },
+        {
+          "type": "relationship",
+          "name": "branch",
+          "label": "Branch",
+          "relationTo": "branches",
+          "description": "Set when the enquiry came from a branch page."
+        },
+        {
+          "type": "text",
+          "name": "part",
+          "label": "Part",
+          "description": "Part number, when the enquiry came from a part page."
+        },
+        {
+          "type": "select",
+          "name": "status",
+          "label": "Status",
+          "defaultValue": "new",
+          "options": [
+            {
+              "label": "New",
+              "value": "new"
+            },
+            {
+              "label": "Contacted",
+              "value": "contacted"
+            },
+            {
+              "label": "Routed to branch",
+              "value": "routed"
+            },
+            {
+              "label": "Closed",
+              "value": "closed"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "sourcePath",
+          "label": "Source Path",
+          "description": "Page the form was on."
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
+    "site-settings": {
+      "fields": [
+        {
+          "type": "tabs",
+          "tabs": [
+            {
+              "label": "Head Office",
+              "fields": [
+                {
+                  "type": "text",
+                  "name": "headOfficeName",
+                  "label": "Head Office Name",
+                  "required": true,
+                  "defaultValue": "Parts-Mall Meadowdale"
+                },
+                {
+                  "type": "email",
+                  "name": "email",
+                  "label": "Email",
+                  "required": true,
+                  "defaultValue": "pma.sales1@parts-mall.com"
+                },
+                {
+                  "type": "text",
+                  "name": "phone",
+                  "label": "Phone"
+                },
+                {
+                  "type": "textarea",
+                  "name": "address",
+                  "label": "Address",
+                  "required": true
+                },
+                {
+                  "type": "text",
+                  "name": "mapQuery",
+                  "label": "Map Query",
+                  "required": true,
+                  "description": "What gets sent to Google Maps for directions."
+                },
+                {
+                  "type": "text",
+                  "name": "hours",
+                  "label": "Hours",
+                  "defaultValue": "Monday to Friday, 08:00 to 17:00 SAST"
+                }
+              ]
+            },
+            {
+              "label": "Group Figures",
+              "fields": [
+                {
+                  "type": "array",
+                  "name": "corporateFacts",
+                  "label": "Corporate Facts",
+                  "description": "Published Parts-Mall Corporation figures. Do not add a number that cannot be sourced.",
+                  "fields": [
+                    {
+                      "type": "row",
+                      "fields": [
+                        {
+                          "type": "text",
+                          "name": "value",
+                          "label": "Value",
+                          "required": true
+                        },
+                        {
+                          "type": "text",
+                          "name": "label",
+                          "label": "Label",
+                          "required": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "name": "note",
+                      "label": "Note"
+                    },
+                    {
+                      "type": "text",
+                      "name": "id",
+                      "label": "ID"
+                    }
+                  ]
+                },
+                {
+                  "type": "array",
+                  "name": "timeline",
+                  "label": "Timeline",
+                  "fields": [
+                    {
+                      "type": "row",
+                      "fields": [
+                        {
+                          "type": "text",
+                          "name": "year",
+                          "label": "Year",
+                          "required": true
+                        },
+                        {
+                          "type": "text",
+                          "name": "event",
+                          "label": "Event",
+                          "required": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "name": "id",
+                      "label": "ID"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "label": "Social and SEO",
+              "fields": [
+                {
+                  "type": "array",
+                  "name": "socials",
+                  "label": "Socials",
+                  "fields": [
+                    {
+                      "type": "row",
+                      "fields": [
+                        {
+                          "type": "text",
+                          "name": "label",
+                          "label": "Label",
+                          "required": true
+                        },
+                        {
+                          "type": "text",
+                          "name": "url",
+                          "label": "Url",
+                          "required": true
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "name": "id",
+                      "label": "ID"
+                    }
+                  ]
+                },
+                {
+                  "type": "email",
+                  "name": "enquiryEmail",
+                  "label": "Enquiry Email",
+                  "description": "Where new site enquiries are notified."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": true,
+      "drafts": false
+    }
+  },
+  "media": {
+    "fields": [
+      {
+        "type": "text",
+        "name": "alt",
+        "label": "Alt",
+        "required": true,
+        "description": "Describe what is in the picture, for screen readers and for search. \"Counter team checking a part number at the Boksburg branch\", not \"image\"."
+      },
+      {
+        "type": "text",
+        "name": "credit",
+        "label": "Credit",
+        "description": "Photographer credit, if one is required."
+      },
+      {
+        "type": "date",
+        "name": "updatedAt"
+      },
+      {
+        "type": "date",
+        "name": "createdAt"
+      },
+      {
+        "type": "text",
+        "name": "url",
+        "label": "URL"
+      },
+      {
+        "type": "text",
+        "name": "thumbnailURL",
+        "label": "Thumbnail URL"
+      },
+      {
+        "type": "text",
+        "name": "filename"
+      },
+      {
+        "type": "text",
+        "name": "mimeType",
+        "label": "MIME Type"
+      },
+      {
+        "type": "number",
+        "name": "filesize"
+      },
+      {
+        "type": "number",
+        "name": "width"
+      },
+      {
+        "type": "number",
+        "name": "height"
+      },
+      {
+        "type": "number",
+        "name": "focalX"
+      },
+      {
+        "type": "number",
+        "name": "focalY"
+      },
+      {
+        "type": "group",
+        "name": "sizes",
+        "fields": [
+          {
+            "type": "group",
+            "name": "thumb",
+            "label": "thumb",
+            "fields": [
+              {
+                "type": "text",
+                "name": "url",
+                "label": "URL"
+              },
+              {
+                "type": "number",
+                "name": "width"
+              },
+              {
+                "type": "number",
+                "name": "height"
+              },
+              {
+                "type": "text",
+                "name": "mimeType",
+                "label": "MIME Type"
+              },
+              {
+                "type": "number",
+                "name": "filesize"
+              },
+              {
+                "type": "text",
+                "name": "filename"
+              }
+            ]
+          },
+          {
+            "type": "group",
+            "name": "card",
+            "label": "card",
+            "fields": [
+              {
+                "type": "text",
+                "name": "url",
+                "label": "URL"
+              },
+              {
+                "type": "number",
+                "name": "width"
+              },
+              {
+                "type": "number",
+                "name": "height"
+              },
+              {
+                "type": "text",
+                "name": "mimeType",
+                "label": "MIME Type"
+              },
+              {
+                "type": "number",
+                "name": "filesize"
+              },
+              {
+                "type": "text",
+                "name": "filename"
+              }
+            ]
+          },
+          {
+            "type": "group",
+            "name": "wide",
+            "label": "wide",
+            "fields": [
+              {
+                "type": "text",
+                "name": "url",
+                "label": "URL"
+              },
+              {
+                "type": "number",
+                "name": "width"
+              },
+              {
+                "type": "number",
+                "name": "height"
+              },
+              {
+                "type": "text",
+                "name": "mimeType",
+                "label": "MIME Type"
+              },
+              {
+                "type": "number",
+                "name": "filesize"
+              },
+              {
+                "type": "text",
+                "name": "filename"
+              }
+            ]
+          },
+          {
+            "type": "group",
+            "name": "hero",
+            "label": "hero",
+            "fields": [
+              {
+                "type": "text",
+                "name": "url",
+                "label": "URL"
+              },
+              {
+                "type": "number",
+                "name": "width"
+              },
+              {
+                "type": "number",
+                "name": "height"
+              },
+              {
+                "type": "text",
+                "name": "mimeType",
+                "label": "MIME Type"
+              },
+              {
+                "type": "number",
+                "name": "filesize"
+              },
+              {
+                "type": "text",
+                "name": "filename"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

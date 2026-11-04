@@ -3,14 +3,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin } from '@phosphor-icons/react/dist/ssr'
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import { PageHeader } from '@/components/PageHeader'
+import { RichText } from '@/components/RichText'
 import { ButtonLink } from '@/components/ui/Button'
 import { COMPANY } from '@/lib/data/company'
 import { JsonLd, SITE_URL, breadcrumbLd, metaDescription } from '@/lib/seo'
-import { getAllGuides, getGuide } from '@/lib/payload/guides'
-import { getPayloadClient } from '@/lib/payload/client'
-import { countBlogViews } from '@/lib/payload/blogViews'
+import { getAllGuides, getGuide } from '@/lib/cms/guides'
+import { countBlogViews } from '@/lib/cms/blogViews'
 
 export const dynamic = 'force-dynamic'
 
@@ -50,7 +49,7 @@ export default async function BlogPostPage({
   const [guide, allGuides] = await Promise.all([getGuide(slug), getAllGuides()])
   if (!guide) notFound()
 
-  const views = await countBlogViews(await getPayloadClient(), guide.slug)
+  const views = await countBlogViews(guide.slug)
 
   const more = allGuides.filter((g) => g.slug !== guide.slug).slice(0, 2)
 
@@ -101,9 +100,11 @@ export default async function BlogPostPage({
               timeZone: 'UTC',
             })}
           </time>
-          <span className="t-data text-[0.76rem] text-steel" title="Recorded article views; refreshed on the next page load">
-            {views.toLocaleString('en-ZA')} {views === 1 ? 'view' : 'views'}
-          </span>
+          {views !== null && (
+            <span className="t-data text-[0.76rem] text-steel" title="Recorded article views; refreshed on the next page load">
+              {views.toLocaleString('en-ZA')} {views === 1 ? 'view' : 'views'}
+            </span>
+          )}
         </div>
       </PageHeader>
 

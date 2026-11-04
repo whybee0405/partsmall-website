@@ -14,7 +14,7 @@ import {
 import { PageHeader } from '@/components/PageHeader'
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { branchWhatsappNumber, distanceKm, mapsHref, telHref, whatsappNumber } from '@/lib/data/branches'
-import { getBranch, getAllBranches } from '@/lib/payload/branches'
+import { getBranch, getAllBranches } from '@/lib/cms/branches'
 
 export const dynamic = 'force-dynamic'
 

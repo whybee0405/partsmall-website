@@ -4,7 +4,7 @@ import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { BranchFinder } from '@/components/BranchFinder'
 import { NetworkMap } from '@/components/NetworkMap'
-import { getAllBranches, branchesByProvince, getNetworkStats } from '@/lib/payload/branches'
+import { getAllBranches, branchesByProvince, getNetworkStats } from '@/lib/cms/branches'
 
 export const dynamic = 'force-dynamic'
 

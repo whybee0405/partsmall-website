@@ -4,7 +4,7 @@ import { ButtonLink, buttonArrowClass } from '@/components/ui/Button'
 
 export default function NotFound() {
   return (
-    <section className="band-tall">
+    <section className="band-tall" data-page-not-found>
       <div className="shell max-w-[60ch]">
         <p className="t-data text-[0.85rem] font-bold text-signal-deep">404</p>
         <h1 className="t-h1 mt-4 text-navy-900">That page is not on the shelf.</h1>

@@ -5,7 +5,7 @@ import { ArrowRight, EnvelopeSimple, WhatsappLogo, NavigationArrow } from '@phos
 import { PageHeader } from '@/components/PageHeader'
 import { Reveal } from '@/components/ui/Reveal'
 import { whatsappNumber } from '@/lib/data/branches'
-import { getNetworkStats } from '@/lib/payload/branches'
+import { getNetworkStats } from '@/lib/cms/branches'
 import { COMPANY, CORPORATE_FACTS, headOfficeMapUrl } from '@/lib/data/company'
 
 export const dynamic = 'force-dynamic'

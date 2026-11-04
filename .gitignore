@@ -26,3 +26,8 @@ partsmall.db-journal
 # Uncompressed originals kept as a local rollback for the re-encoded hero
 # videos — not meant to be shipped or versioned.
 /video-originals/
+
+# CloudIA CMS: local secrets, backup archives and the updater's shared folder
+cloudia/cms.env
+cms-backups/
+cloudia-updater/

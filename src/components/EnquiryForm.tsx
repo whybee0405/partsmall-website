@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { CheckCircle, Spinner, WarningCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/Button'
 import { Field, Input, Textarea, Select } from '@/components/ui/Field'
-import { trackEnquiryAnalytics } from '@/components/analytics/AnalyticsTracker'
+import { analyticsEnquiryHeaders, trackEnquiryAnalytics } from '@/components/analytics/AnalyticsTracker'
 
 type EnquiryType = 'wholesale' | 'branch' | 'general' | 'distributor'
 
@@ -78,7 +78,7 @@ export function EnquiryForm({
     try {
       const res = await fetch('/api/enquiry', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...analyticsEnquiryHeaders() },
         body: JSON.stringify({
           ...Object.fromEntries(data.entries()),
           type,

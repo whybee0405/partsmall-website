@@ -116,7 +116,7 @@ export const PROVINCE_ORDER = [
  * static data (the chat assistant, src/lib/chat/ai.ts, and the FAQ page's
  * generated answers, src/lib/data/faqs.ts — both explicitly deferred, see
  * the migration plan). Pages read the live equivalent instead:
- * getNetworkStats() in src/lib/payload/branches.ts.
+ * getNetworkStats() in src/lib/cms/branches.ts.
  */
 export const NETWORK = {
   total: BRANCHES.length,
@@ -137,8 +137,8 @@ export const NETWORK = {
  *
  * Takes the branch list as its first argument rather than closing over a
  * module-level array, because callers now source that list live (from
- * Payload, server-side) or as a prop (client components, which can't query
- * Payload themselves) — see src/lib/payload/branches.ts and BranchFinder.
+ * the CMS, server-side) or as a prop (client components, which can't query
+ * the CMS themselves) — see src/lib/cms/branches.ts and BranchFinder.
  */
 export function searchBranches(
   branches: Branch[],

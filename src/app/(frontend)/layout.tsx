@@ -8,7 +8,7 @@ import { ChatWidget } from '@/components/ChatWidget'
 import { AnalyticsTracker } from '@/components/analytics/AnalyticsTracker'
 import { GoogleAdsTag } from '@/components/analytics/GoogleAdsTag'
 import { COMPANY } from '@/lib/data/company'
-import { getAllBranches } from '@/lib/payload/branches'
+import { getAllBranches } from '@/lib/cms/branches'
 import './globals.css'
 
 export const dynamic = 'force-dynamic'

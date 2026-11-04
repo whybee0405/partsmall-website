@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { PageHeader } from '@/components/PageHeader'
 import { Reveal } from '@/components/ui/Reveal'
-import { getAllGuides } from '@/lib/payload/guides'
+import { getAllGuides } from '@/lib/cms/guides'
 
 export const dynamic = 'force-dynamic'
 

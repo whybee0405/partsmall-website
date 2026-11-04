@@ -1,10 +1,10 @@
 import type { MetadataRoute } from 'next'
-import { getAllBranches } from '@/lib/payload/branches'
-import { getAllMakes } from '@/lib/payload/makes'
-import { getAllModels, allFitments } from '@/lib/payload/models'
-import { getAllCategories } from '@/lib/payload/categories'
-import { getAllPartTypes } from '@/lib/payload/partTypes'
-import { getAllGuides } from '@/lib/payload/guides'
+import { getAllBranches } from '@/lib/cms/branches'
+import { getAllMakes } from '@/lib/cms/makes'
+import { getAllModels, allFitments } from '@/lib/cms/models'
+import { getAllCategories } from '@/lib/cms/categories'
+import { getAllPartTypes } from '@/lib/cms/partTypes'
+import { getAllGuides } from '@/lib/cms/guides'
 
 const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://partsmall.co.za'
 

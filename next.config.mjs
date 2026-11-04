@@ -1,5 +1,3 @@
-import { withPayload } from '@payloadcms/next/withPayload'
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -8,7 +6,8 @@ const nextConfig = {
   output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Branch photography is served from the local /media upload dir in dev.
+    // CMS images (/api/media/file/*) are local paths: the site proxies them
+    // from CloudIA CMS, see src/app/(frontend)/api/media/file/[filename]/route.ts.
     remotePatterns: [],
   },
   experimental: {
@@ -23,4 +22,4 @@ const nextConfig = {
   },
 }
 
-export default withPayload(nextConfig)
+export default nextConfig

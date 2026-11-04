@@ -2,14 +2,13 @@
 #
 # Parts-Mall Africa.
 #
-# Debian slim rather than Alpine on purpose: sharp and the libsql client used
-# by @payloadcms/db-sqlite both ship native bindings, and glibc avoids the musl
-# rebuild dance entirely.
+# Debian slim rather than Alpine on purpose: sharp ships native bindings and
+# glibc avoids the musl rebuild dance entirely.
 #
-# The database is seeded during the build and baked in at /app/data. Compose
-# mounts a named volume there, so the first container start copies the seeded
-# database into the volume and every later start persists whatever the client
-# has edited since.
+# Content, media, enquiries and analytics live in CloudIA CMS, which runs as
+# its own container beside this one (the `cms` service in docker-compose.yml).
+# This image is only the website: it holds no database and no uploads, and
+# reads everything from the CMS at request time over the Compose network.
 
 ######################## dependencies ########################
 FROM node:22-bookworm-slim AS deps
@@ -21,6 +20,8 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
+# The CloudIA client package is vendored (see vendor/README.md).
+COPY vendor ./vendor
 RUN npm ci
 
 
@@ -28,26 +29,17 @@ RUN npm ci
 FROM node:22-bookworm-slim AS builder
 WORKDIR /app
 
-# Build-time only. The runtime secret comes from the environment and is what
-# actually signs sessions; this one just lets the seed run.
-ARG PAYLOAD_SECRET=build-stage-secret-not-used-at-runtime
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:3050
 
-ENV PAYLOAD_SECRET=$PAYLOAD_SECRET \
-    NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
-    DATABASE_URI=file:/app/data/partsmall.db \
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_TELEMETRY_DISABLED=1
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Order matters. The import map is needed by the admin routes, the database
-# must exist and be seeded before the build imports the Payload config, and
-# only then is it safe to build.
-RUN mkdir -p /app/data \
- && npx payload generate:importmap \
- && npm run seed \
- && npm run build
+# Every page is rendered per request (force-dynamic), so the build needs no
+# CMS connection.
+RUN npm run build
 
 
 ########################### runner ###########################
@@ -68,11 +60,6 @@ RUN apt-get update \
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/data ./data
-COPY --from=builder --chown=nextjs:nodejs /app/src/scripts/migrate-analytics.mjs ./migrate-analytics.mjs
-
-# Uploads land here. Compose mounts a volume over it.
-RUN mkdir -p /app/public/media && chown -R nextjs:nodejs /app/public/media /app/data
 
 USER nextjs
 EXPOSE 3000
@@ -80,4 +67,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=25s --retries=3 \
   CMD curl -fsS http://127.0.0.1:3000/robots.txt || exit 1
 
-CMD ["sh", "-c", "node --experimental-sqlite migrate-analytics.mjs && node server.js"]
+CMD ["node", "server.js"]

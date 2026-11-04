@@ -2,59 +2,72 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { createCloudiaTracker, type CloudiaTracker } from '@cloudia-cms/client/tracker'
 
-const SESSION_KEY = 'pm-analytics-session'
 const ENQUIRY_EVENT = 'pm-analytics-enquiry'
 const WHATSAPP_EVENT = 'pm-analytics-whatsapp'
-type AnalyticsEventType = 'page_view' | 'page_exit' | 'form_submit' | 'whatsapp_click'
 type WhatsAppTopic = 'part_inquiry' | 'distributor_franchise_inquiry' | 'general_inquiry'
 
-function sessionId() {
-  const createId = () => {
-    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID()
-    return `pm-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
-  }
+/**
+ * First-party, cookieless analytics through CloudIA CMS.
+ *
+ * Events go to /api/analytics-events, the same address the Payload-era tracker
+ * used, which the CMS now answers. Beyond page views, exits and time on page
+ * the CloudIA tracker also records campaign (UTM) parameters, scroll depth,
+ * Core Web Vitals, outbound links, downloads, 404s and WhatsApp/phone/email
+ * link clicks (`contact_click`). It keeps only a tab-lifetime session id in
+ * sessionStorage, and honours Do Not Track and Global Privacy Control.
+ *
+ * WhatsApp enquiries keep their own `whatsapp_click` event with the topic and
+ * destination as metadata ({ topic, branch }), continuing the Payload history.
+ */
+let tracker: CloudiaTracker | null = null
 
-  try {
-    let id = window.sessionStorage.getItem(SESSION_KEY)
-    if (!id) { id = createId(); window.sessionStorage.setItem(SESSION_KEY, id) }
-    return id
-  } catch { return createId() }
+function getTracker() {
+  if (typeof window === 'undefined') return null
+  tracker ??= createCloudiaTracker({
+    endpoint: '/api/analytics-events',
+    autoStart: false,
+    // not-found.tsx marks its page, so 404s show up under Analytics → Pages.
+    notFound: () => Boolean(document.querySelector('[data-page-not-found]')),
+  })
+  return tracker
 }
 
-function eventBody(type: AnalyticsEventType, path: string, duration?: number, whatsapp?: { topic: WhatsAppTopic; branchSlug: string }) {
-  return JSON.stringify({ type, path, sessionId: sessionId(), referrer: document.referrer ? new URL(document.referrer).origin : '', ...(duration === undefined ? {} : { duration }), ...(whatsapp ? { whatsappTopic: whatsapp.topic, branchSlug: whatsapp.branchSlug } : {}) })
-}
-
-function post(type: AnalyticsEventType, path: string, duration?: number, beacon = false, whatsapp?: { topic: WhatsAppTopic; branchSlug: string }) {
-  const body = eventBody(type, path, duration, whatsapp)
-  if (beacon && navigator.sendBeacon?.('/api/analytics-events', new Blob([body], { type: 'application/json' }))) return
-  fetch('/api/analytics-events', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {})
-}
-
-/** Client tracker. It stores only a tab-lifetime random session ID. */
 export function AnalyticsTracker() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const loadedAt = Date.now()
-    let exited = false
-    const exit = () => { if (!exited) { exited = true; post('page_exit', pathname, Math.round((Date.now() - loadedAt) / 1000), true) } }
-    const onVisibility = () => { if (document.visibilityState === 'hidden') exit() }
-    const onEnquiry = () => post('form_submit', pathname)
+    const instance = getTracker()
+    if (!instance) return
+    instance.start()
+    const onEnquiry = () => instance.track('form_submit')
     const onWhatsApp = (event: Event) => {
       const detail = (event as CustomEvent<{ topic: WhatsAppTopic; branchSlug: string }>).detail
-      if (detail?.topic && detail?.branchSlug) post('whatsapp_click', pathname, undefined, false, detail)
+      if (detail?.topic && detail?.branchSlug)
+        instance.track('whatsapp_click', { topic: detail.topic, branch: detail.branchSlug })
     }
-    post('page_view', pathname)
-    document.addEventListener('visibilitychange', onVisibility)
-    window.addEventListener('pagehide', exit)
     window.addEventListener(ENQUIRY_EVENT, onEnquiry)
     window.addEventListener(WHATSAPP_EVENT, onWhatsApp)
-    return () => { exit(); document.removeEventListener('visibilitychange', onVisibility); window.removeEventListener('pagehide', exit); window.removeEventListener(ENQUIRY_EVENT, onEnquiry); window.removeEventListener(WHATSAPP_EVENT, onWhatsApp) }
+    return () => {
+      window.removeEventListener(ENQUIRY_EVENT, onEnquiry)
+      window.removeEventListener(WHATSAPP_EVENT, onWhatsApp)
+    }
+  }, [])
+
+  useEffect(() => {
+    getTracker()?.pageChanged(pathname)
   }, [pathname])
 
   return null
+}
+
+/**
+ * Headers that tie an enquiry to this visit (source, campaign, landing page)
+ * in CloudIA's enquiry reports. Empty when the tracker is not running.
+ */
+export function analyticsEnquiryHeaders(): Record<string, string> {
+  return getTracker()?.enquiryHeaders() ?? {}
 }
 
 export function trackEnquiryAnalytics() {
