@@ -16,9 +16,6 @@ test-results
 partsmall.db
 partsmall.db-journal
 
-# Leftover Payload upload folder; media now lives in CloudIA CMS.
-public/media
-
 # The CMS's own config, backups and tooling; the site image does not use them.
 cloudia
 cms-backups

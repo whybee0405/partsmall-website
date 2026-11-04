@@ -469,8 +469,8 @@ html.custom-cursor-active * {
 }
 
 /* ==========================================================================
-   Guide body — the blog post richText renderer's output. Payload's default
-   Lexical converters emit plain semantic HTML (p, h2, ul, a, strong…), so
+   Guide body — the blog post rich-text renderer's output (components/RichText.tsx)
+   emits plain semantic HTML (p, h2, ul, a, strong…), so
    this is the one place on the site styling reaches an element by tag name
    rather than a class, matching what the old plain-paragraph rendering
    looked like plus sane defaults for anything an editor adds beyond that.

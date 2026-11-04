@@ -41,9 +41,6 @@ is namespaced `partsmall-africa` so nothing overlaps:
 Ports 3050 (site) and 8787 (CMS) bind to `127.0.0.1` only; nginx is the public edge.
 Change them with `HOST_PORT` and `CMS_HOST_PORT` in `.env`.
 
-The Payload-era volumes `partsmall-africa_db` and `partsmall-africa_media` are no
-longer mounted and are kept, untouched, for rollback.
-
 ### Docker notes
 
 - **The CMS owns the data.** `partsmall-africa_cms_data` holds its SQLite database
@@ -108,9 +105,9 @@ builds and deploys even with an empty database.
 
 **CloudIA CMS** owns the live records and is where the client edits day to day
 (`/admin`): uploading photography, editing blog posts, adding a branch. The site
-reads it through `src/lib/cms/*`, which uses CloudIA's Payload-compatible client
-(`@cloudia-cms/client`, vendored in `vendor/`), so queries and document shapes are
-the ones the site used with Payload.
+reads it through `src/lib/cms/*` with CloudIA's client (`@cloudia-cms/client`,
+vendored in `vendor/`), using CloudIA's Payload-compatible query API (`find` with
+`where`, `sort`, `depth`).
 
 Counts are always derived, never typed by hand:
 

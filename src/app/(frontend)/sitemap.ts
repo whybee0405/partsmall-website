@@ -15,8 +15,7 @@ export const dynamic = 'force-dynamic'
  * intersection pages are the deepest in the tree and among the most valuable,
  * because they match how people actually search: make, model, year, part.
  *
- * Every collection listed here is now sourced live from Payload — see the
- * migration plan at magical-dancing-turtle.md.
+ * Every collection listed here is sourced live from CloudIA CMS (src/lib/cms).
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()

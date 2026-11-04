@@ -33,7 +33,7 @@ type Located = Branch & { km?: number }
  * is how the trade actually sends a photo of the old part.
  *
  * `branches` comes from the server — this is a client component and can't
- * query Payload itself, so whichever page renders this fetches the live
+ * query the CMS itself, so whichever page renders this fetches the live
  * branch list and passes it down.
  */
 export function BranchFinder({

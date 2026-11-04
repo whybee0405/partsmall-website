@@ -12,11 +12,6 @@
 # nginx is the public edge: /admin and /api/* go to the CMS (except the site's
 # own /api/enquiry, /api/chat and /api/media routes), everything else to the
 # site. See nginx/parts-mall.co.za.
-#
-# Before 2026-11-04 the site ran Payload CMS inside `web`, with its database and
-# uploads in the volumes partsmall-africa_db and partsmall-africa_media. Those
-# volumes are no longer mounted but are kept for rollback; nothing here
-# removes them.
 
 name: partsmall-africa
 
