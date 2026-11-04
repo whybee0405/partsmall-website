@@ -63,4 +63,13 @@ echo "== fix-ups"
 docker cp "$SNAPSHOT" "$CMS:/tmp/payload-snapshot.db"
 docker exec "$CMS" node --import tsx /app/site-config/migration/post-import-fixups.ts /app/data/cloudia.db /tmp/payload-snapshot.db
 docker exec "$CMS" rm -f /tmp/payload-snapshot.db /tmp/payload-profile.json /tmp/payload-schema.json
+
+# import:payload rewrites each model's fields from Payload's schema; restarting re-applies
+# cloudia.config.ts and payload-shape.json (urlSlug and the other CloudIA-side changes).
+echo "== re-apply cloudia.config.ts"
+docker restart "$CMS" >/dev/null
+for _ in $(seq 1 60); do
+  [ "$(docker inspect -f '{{.State.Health.Status}}' "$CMS")" = healthy ] && break; sleep 2
+done
+docker logs "$CMS" 2>&1 | grep 'cloudia.config.ts applied' | tail -1
 echo "== done"
