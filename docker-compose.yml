@@ -22,11 +22,13 @@ name: partsmall-africa
 
 services:
   cms:
-    # Built locally from github.com/whybee0405/cloudia-cms at the tag in
-    # cloudia/cms-version (docker build -f docker/Dockerfile -t cloudia-cms:<version> .),
-    # or ghcr.io/whybee0405/cloudia-cms once the server has a registry login:
-    # set CLOUDIA_CMS_IMAGE=ghcr.io/whybee0405/cloudia-cms in .env.
-    image: ${CLOUDIA_CMS_IMAGE:-cloudia-cms}:${CLOUDIA_CMS_VERSION:-1.7.0}
+    # The version comes from CLOUDIA_CMS_VERSION: the higher of cloudia/cms-version (the git
+    # baseline) and the updater's /var/lib/cloudia-updater/partsmall/version. Updates install
+    # from the dashboard through the host helper cloudia-updater; deploy with
+    # ./scripts/deploy-cms.sh, and for other commands first run
+    #   export CLOUDIA_CMS_VERSION=$(./scripts/deploy-cms.sh version)
+    # Never start a lower version by hand.
+    image: ghcr.io/whybee0405/cloudia-cms:${CLOUDIA_CMS_VERSION:?run ./scripts/deploy-cms.sh, or export CLOUDIA_CMS_VERSION=$(./scripts/deploy-cms.sh version)}
     container_name: partsmall-africa-cms
     restart: unless-stopped
     ports:
@@ -35,6 +37,9 @@ services:
     env_file:
       # PUBLIC_URL, SMTP_*, FORM_SALT, TZ, BACKUP_KEEP_DAYS... (see cloudia/cms.env.example)
       - cloudia/cms.env
+    environment:
+      # The directory shared with the host helper cloudia-updater.
+      UPDATER_DIR: /app/updater
     volumes:
       # Database and uploads.
       - cms_data:/app/data
@@ -43,6 +48,8 @@ services:
       # Backup archives. Outside /var/www/html on purpose: the default nginx
       # server publishes that folder. Must belong to uid 1000.
       - ${CMS_BACKUP_DIR:-./cms-backups}:/app/backups
+      # Requests and status shared with cloudia-updater. Must belong to uid 1000.
+      - ./cloudia-updater:/app/updater
     logging:
       driver: json-file
       options:

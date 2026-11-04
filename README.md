@@ -62,11 +62,18 @@ longer mounted and are kept, untouched, for rollback.
 ### Useful commands
 
 ```bash
+./scripts/deploy-cms.sh                               # pull and (re)start the CMS at the right version
+export CLOUDIA_CMS_VERSION=$(./scripts/deploy-cms.sh version)   # needed before any other compose command
 docker compose logs -f web cms                        # follow logs
 docker compose up -d --build web                      # rebuild the site after a code change
 docker compose exec cms cloudia-cms backup            # CMS backup now
-docker compose exec cms cloudia-cms admin:create you@example.com
+sudo cloudia-updater check --instance partsmall       # look for CloudIA updates now
 ```
+
+CloudIA updates install from the dashboard (System → Updates) through the host
+helper `cloudia-updater` (instance `partsmall`). The CMS image comes from
+`ghcr.io/whybee0405/cloudia-cms`; the server needs a `docker login ghcr.io` with a
+`read:packages` token, for root (the helper) and for the deploying user.
 
 ---
 
