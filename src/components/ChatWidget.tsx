@@ -120,6 +120,7 @@ export function ChatWidget() {
 
       {open && (
         <div
+          data-cloudia-placement="chat"
           className="fixed left-6 bottom-24 z-[95] flex h-[min(32rem,70vh)] w-[min(24rem,calc(100vw-3rem))] flex-col overflow-hidden rounded-[var(--radius-base)] border border-hairline-strong bg-card shadow-[var(--shadow-panel)]"
         >
           <div className="flex items-center justify-between border-b border-hairline bg-navy-900 px-4 py-3">

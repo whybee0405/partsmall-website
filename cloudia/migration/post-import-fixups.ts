@@ -106,4 +106,32 @@ cms.transaction(() => {
 })()
 console.log(`models: ${models.length} in Payload, ${renamed} with a URL segment, ${modelsMissing} missing`)
 
+// 4. Contact clicks: the Overview's WhatsApp KPI and Contact clicks panel count the CloudIA
+//    tracker's automatic `contact_click` events, which only exist from the cutover. Every
+//    Payload-era WhatsApp click came from the floating WhatsApp picker (the only place the old
+//    tracker recorded them), so each gets the contact_click the tracker now sends for the same
+//    click: same session, visitor, page and time; channel whatsapp, placement floating, and its
+//    topic and branch. Rebuilt on every run, so it follows the imported clicks.
+const { backfillSessions } = await import('/app/server/analytics/backfill.ts')
+const columns = (cms.prepare('PRAGMA table_info(events)').all() as { name: string }[])
+  .map((column) => column.name)
+  .filter((name) => !['id', 'type', 'metadata_json'].includes(name))
+let contactCopies = 0
+cms.transaction(() => {
+  cms.prepare(`DELETE FROM events WHERE site_id = ? AND id LIKE 'payload-%-contact'`).run(site.id)
+  contactCopies = cms
+    .prepare(
+      `INSERT INTO events (id, type, metadata_json, ${columns.join(', ')})
+       SELECT id || '-contact', 'contact_click',
+         json_object('channel', 'whatsapp', 'placement', 'floating',
+           'topic', json_extract(metadata_json, '$.topic'),
+           'branch', json_extract(metadata_json, '$.branch')),
+         ${columns.join(', ')}
+       FROM events WHERE site_id = ? AND type = 'whatsapp_click' AND id LIKE 'payload-%'`,
+    )
+    .run(site.id).changes
+})()
+const rebuilt = backfillSessions(cms, site.id)
+console.log(`contact clicks: ${contactCopies} historical WhatsApp clicks; ${rebuilt.sessions} sessions rebuilt`)
+
 if (missing || modelsMissing) process.exitCode = 1

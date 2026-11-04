@@ -122,7 +122,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           Skip to content
         </a>
         <Header />
-        <main id="main">{children}</main>
+        <main id="main" data-cloudia-placement="page">{children}</main>
         <Footer />
         <CustomCursor />
         <FloatingWhatsApp branches={branches} />

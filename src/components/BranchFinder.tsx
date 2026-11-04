@@ -86,7 +86,7 @@ export function BranchFinder({
   }
 
   return (
-    <div className={showMap ? 'grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-12' : undefined}>
+    <div className={showMap ? 'grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-12' : undefined} data-cloudia-placement="branch-finder">
       <div>
       <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">

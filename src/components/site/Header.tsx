@@ -83,6 +83,7 @@ export function Header() {
       <div ref={sentinel} aria-hidden="true" className="absolute top-0 h-px w-full" />
 
       <header
+        data-cloudia-placement="header"
         className={`sticky top-0 z-50 border-b bg-paper/92 backdrop-blur-md transition-shadow duration-200 ${
           stuck ? 'border-hairline shadow-[0_1px_0_oklch(0.885_0.006_85),0_8px_24px_oklch(0.25_0.07_262/0.05)]' : 'border-transparent'
         }`}

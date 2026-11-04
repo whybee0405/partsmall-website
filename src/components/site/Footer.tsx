@@ -66,7 +66,7 @@ export async function Footer() {
   const columns = buildColumns(makes, categories)
 
   return (
-    <footer className="slab max-sm:pb-20" role="contentinfo">
+    <footer className="slab max-sm:pb-20" role="contentinfo" data-cloudia-placement="footer">
       <div className="shell band-tight">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_repeat(4,minmax(0,0.7fr))] lg:gap-7">
           <div>
