@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { List, X, MapPin } from '@phosphor-icons/react'
 import { Wordmark } from '@/components/ui/Wordmark'
 import { ButtonLink } from '@/components/ui/Button'
+import type { NetworkStats } from '@/lib/data/branches'
 
 // Both routes into the catalogue sit at the top level: people either know the
 // part they need or they know their car, and neither should have to guess.
@@ -18,7 +19,7 @@ const NAV = [
   { href: '/about', label: 'Company' },
 ]
 
-export function Header() {
+export function Header({ network }: { network: NetworkStats }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [stuck, setStuck] = useState(false)
@@ -220,7 +221,8 @@ export function Header() {
               Find your nearest branch
             </ButtonLink>
             <p className="text-[0.85rem] leading-relaxed text-on-navy-muted">
-              40+ branches across 9 provinces, plus 5 pan-African country points.
+              {network.southAfrica} branches across {network.provinces} provinces, plus{' '}
+              {network.panAfrican} pan-African country points.
             </p>
           </div>
         </div>

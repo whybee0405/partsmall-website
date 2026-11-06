@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { PageHeader } from '@/components/PageHeader'
+import { getNetworkStats } from '@/lib/cms/branches'
 import { Reveal } from '@/components/ui/Reveal'
 import { ButtonLink } from '@/components/ui/Button'
 import {
@@ -20,7 +21,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const network = await getNetworkStats()
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -189,7 +191,7 @@ export default function AboutPage() {
         <div className="shell flex flex-wrap items-end justify-between gap-8">
           <div>
             <h2 className="t-h1 max-w-[18ch] text-navy-900">
-              40+ points, and one of them is near you.
+              {network.southAfrica} branches, and one of them is near you.
             </h2>
           </div>
           <div className="flex flex-wrap gap-3">

@@ -34,7 +34,7 @@ export function NetworkMap({
         viewBox={`0 0 ${MAP_W} ${MAP_H}`}
         className="h-auto w-full"
         role="img"
-        aria-label={`Map of ${NETWORK_POINTS.length} Parts-Mall network points across southern Africa. A full text list of every branch follows below.`}
+        aria-label={`Map of ${NETWORK_POINTS.filter((p) => p.kind !== 'panafrica').length} Parts-Mall branches and ${NETWORK_POINTS.filter((p) => p.kind === 'panafrica').length} pan-African country points across southern Africa. A full text list of every branch follows below.`}
       >
         <defs>
           <filter id="networkGlow" x="-200%" y="-200%" width="500%" height="500%">

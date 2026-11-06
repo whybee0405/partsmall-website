@@ -8,7 +8,7 @@ import { ChatWidget } from '@/components/ChatWidget'
 import { AnalyticsTracker } from '@/components/analytics/AnalyticsTracker'
 import { GoogleAdsTag } from '@/components/analytics/GoogleAdsTag'
 import { COMPANY } from '@/lib/data/company'
-import { getAllBranches } from '@/lib/cms/branches'
+import { getAllBranches, computeNetworkStats, getNetworkStats } from '@/lib/cms/branches'
 import './globals.css'
 
 export const dynamic = 'force-dynamic'
@@ -48,43 +48,46 @@ const martianMono = Martian_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://partsmall.co.za'
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: 'Parts-Mall Africa | Korean Vehicle Parts Supplier',
-    template: '%s | Parts-Mall Africa',
-  },
-  description:
-    'Parts-Mall Africa supplies Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval replacement parts through 40+ branches across South Africa and 5 pan-African country points. Trade accounts, branch stock checks and wholesale supply.',
-  keywords: [
-    'car parts South Africa',
-    'Korean car parts',
-    'Kia parts',
-    'Hyundai parts',
-    'wholesale auto parts',
-    'trade account car parts',
-    'Parts-Mall',
-  ],
-  openGraph: {
-    type: 'website',
-    locale: 'en_ZA',
-    siteName: COMPANY.name,
-    url: siteUrl,
-    images: [
-      {
-        url: '/images/og-default.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Parts-Mall Africa — Korean vehicle parts supplier in Southern Africa.',
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const network = await getNetworkStats()
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: 'Parts-Mall Africa | Korean Vehicle Parts Supplier',
+      template: '%s | Parts-Mall Africa',
+    },
+    description:
+      `Parts-Mall Africa supplies Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval replacement parts through ${network.southAfrica} branches across South Africa and ${network.panAfrican} pan-African country points. Trade accounts, branch stock checks and wholesale supply.`,
+    keywords: [
+      'car parts South Africa',
+      'Korean car parts',
+      'Kia parts',
+      'Hyundai parts',
+      'wholesale auto parts',
+      'trade account car parts',
+      'Parts-Mall',
     ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/images/og-default.jpg'],
-  },
-  robots: { index: true, follow: true },
-  alternates: { canonical: '/' },
+    openGraph: {
+      type: 'website',
+      locale: 'en_ZA',
+      siteName: COMPANY.name,
+      url: siteUrl,
+      images: [
+        {
+          url: '/images/og-default.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Parts-Mall Africa — Korean vehicle parts supplier in Southern Africa.',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ['/images/og-default.jpg'],
+    },
+    robots: { index: true, follow: true },
+    alternates: { canonical: '/' },
+  }
 }
 
 export const viewport: Viewport = {
@@ -121,7 +124,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Skip to content
         </a>
-        <Header />
+        <Header network={computeNetworkStats(branches)} />
         <main id="main" data-cloudia-placement="page">{children}</main>
         <Footer />
         <CustomCursor />

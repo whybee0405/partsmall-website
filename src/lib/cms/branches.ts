@@ -1,6 +1,8 @@
 import { cache } from 'react'
 import { getCmsClient } from './client'
-import { PROVINCE_ORDER, type Branch } from '@/lib/data/branches'
+import { PROVINCE_ORDER, computeNetworkStats, type Branch } from '@/lib/data/branches'
+
+export { computeNetworkStats }
 
 /**
  * Live equivalents of the old static helpers in src/lib/data/branches.ts.
@@ -37,19 +39,6 @@ export async function branchesByProvince() {
     province,
     branches: branches.filter((b) => b.province === province),
   })).filter((g) => g.branches.length > 0)
-}
-
-/** Pure — same derivation the old NETWORK constant used, now over a live-fetched array. */
-export function computeNetworkStats(branches: Branch[]) {
-  return {
-    total: branches.length,
-    southAfrica: branches.filter((b) => b.country === 'South Africa').length,
-    provinces: new Set(
-      branches.filter((b) => b.province !== 'Pan-Africa').map((b) => b.province),
-    ).size,
-    countries: new Set(branches.map((b) => b.country)).size,
-    panAfrican: branches.filter((b) => b.province === 'Pan-Africa').length,
-  }
 }
 
 export async function getNetworkStats() {

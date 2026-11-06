@@ -14,6 +14,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { FaqList } from '@/components/FaqList'
 import { ButtonLink } from '@/components/ui/Button'
 import { modelYearSpan } from '@/lib/data/vehicles'
+import { getNetworkStats } from '@/lib/cms/branches'
 import { getMake } from '@/lib/cms/makes'
 import { getModel } from '@/lib/cms/models'
 import { getPartType } from '@/lib/cms/partTypes'
@@ -43,6 +44,7 @@ export async function generateMetadata({
   const mo = await getModel(make, model)
   const pt = await getPartType(type)
   if (!mk || !mo || !pt) return { title: 'Not found' }
+  const network = await getNetworkStats()
 
   const span = modelYearSpan(mo)
   // Absolute title without the year span — some make/model/part-type
@@ -52,7 +54,7 @@ export async function generateMetadata({
   return {
     title: { absolute: `${mk.label} ${mo.label} ${pt.label}` },
     description: metaDescription(
-      `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Supplied and fitment-confirmed through 40+ South African branches before dispatch. ${pt.summary}`,
+      `${pt.label} for the ${mk.label} ${mo.label}, ${span}. Supplied and fitment-confirmed through ${network.southAfrica} South African branches before dispatch. ${pt.summary}`,
     ),
     alternates: { canonical: `/vehicles/${mk.slug}/${mo.slug}/${pt.slug}` },
   }
@@ -69,7 +71,7 @@ export default async function VehiclePartPage({
   const pt = await getPartType(type)
   if (!mk || !mo || !pt || !mo.parts.includes(pt.slug)) notFound()
 
-  const cat = await getCategory(pt.category)
+  const [cat, network] = await Promise.all([getCategory(pt.category), getNetworkStats()])
   const span = modelYearSpan(mo)
   const vehicle = `${mk.label} ${mo.label}`
   const path = `/vehicles/${mk.slug}/${mo.slug}/${pt.slug}`
@@ -133,7 +135,7 @@ export default async function VehiclePartPage({
           Parts-Mall supplies {pt.label.toLowerCase()} for the {vehicle} across the{' '}
           {span} range, through {''}
           <Link href="/branches" className="font-semibold text-navy-700 underline underline-offset-4 hover:text-navy-800">
-            40+ branches
+            {network.southAfrica} branches
           </Link>{' '}
           in South Africa. {pt.summary}
         </p>

@@ -1,6 +1,6 @@
-import { BRANCHES, NETWORK } from '@/lib/data/branches'
+import { computeNetworkStats, type Branch } from '@/lib/data/branches'
 import { COMPANY, CORPORATE_FACTS } from '@/lib/data/company'
-import { FAQS } from '@/lib/data/faqs'
+import { buildFaqs } from '@/lib/data/faqs'
 import { MAKES } from '@/lib/data/vehicles'
 
 export type ChatMessage = { role: 'user' | 'assistant'; text: string }
@@ -18,13 +18,15 @@ export function aiConfigured() {
   return Boolean(process.env.ANTHROPIC_API_KEY)
 }
 
-function systemPrompt() {
-  const branchList = BRANCHES.map((b) => `${b.name} (${b.province}${b.province === 'Pan-Africa' ? `, ${b.country}` : ''})`).join('; ')
+function systemPrompt(branches: Branch[]) {
+  const NETWORK = computeNetworkStats(branches)
+  const FAQS = buildFaqs(NETWORK)
+  const branchList = branches.map((b) => `${b.name} (${b.province}${b.province === 'Pan-Africa' ? `, ${b.country}` : ''})`).join('; ')
   const faqBlock = FAQS.map((f) => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')
   const makesList = MAKES.map((m) => m.label).join(', ')
   const factsBlock = CORPORATE_FACTS.map((f) => `${f.value} ${f.label} (${f.note})`).join('; ')
 
-  return `You are the customer-facing chat assistant on the Parts-Mall Africa website, a wholesale distributor of Korean vehicle parts across ${NETWORK.total} branch/country points in Africa (${NETWORK.southAfrica} in South Africa across ${NETWORK.provinces} provinces, plus pan-African country points).
+  return `You are the customer-facing chat assistant on the Parts-Mall Africa website, a wholesale distributor of Korean vehicle parts through ${NETWORK.southAfrica} branches across ${NETWORK.provinces} South African provinces, plus ${NETWORK.panAfrican} pan-African country points.
 
 Ground rules:
 - Only state facts given to you below. Never invent a phone number, statistic, price, or stock claim.
@@ -44,7 +46,11 @@ Frequently asked questions, answer from these when relevant:
 ${faqBlock}`
 }
 
-export async function getAiReply(message: string, history: ChatMessage[]): Promise<AiReply | null> {
+export async function getAiReply(
+  message: string,
+  history: ChatMessage[],
+  branches: Branch[],
+): Promise<AiReply | null> {
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) return null
 
@@ -63,7 +69,7 @@ export async function getAiReply(message: string, history: ChatMessage[]): Promi
       body: JSON.stringify({
         model,
         max_tokens: 400,
-        system: systemPrompt(),
+        system: systemPrompt(branches),
         messages: [
           ...history.slice(-6).map((h) => ({ role: h.role, content: h.text })),
           { role: 'user', content: message },

@@ -8,7 +8,7 @@ import { HeroStory } from '@/components/HeroStory'
 import { BranchFinder } from '@/components/BranchFinder'
 import { CategoryIcon } from '@/components/CategoryIcon'
 import { CountUp } from '@/components/ui/CountUp'
-import { getAllBranches, computeNetworkStats } from '@/lib/cms/branches'
+import { getAllBranches, computeNetworkStats, getNetworkStats } from '@/lib/cms/branches'
 import { REVIEWS, REVIEWS_SUMMARY } from '@/lib/data/reviews'
 import { CERTIFICATIONS } from '@/lib/data/catalogue'
 import { getAllCategories } from '@/lib/cms/categories'
@@ -20,10 +20,12 @@ import { getAllGuides } from '@/lib/cms/guides'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  description:
-    'Korean vehicle parts across 40+ South African branches. Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval, fitment confirmed by the counter.',
-  alternates: { canonical: '/' },
+export async function generateMetadata(): Promise<Metadata> {
+  const network = await getNetworkStats()
+  return {
+    description: `Korean vehicle parts across ${network.southAfrica} South African branches. Kia, Hyundai, Chevrolet, Ssangyong, Suzuki, Daewoo, GWM and Haval, fitment confirmed by the counter.`,
+    alternates: { canonical: '/' },
+  }
 }
 
 /** Shared by the mobile ticker (duplicated, unrevealed) and the sm+ reveal grid. */
@@ -92,7 +94,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="t-lead mx-auto mt-5 max-w-[54ch] text-on-navy-muted">
-            Korean vehicle parts held across 40+ South African
+            Korean vehicle parts held across {network.southAfrica} South African
             branches, with a counter team that confirms fitment before you drive.
           </p>
 
@@ -125,7 +127,7 @@ export default async function HomePage() {
         <div className="shell">
           <dl className="grid grid-cols-2 divide-hairline md:grid-cols-4 md:divide-x">
             {[
-              { v: 40, suffix: '+', l: 'branches and country points across Southern Africa' },
+              { v: network.southAfrica, l: 'branches across South Africa' },
               { v: 189, l: 'buyers across 63 countries worldwide' },
               { v: 20, suffix: '+', l: 'official agents across 10 countries' },
               { v: 1998, static: true, l: 'group founded in Korea' },
@@ -166,9 +168,9 @@ export default async function HomePage() {
             <h2 className="t-h1 mt-3 text-navy-900">Find a Parts-Mall branch near you.</h2>
             <p className="t-lead mt-4">
               Search by town, province, or share your location, then call or WhatsApp
-              your nearest branch for stock and fitment — 40+ branches
-              across {network.provinces} provinces, plus country points in Botswana,
-              Eswatini, Mozambique, Namibia and Zimbabwe.
+              your nearest branch for stock and fitment — {network.southAfrica} branches
+              across {network.provinces} provinces, plus country points in{' '}
+              {network.panAfricanCountries}.
             </p>
           </Reveal>
 
@@ -181,7 +183,7 @@ export default async function HomePage() {
               href="/branches"
               className="group inline-flex items-center gap-2 text-[0.95rem] font-semibold text-navy-700 transition-colors hover:text-navy-800 max-sm:min-h-11"
             >
-              See all 40+ branches and country points
+              See all {network.southAfrica} branches and country points
               <ArrowRight
                 size={17}
                 weight="bold"

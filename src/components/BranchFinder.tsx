@@ -153,7 +153,16 @@ export function BranchFinder({
       )}
 
       <p role="status" aria-live="polite" className="t-data mt-5 text-[0.82rem] text-steel">
-        {results.length} {results.length === 1 ? 'branch' : 'branches'}
+        {(() => {
+          // Pan-African country points are listed with the branches but not
+          // counted as branches, so the total matches the rest of the site.
+          const points = results.filter((b) => b.province === 'Pan-Africa').length
+          const count = results.length - points
+          const parts = []
+          if (count > 0 || points === 0) parts.push(`${count} ${count === 1 ? 'branch' : 'branches'}`)
+          if (points > 0) parts.push(`${points} country ${points === 1 ? 'point' : 'points'}`)
+          return parts.join(', ')
+        })()}
         {origin ? ', nearest first' : ''}
       </p>
 

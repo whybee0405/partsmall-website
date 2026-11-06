@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { getRuleReply } from '@/lib/chat/engine'
 import { aiConfigured, getAiReply, type ChatMessage } from '@/lib/chat/ai'
+import { getAllBranches } from '@/lib/cms/branches'
+import { computeNetworkStats } from '@/lib/data/branches'
+import { buildFaqs } from '@/lib/data/faqs'
 
 /**
  * Chat assistant endpoint. Defaults to the deterministic rule engine — zero
@@ -25,10 +28,14 @@ export async function POST(request: Request) {
       ? body.location
       : null
 
+  // The live CMS list, so the assistant matches the branch finder exactly.
+  const branches = await getAllBranches()
+
   if (aiConfigured() && !location) {
-    const aiReply = await getAiReply(message, history)
+    const aiReply = await getAiReply(message, history, branches)
     if (aiReply) return NextResponse.json(aiReply)
   }
 
-  return NextResponse.json(getRuleReply(message, location))
+  const faqs = buildFaqs(computeNetworkStats(branches))
+  return NextResponse.json(getRuleReply(message, location, { branches, faqs }))
 }

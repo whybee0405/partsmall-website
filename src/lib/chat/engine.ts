@@ -1,6 +1,6 @@
-import { BRANCHES, searchBranches, PROVINCE_ORDER, type Branch } from '@/lib/data/branches'
+import { searchBranches, PROVINCE_ORDER, type Branch } from '@/lib/data/branches'
 import { COMPANY } from '@/lib/data/company'
-import { FAQS } from '@/lib/data/faqs'
+import type { Faq } from '@/lib/data/faqs'
 import { MAKES } from '@/lib/data/vehicles'
 
 export type ChatReply = {
@@ -76,25 +76,23 @@ function extractLocationQuery(message: string) {
  * How many of the ~30 FAQs a given word shows up in. Words like "part" or
  * "branch" appear in a dozen questions and should count for little; words
  * like "warranty" or "franchisee" appear in one or two and are the actual
- * signal. Plain inverse document frequency, computed once at module load.
+ * signal. Plain inverse document frequency over the questions.
  */
-const FAQ_DOC_FREQ = (() => {
+function faqDocFreq(faqs: Faq[]) {
   const df = new Map<string, number>()
-  for (const faq of FAQS) {
+  for (const faq of faqs) {
     for (const t of new Set(tokenize(faq.q))) df.set(t, (df.get(t) ?? 0) + 1)
   }
   return df
-})()
-
-function idf(token: string) {
-  return Math.log(1 + FAQS.length / (FAQ_DOC_FREQ.get(token) ?? 1))
 }
 
-function faqMatch(message: string) {
+function faqMatch(message: string, faqs: Faq[]) {
   const tokens = new Set(tokenize(message))
   if (tokens.size === 0) return null
 
-  const scored = FAQS.map((faq) => {
+  const df = faqDocFreq(faqs)
+  const idf = (token: string) => Math.log(1 + faqs.length / (df.get(token) ?? 1))
+  const scored = faqs.map((faq) => {
     const qTokens = new Set(tokenize(faq.q))
     const aTokens = new Set(tokenize(faq.a))
     let score = 0
@@ -118,9 +116,15 @@ function makeMatch(message: string) {
   return MAKES.find((mk) => m.includes(mk.label.toLowerCase()) || m.includes(mk.slug))
 }
 
+/**
+ * `branches` and `faqs` come from the caller, built from the live CMS branch
+ * list (see the chat API route), so the assistant only ever names registered
+ * branches and quotes current counts.
+ */
 export function getRuleReply(
   message: string,
-  location?: { lat: number; lng: number } | null,
+  location: { lat: number; lng: number } | null | undefined,
+  { branches, faqs }: { branches: Branch[]; faqs: Faq[] },
 ): ChatReply {
   const trimmed = message.trim()
 
@@ -161,7 +165,7 @@ export function getRuleReply(
   // a branch in Polokwane") must still win the search below rather than
   // being swallowed by an FAQ that happens to share a stray common word.
   if (!includesAny(trimmed, BRANCH_TRIGGER_WORDS)) {
-    const earlyFaq = faqMatch(trimmed)
+    const earlyFaq = faqMatch(trimmed, faqs)
     if (earlyFaq) {
       return { mode: 'rules', text: earlyFaq.a, quickReplies: DEFAULT_QUICK_REPLIES }
     }
@@ -184,11 +188,20 @@ export function getRuleReply(
     }
   }
 
+  // "How many branches…" is a question about the network, not a branch
+  // lookup, so it goes to the FAQ (which carries the live counts) first.
+  if (/\bhow many\b/i.test(trimmed)) {
+    const countFaq = faqMatch(trimmed, faqs)
+    if (countFaq) {
+      return { mode: 'rules', text: countFaq.a, quickReplies: ['Find a branch'] }
+    }
+  }
+
   if (includesAny(trimmed, BRANCH_TRIGGER_WORDS) || location) {
     const locQuery = extractLocationQuery(trimmed)
     const matchedProvince = PROVINCE_ORDER.find((p) => trimmed.toLowerCase().includes(p.toLowerCase()))
     const results = searchBranches(
-      BRANCHES,
+      branches,
       matchedProvince ? '' : locQuery,
       matchedProvince ?? 'All',
       location,

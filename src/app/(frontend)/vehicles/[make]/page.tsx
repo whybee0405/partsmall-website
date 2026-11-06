@@ -5,6 +5,7 @@ import { ArrowRight, MapPin } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
 import { modelYearSpan } from '@/lib/data/vehicles'
+import { getNetworkStats } from '@/lib/cms/branches'
 import { getMake } from '@/lib/cms/makes'
 import { modelsForMake } from '@/lib/cms/models'
 import { getAllCategories } from '@/lib/cms/categories'
@@ -21,7 +22,7 @@ export async function generateMetadata({
   const mk = await getMake(make)
   if (!mk) return { title: 'Not found' }
 
-  const models = await modelsForMake(mk.slug)
+  const [models, network] = await Promise.all([modelsForMake(mk.slug), getNetworkStats()])
   const modelList = models
     .slice(0, 3)
     .map((x) => x.label)
@@ -29,8 +30,8 @@ export async function generateMetadata({
   // A make with very few models (GWM and Haval has two) produces a short
   // enough sentence that the longer closing clause still fits; a make with
   // many models needs the shorter one to stay under the ceiling.
-  const long = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 40+ branches, fitment confirmed by the counter.`
-  const short = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through 40+ South African branches.`
+  const long = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through ${network.southAfrica} branches, fitment confirmed by the counter.`
+  const short = `${mk.label} replacement parts across ${models.length} models in South Africa, including the ${modelList}. Supplied through ${network.southAfrica} South African branches.`
 
   return {
     title: `${mk.label} parts`,

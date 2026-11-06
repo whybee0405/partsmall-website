@@ -178,7 +178,7 @@ export async function Footer() {
             </Link>
           </nav>
           <p className="t-data text-[0.78rem]">
-            40+ branches / {network.provinces} provinces /{' '}
+            {network.southAfrica} branches / {network.provinces} provinces /{' '}
             {network.countries} countries
           </p>
         </div>

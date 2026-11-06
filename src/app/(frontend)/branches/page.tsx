@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const network = await getNetworkStats()
   return {
     title: 'Branch finder',
-    description: `Find your nearest Parts-Mall branch. 40+ branches across ${network.provinces} South African provinces, plus points in Botswana, Eswatini, Mozambique, Namibia and Zimbabwe.`,
+    description: `Find your nearest Parts-Mall branch. ${network.southAfrica} branches across ${network.provinces} South African provinces, plus points in ${network.panAfricanCountries}.`,
     alternates: { canonical: '/branches' },
   }
 }

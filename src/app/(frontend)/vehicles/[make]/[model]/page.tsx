@@ -7,6 +7,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { ButtonLink } from '@/components/ui/Button'
 import { CategoryIcon } from '@/components/CategoryIcon'
 import { modelYearSpan } from '@/lib/data/vehicles'
+import { getNetworkStats } from '@/lib/cms/branches'
 import { getMake } from '@/lib/cms/makes'
 import { getAllModels, getModel } from '@/lib/cms/models'
 import { getPartType } from '@/lib/cms/partTypes'
@@ -24,11 +25,12 @@ export async function generateMetadata({
   const mk = await getMake(make)
   const mo = await getModel(make, model)
   if (!mk || !mo) return { title: 'Not found' }
+  const network = await getNetworkStats()
 
   return {
     title: `${mk.label} ${mo.label} parts`,
     description: metaDescription(
-      `${mk.label} ${mo.label} replacement parts, ${modelYearSpan(mo)}. Brakes, clutch, filters, bearings and more, supplied through 40+ South African branches.`,
+      `${mk.label} ${mo.label} replacement parts, ${modelYearSpan(mo)}. Brakes, clutch, filters, bearings and more, supplied through ${network.southAfrica} South African branches.`,
     ),
     alternates: { canonical: `/vehicles/${mk.slug}/${mo.slug}` },
   }

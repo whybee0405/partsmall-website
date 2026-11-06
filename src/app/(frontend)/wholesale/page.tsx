@@ -93,7 +93,7 @@ export default async function WholesalePage() {
               />
               <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-6">
                 {[
-                  { v: '40+', l: 'branches to draw stock from' },
+                  { v: network.southAfrica, l: 'branches to draw stock from' },
                   { v: network.countries, l: 'countries in the local network' },
                   ...CORPORATE_FACTS.slice(0, 2).map((f) => ({ v: f.value, l: f.label })),
                 ].map((s) => (

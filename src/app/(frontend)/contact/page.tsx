@@ -11,12 +11,15 @@ import {
 import { PageHeader } from '@/components/PageHeader'
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { COMPANY, headOfficeMapUrl } from '@/lib/data/company'
+import { getNetworkStats } from '@/lib/cms/branches'
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description:
-    'Contact Parts-Mall Africa head office in Meadowdale, Germiston. For stock checks and fitment, contact your nearest of 40+ network points directly.',
-  alternates: { canonical: '/contact' },
+export async function generateMetadata(): Promise<Metadata> {
+  const network = await getNetworkStats()
+  return {
+    title: 'Contact',
+    description: `Contact Parts-Mall Africa head office in Meadowdale, Germiston. For stock checks and fitment, contact your nearest of ${network.southAfrica} branches directly.`,
+    alternates: { canonical: '/contact' },
+  }
 }
 
 export default function ContactPage() {

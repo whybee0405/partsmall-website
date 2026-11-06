@@ -4,8 +4,11 @@ import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { PageHeader } from '@/components/PageHeader'
 import { Reveal } from '@/components/ui/Reveal'
 import { ButtonLink } from '@/components/ui/Button'
-import { FAQS, FAQ_CATEGORIES, faqsByCategory } from '@/lib/data/faqs'
+import { buildFaqs, FAQ_CATEGORIES, faqsByCategory } from '@/lib/data/faqs'
+import { getNetworkStats } from '@/lib/cms/branches'
 import { breadcrumbLd, faqLd, JsonLd } from '@/lib/seo'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Frequently asked questions',
@@ -14,7 +17,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/faq' },
 }
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const FAQS = buildFaqs(await getNetworkStats())
   return (
     <>
       <JsonLd
@@ -43,7 +47,7 @@ export default function FaqPage() {
       </PageHeader>
 
       {FAQ_CATEGORIES.map((cat, i) => {
-        const items = faqsByCategory(cat.slug)
+        const items = faqsByCategory(FAQS, cat.slug)
         if (items.length === 0) return null
         return (
           <section
