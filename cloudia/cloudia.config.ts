@@ -428,10 +428,28 @@ const config: CloudiaConfig = {
       ]
     },
     {
+      slug: 'authors',
+      name: 'Authors',
+      titleField: 'name',
+      description: 'People who write and review blog posts. Shown in the byline and the author box.',
+      fields: [
+        { name: 'name', type: 'text', required: true },
+        {
+          name: 'role',
+          type: 'text',
+          required: true,
+          help: 'Shown after the name, e.g. "Parts specialist" or "Workshop manager, Germiston".'
+        },
+        { name: 'bio', type: 'textarea', help: 'Two or three sentences for the author box.' },
+        { name: 'photo', type: 'image', help: 'Square head-and-shoulders photo, at least 400 px.' },
+        { name: 'profileUrl', type: 'url', label: 'Profile URL', help: 'Optional, e.g. a LinkedIn profile.' }
+      ]
+    },
+    {
       slug: 'guides',
       name: 'Blog Posts',
       titleField: 'title',
-      // Analytics -> Content lists views per post at this address
+      // Analytics -> Content lists views per post at this address; draft previews open here too.
       url: '/blog/{slug}',
       fields: [
         {
@@ -453,6 +471,7 @@ const config: CloudiaConfig = {
             'Ordering',
             'Fitment',
             'Buying',
+            'Maintenance',
             'Trade',
             'Network'
           ]
@@ -460,7 +479,22 @@ const config: CloudiaConfig = {
         {
           name: 'publishedAt',
           type: 'date',
-          required: true
+          fillOnPublish: true,
+          help: 'Leave empty to use the day the post goes live.'
+        },
+        {
+          name: 'lastUpdated',
+          type: 'date',
+          label: 'Last updated',
+          help: 'Shown as "Last updated" in the byline. Leave empty to use the publish date.'
+        },
+        {
+          name: 'reviewer',
+          type: 'relation',
+          relation: 'authors',
+          multiple: false,
+          requiredToPublish: true,
+          help: 'The Parts-Mall person who checked the post. Needed before it can be published or scheduled.'
         },
         {
           name: 'image',
@@ -468,9 +502,37 @@ const config: CloudiaConfig = {
         },
         {
           name: 'body',
-          type: 'json',
+          type: 'lexical',
           required: true,
-          help: 'The post body as rich-text (Lexical) JSON, rendered by the site. Lists and links included.'
+          help: 'The post. Type / for headings, lists, images and tables.'
+        },
+        {
+          name: 'faqs',
+          type: 'array',
+          label: 'FAQs',
+          help: 'Shown at the end of the post and published as FAQ structured data. Write each answer as a complete sentence.',
+          fields: [
+            { name: 'q', type: 'text', label: 'Question', required: true },
+            { name: 'a', type: 'textarea', label: 'Answer', required: true }
+          ]
+        },
+        {
+          name: 'seoTitle',
+          type: 'text',
+          label: 'SEO title',
+          help: 'Search result title, up to about 60 characters. Leave empty to use the title.'
+        },
+        {
+          name: 'metaDescription',
+          type: 'textarea',
+          label: 'Meta description',
+          help: 'Search result description, up to about 160 characters. Leave empty to use the excerpt.'
+        },
+        {
+          name: 'ogImage',
+          type: 'image',
+          label: 'Social image',
+          help: 'Image for link previews on WhatsApp and social media. Leave empty to use the post image.'
         },
         {
           name: 'relatedCategory',

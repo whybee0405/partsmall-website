@@ -11,7 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cloudia-cms/client": "file:vendor/whybee0405-cloudia-cms-client-1.7.0.tgz",
+    "@cloudia-cms/client": "file:vendor/whybee0405-cloudia-cms-client-1.11.0.tgz",
     "@phosphor-icons/react": "^2.1.7",
     "leaflet": "^1.9.4",
     "next": "15.4.11",

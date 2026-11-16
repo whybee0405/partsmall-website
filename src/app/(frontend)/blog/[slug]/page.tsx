@@ -7,78 +7,135 @@ import { PageHeader } from '@/components/PageHeader'
 import { RichText } from '@/components/RichText'
 import { ButtonLink } from '@/components/ui/Button'
 import { COMPANY } from '@/lib/data/company'
-import { JsonLd, SITE_URL, breadcrumbLd, metaDescription } from '@/lib/seo'
-import { getAllGuides, getGuide } from '@/lib/cms/guides'
+import { FaqList } from '@/components/FaqList'
+import { JsonLd, SITE_URL, breadcrumbLd, faqLd, metaDescription } from '@/lib/seo'
+import { getAllGuides, getGuide, getGuidePreview, type LiveGuide } from '@/lib/cms/guides'
 import { countBlogViews } from '@/lib/cms/blogViews'
 
 export const dynamic = 'force-dynamic'
 
+type Params = Promise<{ slug: string }>
+type Search = Promise<Record<string, string | string[] | undefined>>
+
+/** The published post, or the draft when the URL carries a valid CMS preview token. */
+async function loadGuide(slug: string, searchParams: Search) {
+  const raw = (await searchParams)['cloudia-preview']
+  const preview = await getGuidePreview(slug, Array.isArray(raw) ? raw[0] : raw)
+  if (preview) return { guide: preview, preview: true }
+  return { guide: await getGuide(slug), preview: false }
+}
+
+const absolute = (url: string) => (url.startsWith('http') ? url : `${SITE_URL}${url}`)
+
+/** 18 November 2026: the byline's date format. */
+const longDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-ZA', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'Africa/Johannesburg',
+  })
+
+function personLd(guide: LiveGuide) {
+  const reviewer = guide.reviewer
+  if (!reviewer) return undefined
+  return {
+    '@type': 'Person',
+    name: reviewer.name,
+    jobTitle: reviewer.role || undefined,
+    image: reviewer.photo ? absolute(reviewer.photo) : undefined,
+    url: reviewer.profileUrl || undefined,
+    worksFor: { '@type': 'Organization', name: COMPANY.name, url: SITE_URL },
+  }
+}
+
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
-  params: Promise<{ slug: string }>
+  params: Params
+  searchParams: Search
 }): Promise<Metadata> {
   const { slug } = await params
-  const guide = await getGuide(slug)
+  const { guide, preview } = await loadGuide(slug, searchParams)
   if (!guide) return { title: 'Post not found' }
 
   // Absolute title, not the templated one — the site suffix would push
   // several of these headlines past the 60-character budget.
   return {
-    title: { absolute: guide.title },
-    description: metaDescription(guide.excerpt),
+    title: { absolute: guide.seoTitle },
+    description: metaDescription(guide.seoDescription),
     alternates: { canonical: `/blog/${guide.slug}` },
+    ...(preview ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       type: 'article',
-      title: guide.title,
-      description: metaDescription(guide.excerpt),
+      title: guide.seoTitle,
+      description: metaDescription(guide.seoDescription),
       url: `/blog/${guide.slug}`,
       publishedTime: guide.date,
-      images: guide.image ? [{ url: guide.image, alt: guide.imageAlt }] : undefined,
+      modifiedTime: guide.updated,
+      images: guide.ogImage ? [{ url: guide.ogImage, alt: guide.imageAlt }] : undefined,
     },
-    twitter: { card: 'summary_large_image', title: guide.title },
+    twitter: { card: 'summary_large_image', title: guide.seoTitle },
   }
 }
 
 export default async function BlogPostPage({
   params,
+  searchParams,
 }: {
-  params: Promise<{ slug: string }>
+  params: Params
+  searchParams: Search
 }) {
   const { slug } = await params
-  const [guide, allGuides] = await Promise.all([getGuide(slug), getAllGuides()])
+  const [{ guide, preview }, allGuides] = await Promise.all([
+    loadGuide(slug, searchParams),
+    getAllGuides(),
+  ])
   if (!guide) notFound()
 
-  const views = await countBlogViews(guide.slug)
+  const views = preview ? null : await countBlogViews(guide.slug)
 
   const more = allGuides.filter((g) => g.slug !== guide.slug).slice(0, 2)
 
   const url = `${SITE_URL}/blog/${guide.slug}`
-  const jsonLd = [
+  const organization = { '@type': 'Organization', name: COMPANY.name, url: SITE_URL }
+  const reviewer = personLd(guide)
+  const heroImage = guide.ogImage || guide.image
+  const jsonLd: object[] = [
     {
       '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: guide.title,
-      description: guide.excerpt,
+      '@type': 'BlogPosting',
+      headline: guide.seoTitle,
+      description: guide.seoDescription,
       datePublished: guide.date,
-      dateModified: guide.date,
+      dateModified: guide.updated,
       inLanguage: 'en-ZA',
+      url,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      image: guide.image
-        ? [guide.image.startsWith('http') ? guide.image : `${SITE_URL}${guide.image}`]
-        : undefined,
-      author: { '@type': 'Organization', name: COMPANY.name, url: SITE_URL },
-      publisher: { '@type': 'Organization', name: COMPANY.name, url: SITE_URL },
+      image: heroImage ? [absolute(heroImage)] : undefined,
+      author: reviewer ?? organization,
+      ...(reviewer ? { reviewedBy: reviewer } : {}),
+      publisher: organization,
     },
     breadcrumbLd([
       { name: 'Blog', path: '/blog' },
       { name: guide.title, path: `/blog/${guide.slug}` },
     ]),
   ]
+  if (guide.faqs.length) jsonLd.push(faqLd(guide.faqs))
 
   return (
     <>
       <JsonLd data={jsonLd} />
+      {preview && (
+        <div
+          role="status"
+          className="bg-navy-900 px-4 py-2.5 text-center text-[0.9rem] font-semibold text-white"
+        >
+          Draft preview: this post is not published. Only people with this link can see it.
+        </div>
+      )}
 
       <PageHeader
         title={guide.title}
@@ -93,12 +150,7 @@ export default async function BlogPostPage({
             {guide.readMinutes} min read
           </span>
           <time dateTime={guide.date} className="t-data text-[0.76rem] text-steel">
-            {new Date(guide.date).toLocaleDateString('en-ZA', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-              timeZone: 'UTC',
-            })}
+            {longDate(guide.date)}
           </time>
           {views !== null && (
             <span className="t-data text-[0.76rem] text-steel" title="Recorded article views; refreshed on the next page load">
@@ -126,9 +178,69 @@ export default async function BlogPostPage({
               {guide.excerpt}
             </p>
 
+            <p className="t-data mt-4 text-[0.8rem] text-steel">
+              Last updated <time dateTime={guide.updated}>{longDate(guide.updated)}</time>
+              {guide.reviewer && (
+                <>
+                  {' · '}Reviewed by {guide.reviewer.name}
+                  {guide.reviewer.role ? `, ${guide.reviewer.role}` : ''}
+                </>
+              )}
+            </p>
+
             <div className="guide-body mt-8">
               <RichText data={guide.body as never} />
             </div>
+
+            {guide.faqs.length > 0 && (
+              <div className="mt-14">
+                <FaqList faqs={guide.faqs} headingId="post-faq-heading" />
+              </div>
+            )}
+
+            {guide.reviewer && (
+              <aside
+                aria-label="About the reviewer"
+                className="mt-14 flex items-start gap-5 border-t border-hairline pt-6"
+              >
+                {guide.reviewer.photo && (
+                  <Image
+                    src={guide.reviewer.photo}
+                    alt=""
+                    width={72}
+                    height={72}
+                    className="h-[72px] w-[72px] shrink-0 rounded-full bg-paper-2 object-cover"
+                  />
+                )}
+                <div>
+                  <p className="t-label text-steel">Reviewed by</p>
+                  <p className="t-h3 mt-1 text-ink">
+                    {guide.reviewer.profileUrl ? (
+                      <a
+                        href={guide.reviewer.profileUrl}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="hover:text-navy-700"
+                      >
+                        {guide.reviewer.name}
+                      </a>
+                    ) : (
+                      guide.reviewer.name
+                    )}
+                  </p>
+                  {guide.reviewer.role && (
+                    <p className="text-[0.95rem] text-steel">
+                      {guide.reviewer.role}, {COMPANY.name}
+                    </p>
+                  )}
+                  {guide.reviewer.bio && (
+                    <p className="mt-2.5 max-w-[60ch] text-[0.97rem] leading-relaxed text-ink-soft">
+                      {guide.reviewer.bio}
+                    </p>
+                  )}
+                </div>
+              </aside>
+            )}
 
             <aside className="mt-14 border-t-2 border-ink pt-6">
               <h2 className="t-h3 text-ink">Need this checked against your vehicle?</h2>

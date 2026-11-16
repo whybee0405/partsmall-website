@@ -94,7 +94,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${base}/blog/${g.slug}`,
       priority: 0.6,
       changeFrequency: 'yearly' as const,
-      lastModified: new Date(g.date),
+      lastModified: new Date(g.updated),
     })),
   ]
 }

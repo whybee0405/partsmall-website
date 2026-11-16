@@ -683,6 +683,54 @@
       "global": false,
       "drafts": false
     },
+    "authors": {
+      "fields": [
+        {
+          "type": "text",
+          "name": "name",
+          "label": "Name",
+          "required": true
+        },
+        {
+          "type": "text",
+          "name": "slug",
+          "label": "Slug",
+          "required": true
+        },
+        {
+          "type": "text",
+          "name": "role",
+          "label": "Role",
+          "required": true
+        },
+        {
+          "type": "textarea",
+          "name": "bio",
+          "label": "Bio"
+        },
+        {
+          "type": "upload",
+          "name": "photo",
+          "label": "Photo",
+          "relationTo": "media"
+        },
+        {
+          "type": "text",
+          "name": "profileUrl",
+          "label": "Profile URL"
+        },
+        {
+          "type": "date",
+          "name": "updatedAt"
+        },
+        {
+          "type": "date",
+          "name": "createdAt"
+        }
+      ],
+      "global": false,
+      "drafts": false
+    },
     "guides": {
       "fields": [
         {
@@ -726,6 +774,10 @@
                   "value": "Buying"
                 },
                 {
+                  "label": "Maintenance",
+                  "value": "Maintenance"
+                },
+                {
                   "label": "Trade",
                   "value": "Trade"
                 },
@@ -738,8 +790,7 @@
             {
               "type": "date",
               "name": "publishedAt",
-              "label": "Published At",
-              "required": true
+              "label": "Published At"
             }
           ]
         },
@@ -761,6 +812,57 @@
           "label": "Related Category",
           "relationTo": "categories",
           "description": "Links the guide back to a catalogue system."
+        },
+        {
+          "type": "date",
+          "name": "lastUpdated",
+          "label": "Last updated"
+        },
+        {
+          "type": "relationship",
+          "name": "reviewer",
+          "label": "Reviewer",
+          "relationTo": "authors"
+        },
+        {
+          "type": "array",
+          "name": "faqs",
+          "label": "FAQs",
+          "fields": [
+            {
+              "type": "text",
+              "name": "q",
+              "label": "Question",
+              "required": true
+            },
+            {
+              "type": "textarea",
+              "name": "a",
+              "label": "Answer",
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "id",
+              "label": "ID"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "name": "seoTitle",
+          "label": "SEO title"
+        },
+        {
+          "type": "textarea",
+          "name": "metaDescription",
+          "label": "Meta description"
+        },
+        {
+          "type": "upload",
+          "name": "ogImage",
+          "label": "Social image",
+          "relationTo": "media"
         },
         {
           "type": "date",
